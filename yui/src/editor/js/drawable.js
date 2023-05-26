@@ -16,22 +16,22 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a drawable thing which contains both Y.Nodes, and Y.Shapes.
  *
- * @namespace M.assignfeedback_editpdf
- * @param M.assignfeedback_editpdf.editor editor
+ * @namespace M.assignfeedback_exapdf
+ * @param M.assignfeedback_exapdf.editor editor
  * @class drawable
  */
 var DRAWABLE = function(editor) {
 
     /**
-     * Reference to M.assignfeedback_editpdf.editor.
+     * Reference to M.assignfeedback_exapdf.editor.
      * @property editor
-     * @type M.assignfeedback_editpdf.editor
+     * @type M.assignfeedback_exapdf.editor
      * @public
      */
     this.editor = editor;
@@ -108,5 +108,5 @@ var DRAWABLE = function(editor) {
     };
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.drawable = DRAWABLE;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.drawable = DRAWABLE;

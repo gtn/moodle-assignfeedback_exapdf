@@ -4,23 +4,23 @@ var COLOURPICKER_NAME = "Colourpicker",
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * COLOURPICKER
  * This is a drop down list of colours.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class colourpicker
  * @constructor
- * @extends M.assignfeedback_editpdf.dropdown
+ * @extends M.assignfeedback_exapdf.dropdown
  */
 COLOURPICKER = function(config) {
     COLOURPICKER.superclass.constructor.apply(this, [config]);
 };
 
-Y.extend(COLOURPICKER, M.assignfeedback_editpdf.dropdown, {
+Y.extend(COLOURPICKER, M.assignfeedback_exapdf.dropdown, {
 
     /**
      * Initialise the menu.
@@ -29,16 +29,16 @@ Y.extend(COLOURPICKER, M.assignfeedback_editpdf.dropdown, {
      * @return void
      */
     initializer: function(config) {
-        var colourlist = Y.Node.create('<ul role="menu" class="assignfeedback_editpdf_menu"/>'),
+        var colourlist = Y.Node.create('<ul role="menu" class="assignfeedback_exapdf_menu"/>'),
             body;
 
         // Build a list of coloured buttons.
         Y.each(this.get('colours'), function(rgb, colour) {
             var button, listitem, title, img, iconname;
 
-            title = M.util.get_string(colour, 'assignfeedback_editpdf');
+            title = M.util.get_string(colour, 'assignfeedback_exapdf');
             iconname = this.get('iconprefix') + colour;
-            img = M.util.image_url(iconname, 'assignfeedback_editpdf');
+            img = M.util.image_url(iconname, 'assignfeedback_exapdf');
             button = Y.Node.create('<button><img alt="' + title + '" src="' + img + '"/></button>');
             button.setAttribute('data-colour', colour);
             button.setAttribute('data-rgb', rgb);
@@ -57,7 +57,7 @@ Y.extend(COLOURPICKER, M.assignfeedback_editpdf.dropdown, {
         colourlist.delegate('key', this.callback_handler, 'down:13', 'button', this);
 
         // Set the accessible header text.
-        this.set('headerText', M.util.get_string('colourpicker', 'assignfeedback_editpdf'));
+        this.set('headerText', M.util.get_string('colourpicker', 'assignfeedback_exapdf'));
 
         // Set the body content.
         body.append(colourlist);
@@ -128,5 +128,5 @@ Y.extend(COLOURPICKER, M.assignfeedback_editpdf.dropdown, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.colourpicker = COLOURPICKER;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.colourpicker = COLOURPICKER;

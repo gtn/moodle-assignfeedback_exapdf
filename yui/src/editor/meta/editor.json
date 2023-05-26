@@ -1,5 +1,5 @@
 {
-  "moodle-assignfeedback_editpdf-editor": {
+  "moodle-assignfeedback_exapdf-editor": {
     "requires": [
         "base",
         "event",

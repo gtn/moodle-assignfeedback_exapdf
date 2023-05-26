@@ -17,7 +17,7 @@
 /**
  * This file contains the version information for the comments feedback plugin
  *
- * @package assignfeedback_editpdf
+ * @package assignfeedback_exapdf
  * @copyright  2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,5 +25,5 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2023042400;
-$plugin->requires  = 2023041800;
-$plugin->component = 'assignfeedback_editpdf';
+$plugin->requires  = 2022111800;
+$plugin->component = 'assignfeedback_exapdf';

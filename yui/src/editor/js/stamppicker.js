@@ -4,22 +4,22 @@ var STAMPPICKER_NAME = "Colourpicker",
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * This is a drop down list of stamps.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class stamppicker
  * @constructor
- * @extends M.assignfeedback_editpdf.dropdown
+ * @extends M.assignfeedback_exapdf.dropdown
  */
 STAMPPICKER = function(config) {
     STAMPPICKER.superclass.constructor.apply(this, [config]);
 };
 
-Y.extend(STAMPPICKER, M.assignfeedback_editpdf.dropdown, {
+Y.extend(STAMPPICKER, M.assignfeedback_exapdf.dropdown, {
 
     /**
      * Initialise the menu.
@@ -28,13 +28,13 @@ Y.extend(STAMPPICKER, M.assignfeedback_editpdf.dropdown, {
      * @return void
      */
     initializer: function(config) {
-        var stamplist = Y.Node.create('<ul role="menu" class="assignfeedback_editpdf_menu"/>');
+        var stamplist = Y.Node.create('<ul role="menu" class="assignfeedback_exapdf_menu"/>');
 
         // Build a list of stamped buttons.
         Y.each(this.get('stamps'), function(stamp) {
             var button, listitem, title;
 
-            title = M.util.get_string('stamp', 'assignfeedback_editpdf');
+            title = M.util.get_string('stamp', 'assignfeedback_exapdf');
             button = Y.Node.create('<button><img height="16" width="16" alt="' + title + '" src="' + stamp + '"/></button>');
             button.setAttribute('data-stamp', stamp);
             button.setAttribute('role', 'menuitem');
@@ -51,7 +51,7 @@ Y.extend(STAMPPICKER, M.assignfeedback_editpdf.dropdown, {
         stamplist.delegate('key', this.callback_handler, 'down:13', 'button', this);
 
         // Set the accessible header text.
-        this.set('headerText', M.util.get_string('stamppicker', 'assignfeedback_editpdf'));
+        this.set('headerText', M.util.get_string('stamppicker', 'assignfeedback_exapdf'));
 
         // Set the body content.
         this.set('bodyContent', stamplist);
@@ -109,5 +109,5 @@ Y.extend(STAMPPICKER, M.assignfeedback_editpdf.dropdown, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.stamppicker = STAMPPICKER;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.stamppicker = STAMPPICKER;

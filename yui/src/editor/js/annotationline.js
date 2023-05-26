@@ -16,15 +16,15 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a line.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationline
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONLINE = function(config) {
     ANNOTATIONLINE.superclass.constructor.apply(this, [config]);
@@ -33,18 +33,18 @@ var ANNOTATIONLINE = function(config) {
 ANNOTATIONLINE.NAME = "annotationline";
 ANNOTATIONLINE.ATTRS = {};
 
-Y.extend(ANNOTATIONLINE, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONLINE, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a line annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
             shape;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
 
         shape = this.editor.graphic.addShape({
         type: Y.Path,
@@ -69,10 +69,10 @@ Y.extend(ANNOTATIONLINE, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape;
 
         shape = this.editor.graphic.addShape({
@@ -98,7 +98,7 @@ Y.extend(ANNOTATIONLINE, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool true if line bound is more than min width/height, else false.
      */
     init_from_edit: function(edit) {
@@ -116,5 +116,5 @@ Y.extend(ANNOTATIONLINE, M.assignfeedback_editpdf.annotation, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationline = ANNOTATIONLINE;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationline = ANNOTATIONLINE;

@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace assignfeedback_editpdf;
+namespace assignfeedback_exapdf;
 
 use mod_assign_test_generator;
 
@@ -24,9 +24,9 @@ global $CFG;
 require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 
 /**
- * Unit tests for assignfeedback_editpdf\comments_quick_list
+ * Unit tests for assignfeedback_exapdf\comments_quick_list
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @category   test
  * @copyright  2013 Damyon Wiese
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -71,7 +71,7 @@ class feedback_test extends \advanced_testcase {
             'filepath' => '/',
             'filename' => $textfile ? 'submission.txt' : 'submission.pdf'
         );
-        $sourcefile = $CFG->dirroot . '/mod/assign/feedback/editpdf/tests/fixtures/submission.' . ($textfile ? 'txt' : 'pdf');
+        $sourcefile = $CFG->dirroot . '/mod/assign/feedback/exapdf/tests/fixtures/submission.' . ($textfile ? 'txt' : 'pdf');
         $fs->create_file_from_pathname($filerecord, $sourcefile);
 
         $data = new \stdClass();
@@ -112,7 +112,7 @@ class feedback_test extends \advanced_testcase {
                 'assignsubmission_onlinetext_enabled' => 1,
                 'assignsubmission_file_enabled' => 1,
                 'assignsubmission_file_maxfiles' => 1,
-                'assignfeedback_editpdf_enabled' => 1,
+                'assignfeedback_exapdf_enabled' => 1,
                 'assignsubmission_file_maxsizebytes' => 1000000,
             ]);
 
@@ -212,7 +212,7 @@ class feedback_test extends \advanced_testcase {
                 'assignsubmission_onlinetext_enabled' => 1,
                 'assignsubmission_file_enabled' => 1,
                 'assignsubmission_file_maxfiles' => 1,
-                'assignfeedback_editpdf_enabled' => 1,
+                'assignfeedback_exapdf_enabled' => 1,
                 'assignsubmission_file_maxsizebytes' => 1000000,
             ]);
 
@@ -224,7 +224,7 @@ class feedback_test extends \advanced_testcase {
         $grade = $assign->get_user_grade($student->id, true);
 
         $contextid = $assign->get_context()->id;
-        $component = 'assignfeedback_editpdf';
+        $component = 'assignfeedback_exapdf';
         $filearea = document_services::COMBINED_PDF_FILEAREA;
         $itemid = $grade->id;
         $filepath = '/';
@@ -339,7 +339,7 @@ class feedback_test extends \advanced_testcase {
     /**
      * Test Convert submission ad-hoc task.
      *
-     * @covers \assignfeedback_editpdf\task\convert_submission
+     * @covers \assignfeedback_exapdf\task\convert_submission
      */
     public function test_conversion_task() {
         $this->require_ghostscript();
@@ -351,7 +351,7 @@ class feedback_test extends \advanced_testcase {
         $assignopts = [
             'assignsubmission_file_enabled' => 1,
             'assignsubmission_file_maxfiles' => 1,
-            'assignfeedback_editpdf_enabled' => 1,
+            'assignfeedback_exapdf_enabled' => 1,
             'assignsubmission_file_maxsizebytes' => 1000000,
         ];
         $assign = $this->create_instance($course, $assignopts);
@@ -404,7 +404,7 @@ class feedback_test extends \advanced_testcase {
                 'assignsubmission_onlinetext_enabled' => 1,
                 'assignsubmission_file_enabled' => 1,
                 'assignsubmission_file_maxfiles' => 1,
-                'assignfeedback_editpdf_enabled' => 1,
+                'assignfeedback_exapdf_enabled' => 1,
                 'assignsubmission_file_maxsizebytes' => 1000000,
             ]);
 
@@ -441,9 +441,9 @@ class feedback_test extends \advanced_testcase {
 
         page_editor::set_annotations($grade->id, 0, $annotations);
 
-        $plugin = $assign->get_feedback_plugin_by_type('editpdf');
+        $plugin = $assign->get_feedback_plugin_by_type('exapdf');
         $data = new \stdClass();
-        $data->editpdf_source_userid = $student->id;
+        $data->exapdf_source_userid = $student->id;
         $this->assertTrue($plugin->is_feedback_modified($grade, $data));
         $plugin->save($grade, $data);
 
@@ -536,7 +536,7 @@ class feedback_test extends \advanced_testcase {
             'assignsubmission_onlinetext_enabled' => 1,
             'assignsubmission_file_enabled' => 1,
             'assignsubmission_file_maxfiles' => 1,
-            'assignfeedback_editpdf_enabled' => 1,
+            'assignfeedback_exapdf_enabled' => 1,
             'assignsubmission_file_maxsizebytes' => 1000000,
         ]);
 

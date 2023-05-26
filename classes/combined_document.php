@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,19 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the combined document class for the assignfeedback_editpdf plugin.
+ * This file contains the combined document class for the assignfeedback_exapdf plugin.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2017 Andrew Nicols <andrew@nicols.co.uk>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignfeedback_editpdf;
+namespace assignfeedback_exapdf;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The combined_document class for the assignfeedback_editpdf plugin.
+ * The combined_document class for the assignfeedback_exapdf plugin.
  *
  * @copyright 2017 Andrew Nicols <andrew@nicols.co.uk>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -436,7 +436,7 @@ class combined_document {
         }
         return (object) [
             'contextid' => $contextid,
-            'component' => 'assignfeedback_editpdf',
+            'component' => 'assignfeedback_exapdf',
             'filearea' => $filearea,
             'itemid' => $itemid,
             'filepath' => '/',

@@ -16,15 +16,15 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a pen.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationpen
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONPEN = function(config) {
     ANNOTATIONPEN.superclass.constructor.apply(this, [config]);
@@ -33,12 +33,12 @@ var ANNOTATIONPEN = function(config) {
 ANNOTATIONPEN.NAME = "annotationpen";
 ANNOTATIONPEN.ATTRS = {};
 
-Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONPEN, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a pen annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
@@ -47,7 +47,7 @@ Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
             positions,
             xy;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
 
         shape = this.editor.graphic.addShape({
            type: Y.Path,
@@ -85,10 +85,10 @@ Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             first;
 
@@ -126,11 +126,11 @@ Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool true if pen bound is more than min width/height, else false.
      */
     init_from_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect(),
+        var bounds = new M.assignfeedback_exapdf.rect(),
             pathlist = [],
             i = 0;
 
@@ -156,5 +156,5 @@ Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationpen = ANNOTATIONPEN;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationpen = ANNOTATIONPEN;

@@ -16,13 +16,13 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * EDIT
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class edit
  */
 var EDIT = function() {
@@ -30,7 +30,7 @@ var EDIT = function() {
     /**
      * Starting point for the edit.
      * @property start
-     * @type M.assignfeedback_editpdf.point|false
+     * @type M.assignfeedback_exapdf.point|false
      * @public
      */
     this.start = false;
@@ -38,7 +38,7 @@ var EDIT = function() {
     /**
      * Finishing point for the edit.
      * @property end
-     * @type M.assignfeedback_editpdf.point|false
+     * @type M.assignfeedback_exapdf.point|false
      * @public
      */
     this.end = false;
@@ -54,7 +54,7 @@ var EDIT = function() {
     /**
      * Starting point for the currently selected annotation.
      * @property annotationstart
-     * @type M.assignfeedback_editpdf.point|false
+     * @type M.assignfeedback_exapdf.point|false
      * @public
      */
     this.annotationstart = false;
@@ -94,11 +94,11 @@ var EDIT = function() {
     /**
      * List of points the the current drawing path.
      * @property path
-     * @type M.assignfeedback_editpdf.point[]
+     * @type M.assignfeedback_exapdf.point[]
      * @public
      */
     this.path = [];
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.edit = EDIT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.edit = EDIT;

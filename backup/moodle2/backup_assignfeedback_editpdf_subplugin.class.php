@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the backup code for the feedback_editpdf plugin.
+ * This file contains the backup code for the feedback_exapdf plugin.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2013 Damyon Wiese
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,11 +28,11 @@ defined('MOODLE_INTERNAL') || die();
  *
  * This just adds its fileareas to the annotations and the comments and annotation data.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2013 Damyon Wiese
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class backup_assignfeedback_editpdf_subplugin extends backup_subplugin {
+class backup_assignfeedback_exapdf_subplugin extends backup_subplugin {
 
     /**
      * Returns the subplugin information to attach to feedback element
@@ -43,12 +43,12 @@ class backup_assignfeedback_editpdf_subplugin extends backup_subplugin {
         // Create XML elements.
         $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subpluginelementfiles = new backup_nested_element('feedback_editpdf_files', null, array('gradeid'));
-        $subpluginelementannotations = new backup_nested_element('feedback_editpdf_annotations');
+        $subpluginelementfiles = new backup_nested_element('feedback_exapdf_files', null, array('gradeid'));
+        $subpluginelementannotations = new backup_nested_element('feedback_exapdf_annotations');
         $subpluginelementannotation = new backup_nested_element('annotation', null, array('gradeid', 'pageno', 'type', 'x', 'y', 'endx', 'endy', 'colour', 'path', 'draft'));
-        $subpluginelementcomments = new backup_nested_element('feedback_editpdf_comments');
+        $subpluginelementcomments = new backup_nested_element('feedback_exapdf_comments');
         $subpluginelementcomment = new backup_nested_element('comment', null, array('gradeid', 'pageno', 'x', 'y', 'width', 'rawtext', 'colour', 'draft'));
-        $subpluginelementrotation = new backup_nested_element('feedback_editpdf_rotation');
+        $subpluginelementrotation = new backup_nested_element('feedback_exapdf_rotation');
         $subpluginelementpagerotation = new backup_nested_element('pagerotation', null,
             array('gradeid', 'pageno', 'pathnamehash', 'isrotated', 'degree'));
 
@@ -66,13 +66,13 @@ class backup_assignfeedback_editpdf_subplugin extends backup_subplugin {
         $subpluginelementfiles->set_source_sql('SELECT id AS gradeid from {assign_grades} where id = :gradeid', array('gradeid' => backup::VAR_PARENTID));
         $subpluginelementannotation->set_source_table('assignfeedback_editpdf_annot', array('gradeid' => backup::VAR_PARENTID));
         $subpluginelementcomment->set_source_table('assignfeedback_editpdf_cmnt', array('gradeid' => backup::VAR_PARENTID));
-        $subpluginelementpagerotation->set_source_table('assignfeedback_editpdf_rot', array('gradeid' => backup::VAR_PARENTID));
+        $subpluginelementpagerotation->set_source_table('assignfeedback_exapdf_rot', array('gradeid' => backup::VAR_PARENTID));
         // We only need to backup the files in the final pdf area, and the readonly page images - the others can be regenerated.
-        $subpluginelementfiles->annotate_files('assignfeedback_editpdf',
-            \assignfeedback_editpdf\document_services::FINAL_PDF_FILEAREA, 'gradeid');
-        $subpluginelementfiles->annotate_files('assignfeedback_editpdf',
-            \assignfeedback_editpdf\document_services::PAGE_IMAGE_READONLY_FILEAREA, 'gradeid');
-        $subpluginelementfiles->annotate_files('assignfeedback_editpdf', 'stamps', 'gradeid');
+        $subpluginelementfiles->annotate_files('assignfeedback_exapdf',
+            \assignfeedback_exapdf\document_services::FINAL_PDF_FILEAREA, 'gradeid');
+        $subpluginelementfiles->annotate_files('assignfeedback_exapdf',
+            \assignfeedback_exapdf\document_services::PAGE_IMAGE_READONLY_FILEAREA, 'gradeid');
+        $subpluginelementfiles->annotate_files('assignfeedback_exapdf', 'stamps', 'gradeid');
         return $subplugin;
     }
 

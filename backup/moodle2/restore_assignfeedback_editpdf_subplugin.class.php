@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the restore code for the feedback_editpdf plugin.
+ * This file contains the restore code for the feedback_exapdf plugin.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2013 Damyon Wiese
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,11 +29,11 @@ defined('MOODLE_INTERNAL') || die();
  * Provides the necessary information needed
  * to restore one assign_feedback subplugin.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2013 Damyon Wiese
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_assignfeedback_editpdf_subplugin extends restore_subplugin {
+class restore_assignfeedback_exapdf_subplugin extends restore_subplugin {
 
     /**
      * Returns the paths to be handled by the subplugin at assignment level
@@ -46,45 +46,45 @@ class restore_assignfeedback_editpdf_subplugin extends restore_subplugin {
         // We used get_recommended_name() so this works.
         // The files node is a placeholder just containing gradeid so we can restore files once per grade.
         $elename = $this->get_namefor('files');
-        $elepath = $this->get_pathfor('/feedback_editpdf_files');
+        $elepath = $this->get_pathfor('/feedback_exapdf_files');
         $paths[] = new restore_path_element($elename, $elepath);
 
         // Now we have the list of comments and annotations per grade.
         $elename = $this->get_namefor('comment');
-        $elepath = $this->get_pathfor('/feedback_editpdf_comments/comment');
+        $elepath = $this->get_pathfor('/feedback_exapdf_comments/comment');
         $paths[] = new restore_path_element($elename, $elepath);
         $elename = $this->get_namefor('annotation');
-        $elepath = $this->get_pathfor('/feedback_editpdf_annotations/annotation');
+        $elepath = $this->get_pathfor('/feedback_exapdf_annotations/annotation');
         $paths[] = new restore_path_element($elename, $elepath);
 
         // Rotation details.
         $elename = $this->get_namefor('pagerotation');
-        $elepath = $this->get_pathfor('/feedback_editpdf_rotation/pagerotation');
+        $elepath = $this->get_pathfor('/feedback_exapdf_rotation/pagerotation');
         $paths[] = new restore_path_element($elename, $elepath);
 
         return $paths;
     }
 
     /**
-     * Processes one feedback_editpdf_files element
+     * Processes one feedback_exapdf_files element
      * @param mixed $data
      */
-    public function process_assignfeedback_editpdf_files($data) {
+    public function process_assignfeedback_exapdf_files($data) {
         $data = (object)$data;
 
         // In this case the id is the old gradeid which will be mapped.
-        $this->add_related_files('assignfeedback_editpdf',
-            \assignfeedback_editpdf\document_services::FINAL_PDF_FILEAREA, 'grade', null, $data->gradeid);
-        $this->add_related_files('assignfeedback_editpdf',
-            \assignfeedback_editpdf\document_services::PAGE_IMAGE_READONLY_FILEAREA, 'grade', null, $data->gradeid);
-        $this->add_related_files('assignfeedback_editpdf', 'stamps', 'grade', null, $data->gradeid);
+        $this->add_related_files('assignfeedback_exapdf',
+            \assignfeedback_exapdf\document_services::FINAL_PDF_FILEAREA, 'grade', null, $data->gradeid);
+        $this->add_related_files('assignfeedback_exapdf',
+            \assignfeedback_exapdf\document_services::PAGE_IMAGE_READONLY_FILEAREA, 'grade', null, $data->gradeid);
+        $this->add_related_files('assignfeedback_exapdf', 'stamps', 'grade', null, $data->gradeid);
     }
 
     /**
-     * Processes one feedback_editpdf_annotations/annotation element
+     * Processes one feedback_exapdf_annotations/annotation element
      * @param mixed $data
      */
-    public function process_assignfeedback_editpdf_annotation($data) {
+    public function process_assignfeedback_exapdf_annotation($data) {
         global $DB;
 
         $data = (object)$data;
@@ -98,10 +98,10 @@ class restore_assignfeedback_editpdf_subplugin extends restore_subplugin {
     }
 
     /**
-     * Processes one feedback_editpdf_comments/comment element
+     * Processes one feedback_exapdf_comments/comment element
      * @param mixed $data
      */
-    public function process_assignfeedback_editpdf_comment($data) {
+    public function process_assignfeedback_exapdf_comment($data) {
         global $DB;
 
         $data = (object)$data;
@@ -115,14 +115,14 @@ class restore_assignfeedback_editpdf_subplugin extends restore_subplugin {
     }
 
     /**
-     * Processes one /feedback_editpdf_rotation/pagerotation element
+     * Processes one /feedback_exapdf_rotation/pagerotation element
      * @param mixed $data
      */
-    public function process_assignfeedback_editpdf_pagerotation($data) {
+    public function process_assignfeedback_exapdf_pagerotation($data) {
         global $DB;
         $data = (object)$data;
         $oldgradeid = $data->gradeid;
         $data->gradeid = $this->get_mappingid('grade', $oldgradeid);
-        $DB->insert_record('assignfeedback_editpdf_rot', $data);
+        $DB->insert_record('assignfeedback_exapdf_rot', $data);
     }
 }

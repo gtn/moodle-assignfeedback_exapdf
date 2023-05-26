@@ -16,15 +16,15 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a list of comments.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class comment
- * @param M.assignfeedback_editpdf.editor editor
+ * @param M.assignfeedback_exapdf.editor editor
  * @param Int gradeid
  * @param Int pageno
  * @param Int x
@@ -36,9 +36,9 @@
 var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
 
     /**
-     * Reference to M.assignfeedback_editpdf.editor.
+     * Reference to M.assignfeedback_exapdf.editor.
      * @property editor
-     * @type M.assignfeedback_editpdf.editor
+     * @type M.assignfeedback_exapdf.editor
      * @public
      */
     this.editor = editor;
@@ -100,9 +100,9 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
     this.colour = colour || 'yellow';
 
     /**
-     * Reference to M.assignfeedback_editpdf.drawable
+     * Reference to M.assignfeedback_exapdf.drawable
      * @property drawable
-     * @type M.assignfeedback_editpdf.drawable
+     * @type M.assignfeedback_exapdf.drawable
      * @public
      */
     this.drawable = false;
@@ -126,7 +126,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
     /**
      * Reference to the dialogue that is the context menu.
      * @property menu
-     * @type M.assignfeedback_editpdf.dropdown
+     * @type M.assignfeedback_exapdf.dropdown
      * @public
      */
     this.menu = null;
@@ -154,10 +154,10 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
      * @public
      * @method draw_comment
      * @param boolean focus - Set the keyboard focus to the new comment if true
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     this.draw = function(focus) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             node,
             drawingcanvas = this.editor.get_dialogue_element(SELECTOR.DRAWINGCANVAS),
             container,
@@ -195,7 +195,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
             this.width = 100;
         }
 
-        position = this.editor.get_window_coordinates(new M.assignfeedback_editpdf.point(this.x, this.y));
+        position = this.editor.get_window_coordinates(new M.assignfeedback_exapdf.point(this.x, this.y));
         node.setStyles({
             width: this.width + 'px',
             backgroundColor: COMMENTCOLOUR[this.colour],
@@ -408,7 +408,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
                         node.setData('dragging', true);
                     }
 
-                    newlocation = this.editor.get_canvas_coordinates(new M.assignfeedback_editpdf.point(x, y));
+                    newlocation = this.editor.get_canvas_coordinates(new M.assignfeedback_exapdf.point(x, y));
                     bounds = this.editor.get_canvas_bounds(true);
                     bounds.x = 0;
                     bounds.y = 0;
@@ -457,7 +457,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
                         node.setData('dragging', true);
                     }
 
-                    newlocation = this.editor.get_canvas_coordinates(new M.assignfeedback_editpdf.point(x, y));
+                    newlocation = this.editor.get_canvas_coordinates(new M.assignfeedback_exapdf.point(x, y));
                     bounds = this.editor.get_canvas_bounds(true);
                     bounds.x = 0;
                     bounds.y = 0;
@@ -485,7 +485,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
                 }
             }, null, this);
 
-            this.menu = new M.assignfeedback_editpdf.commentmenu({
+            this.menu = new M.assignfeedback_exapdf.commentmenu({
                 buttonNode: this.menulink,
                 comment: this
             });
@@ -569,14 +569,14 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     this.draw_current_edit = function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             bounds;
 
-        bounds = new M.assignfeedback_editpdf.rect();
+        bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         // We will draw a box with the current background colour.
@@ -601,11 +601,11 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool true if comment bound is more than min width/height, else false.
      */
     this.init_from_edit = function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect();
+        var bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         // Minimum comment width.
@@ -635,7 +635,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
         var node = this.drawable.nodes[0].one('textarea');
         var container = node.ancestor('div');
 
-        var newlocation = new M.assignfeedback_editpdf.point(this.x, this.y);
+        var newlocation = new M.assignfeedback_exapdf.point(this.x, this.y);
         var windowlocation = this.editor.get_window_coordinates(newlocation);
 
         container.setX(windowlocation.x);
@@ -645,5 +645,5 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
 
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.comment = COMMENT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.comment = COMMENT;

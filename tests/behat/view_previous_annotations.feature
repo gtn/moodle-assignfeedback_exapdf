@@ -1,4 +1,4 @@
-@mod @mod_assign @assignfeedback @assignfeedback_editpdf @_file_upload
+@mod @mod_assign @assignfeedback @assignfeedback_exapdf @_file_upload
 Feature: In an assignment, teacher can view the feedback for a previous attempt.
   In order to see the history of attempts
   As a teacher
@@ -26,13 +26,13 @@ Feature: In an assignment, teacher can view the feedback for a previous attempt.
       | assignsubmission_file_enabled      | 1                    |
       | assignsubmission_file_maxfiles     | 2                    |
       | assignsubmission_file_maxsizebytes | 102400               |
-      | assignfeedback_editpdf_enabled     | 1                    |
+      | assignfeedback_exapdf_enabled     | 1                    |
       | submissiondrafts                   | 0                    |
       | attemptreopenmethod                | manual               |
     And the following "mod_assign > submission" exists:
       | assign  | Test assignment name                                                                                              |
       | user    | student1                                                                                                          |
-      | file    | mod/assign/feedback/editpdf/tests/fixtures/submission.pdf, mod/assign/feedback/editpdf/tests/fixtures/testgs.pdf  |
+      | file    | mod/assign/feedback/exapdf/tests/fixtures/submission.pdf, mod/assign/feedback/exapdf/tests/fixtures/testgs.pdf  |
 
     When I am on the "Test assignment name" Activity page logged in as teacher1
     And I follow "View all submissions"

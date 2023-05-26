@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace assignfeedback_editpdf\task;
+namespace assignfeedback_exapdf\task;
 
 use core\task\adhoc_task;
 use core\task\manager;
-use assignfeedback_editpdf\document_services;
-use assignfeedback_editpdf\combined_document;
+use assignfeedback_exapdf\document_services;
+use assignfeedback_exapdf\combined_document;
 use context_module;
 use assign;
 
@@ -27,7 +27,7 @@ use assign;
  * An adhoc task to convert submissions to pdf in the background.
  *
  * @copyright  2022 Mikhail Golenkov <mikhailgolenkov@catalyst-au.net>
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class convert_submission extends adhoc_task {
@@ -69,7 +69,7 @@ class convert_submission extends adhoc_task {
             // task would stop attempting to poll the conversion after a
             // configured number of attempts were made to poll it, see:
             //
-            // mod/assign/feedback/editpdf/classes/task/convert_submissions.php@MOODLE_400_STABLE
+            // mod/assign/feedback/exapdf/classes/task/convert_submissions.php@MOODLE_400_STABLE
             //
             // This means that currently this adhoc task, if it fails, will retry forever. But
             // the fail-delay mechanism will ensure that it eventually only tries once per day.

@@ -1,4 +1,4 @@
-@mod @mod_assign @assignfeedback @assignfeedback_editpdf @javascript @_file_upload
+@mod @mod_assign @assignfeedback @assignfeedback_exapdf @javascript @_file_upload
 Feature: Ensure that a comment remains visible if its popup menu is open
   In order to insert quick list comments in the PDF editor
   As a teacher
@@ -24,12 +24,12 @@ Feature: Ensure that a comment remains visible if its popup menu is open
       | assignsubmission_file_enabled       | 1                     |
       | assignsubmission_file_maxfiles      | 1                     |
       | assignsubmission_file_maxsizebytes  | 102400                |
-      | assignfeedback_editpdf_enabled      | 1                     |
+      | assignfeedback_exapdf_enabled      | 1                     |
       | submissiondrafts                    | 0                     |
     And the following "mod_assign > submission" exists:
       | assign  | Test assignment name                                       |
       | user    | student1                                                   |
-      | file    | mod/assign/feedback/editpdf/tests/fixtures/submission.pdf  |
+      | file    | mod/assign/feedback/exapdf/tests/fixtures/submission.pdf  |
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
     And I follow "View all submissions"

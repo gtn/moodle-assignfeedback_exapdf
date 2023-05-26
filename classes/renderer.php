@@ -17,21 +17,21 @@
 /**
  * This file contains the definition for the library class for edit PDF renderer.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+// debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); exit;
 
 /**
- * A custom renderer class that extends the plugin_renderer_base and is used by the editpdf feedback plugin.
+ * A custom renderer class that extends the plugin_renderer_base and is used by the exapdf feedback plugin.
  *
- * @package assignfeedback_editpdf
+ * @package assignfeedback_exapdf
  * @copyright 2013 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class assignfeedback_editpdf_renderer extends plugin_renderer_base {
+class assignfeedback_exapdf_renderer extends plugin_renderer_base {
 
     /**
      * Return the PDF button shortcut.
@@ -76,18 +76,17 @@ class assignfeedback_editpdf_renderer extends plugin_renderer_base {
      * @return string
      */
     private function render_toolbar_button($icon, $tool, $accesskey = null, $disabled=false) {
-
         // Build button alt text.
         $alttext = new stdClass();
-        $alttext->tool = get_string($tool, 'assignfeedback_editpdf');
+        $alttext->tool = get_string($tool, 'assignfeedback_exapdf');
         if (!empty($accesskey)) {
             $alttext->shortcut = '(Alt/Shift-Alt/Ctrl-Option + ' . $accesskey . ')';
         } else {
             $alttext->shortcut = '';
         }
-        $iconalt = get_string('toolbarbutton', 'assignfeedback_editpdf', $alttext);
+        $iconalt = get_string('toolbarbutton', 'assignfeedback_exapdf', $alttext);
 
-        $iconhtml = $this->image_icon($icon, $iconalt, 'assignfeedback_editpdf');
+        $iconhtml = $this->image_icon($icon, $iconalt, 'assignfeedback_exapdf');
         $iconparams = array('data-tool'=>$tool, 'class'=>$tool . 'button');
         if ($disabled) {
             $iconparams['disabled'] = 'true';
@@ -100,27 +99,37 @@ class assignfeedback_editpdf_renderer extends plugin_renderer_base {
     }
 
     /**
-     * Render the editpdf widget in the grading form.
+     * Render the exapdf widget in the grading form.
      *
-     * @param assignfeedback_editpdf_widget $widget - Renderable widget containing assignment, user and attempt number.
+     * @param assignfeedback_exapdf_widget $widget - Renderable widget containing assignment, user and attempt number.
      * @return string
      */
-    public function render_assignfeedback_editpdf_widget(assignfeedback_editpdf_widget $widget) {
+    public function render_assignfeedback_exapdf_widget(assignfeedback_exapdf_widget $widget) {
         global $CFG;
 
-        $html = '';
+        // // old:
+        // $jscode = file_get_contents(__DIR__.'/../editor.js');
+        // $this->page->requires->js_init_code($jscode);
+        //
+        // debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        // exit;
+        // new \assign_files($context, $userid, $filearea, $component, $course, $coursemodule);
+        //
+        // return ;
 
-        $html .= html_writer::div(get_string('jsrequired', 'assignfeedback_editpdf'), 'hiddenifjs');
+        $html = 'TODO: ausgabe von render_assignfeedback_exapdf_widget';
+
+        $html .= html_writer::div(get_string('jsrequired', 'assignfeedback_exapdf'), 'hiddenifjs');
         $linkid = html_writer::random_id();
 
-        $launcheditorstring = $widget->readonly ? get_string('viewfeedbackonline', 'assignfeedback_editpdf') :
-            get_string('launcheditor', 'assignfeedback_editpdf');
+        $launcheditorstring = $widget->readonly ? get_string('viewfeedbackonline', 'assignfeedback_exapdf') :
+            get_string('launcheditor', 'assignfeedback_exapdf');
         $links = html_writer::link('#', $launcheditorstring, ['id' => $linkid, 'class' => 'd-block mt-2']);
 
-        $html .= '<input type="hidden" name="assignfeedback_editpdf_haschanges" value="false"/>';
+        $html .= '<input type="hidden" name="assignfeedback_exapdf_haschanges" value="false"/>';
 
         $html .= html_writer::div($links, 'visibleifjs');
-        $header = get_string('pluginname', 'assignfeedback_editpdf');
+        $header = get_string('pluginname', 'assignfeedback_exapdf');
         $body = '';
         // Create the page navigation.
         $navigation1 = '';
@@ -137,16 +146,16 @@ class assignfeedback_editpdf_renderer extends plugin_renderer_base {
         }
 
         $iconshortcut = $this->get_shortcut('navigate-previous-button');
-        $iconalt = get_string('navigateprevious', 'assignfeedback_editpdf', $iconshortcut);
-        $iconhtml = $this->image_icon($nav_prev, $iconalt, 'assignfeedback_editpdf');
+        $iconalt = get_string('navigateprevious', 'assignfeedback_exapdf', $iconshortcut);
+        $iconhtml = $this->image_icon($nav_prev, $iconalt, 'assignfeedback_exapdf');
         $navigation1 .= html_writer::tag('button', $iconhtml, array('disabled'=>'true',
             'class'=>'navigate-previous-button', 'accesskey' => $this->get_shortcut('navigate-previous-button')));
         $navigation1 .= html_writer::tag('select', null, array('disabled'=>'true',
-            'aria-label' => get_string('gotopage', 'assignfeedback_editpdf'), 'class'=>'navigate-page-select',
+            'aria-label' => get_string('gotopage', 'assignfeedback_exapdf'), 'class'=>'navigate-page-select',
             'accesskey' => $this->get_shortcut('navigate-page-select')));
         $iconshortcut = $this->get_shortcut('navigate-next-button');
-        $iconalt = get_string('navigatenext', 'assignfeedback_editpdf', $iconshortcut);
-        $iconhtml = $this->image_icon($nav_next, $iconalt, 'assignfeedback_editpdf');
+        $iconalt = get_string('navigatenext', 'assignfeedback_exapdf', $iconshortcut);
+        $iconhtml = $this->image_icon($nav_next, $iconalt, 'assignfeedback_exapdf');
         $navigation1 .= html_writer::tag('button', $iconhtml, array('disabled'=>'true',
             'class'=>'navigate-next-button', 'accesskey' => $this->get_shortcut('navigate-next-button')));
 
@@ -212,10 +221,10 @@ class assignfeedback_editpdf_renderer extends plugin_renderer_base {
         // Loading progress bar.
         $progressbar = html_writer::div('', 'bar', array('style' => 'width: 0%'));
         $progressbar = html_writer::div($progressbar, 'progress progress-info progress-striped active',
-            array('title' => get_string('loadingeditor', 'assignfeedback_editpdf'),
+            array('title' => get_string('loadingeditor', 'assignfeedback_exapdf'),
                   'role'=> 'progressbar', 'aria-valuenow' => 0, 'aria-valuemin' => 0,
                   'aria-valuemax' => 100));
-        $progressbarlabel = html_writer::div(get_string('generatingpdf', 'assignfeedback_editpdf'),
+        $progressbarlabel = html_writer::div(get_string('generatingpdf', 'assignfeedback_exapdf'),
             'progressbarlabel');
         $loading = html_writer::div($progressbar . $progressbarlabel, 'loading');
 
@@ -247,8 +256,8 @@ class assignfeedback_editpdf_renderer extends plugin_renderer_base {
             )
         );
 
-        $this->page->requires->yui_module('moodle-assignfeedback_editpdf-editor',
-                                          'M.assignfeedback_editpdf.editor.init',
+        $this->page->requires->yui_module('moodle-assignfeedback_exapdf-editor',
+                                          'M.assignfeedback_exapdf.editor.init',
                                           $editorparams);
 
         $this->page->requires->strings_for_js(array(
@@ -274,7 +283,7 @@ class assignfeedback_editpdf_renderer extends plugin_renderer_base {
             'pagenumber',
             'partialwarning',
             'draftchangessaved'
-        ), 'assignfeedback_editpdf');
+        ), 'assignfeedback_exapdf');
 
         return $html;
     }

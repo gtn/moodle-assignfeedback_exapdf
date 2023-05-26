@@ -15,17 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the ingest manager for the assignfeedback_editpdf plugin
+ * This file contains the ingest manager for the assignfeedback_exapdf plugin
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignfeedback_editpdf;
+namespace assignfeedback_exapdf;
 
 use DOMDocument;
 
+// debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); exit;
 /**
  * Functions for generating the annotated pdf.
  *
@@ -39,7 +40,7 @@ use DOMDocument;
 class document_services {
 
     /** Compoment name */
-    const COMPONENT = "assignfeedback_editpdf";
+    const COMPONENT = "assignfeedback_exapdf";
     /** File area for generated pdf */
     const FINAL_PDF_FILEAREA = 'download';
     /** File area for combined pdf */
@@ -222,7 +223,7 @@ EOD;
                         $file = self::strip_images($file);
                         $record = new \stdClass();
                         $record->contextid = $assignment->get_context()->id;
-                        $record->component = 'assignfeedback_editpdf';
+                        $record->component = 'assignfeedback_exapdf';
                         $record->filearea = self::IMPORT_HTML_FILEAREA;
                         $record->itemid = $submission->id;
                         $record->filepath = '/';
@@ -289,7 +290,7 @@ EOD;
         }
 
         $contextid = $assignment->get_context()->id;
-        $component = 'assignfeedback_editpdf';
+        $component = 'assignfeedback_exapdf';
         $filearea = self::COMBINED_PDF_FILEAREA;
         $partialfilearea = self::PARTIAL_PDF_FILEAREA;
         $itemid = $grade->id;
@@ -371,7 +372,7 @@ EOD;
         if ($readonly) {
             $grade = $assignment->get_user_grade($userid, true, $attemptnumber);
             $fs = get_file_storage();
-            $files = $fs->get_directory_files($assignment->get_context()->id, 'assignfeedback_editpdf',
+            $files = $fs->get_directory_files($assignment->get_context()->id, 'assignfeedback_exapdf',
                 self::PAGE_IMAGE_READONLY_FILEAREA, $grade->id, '/');
             $pagecount = count($files);
             if ($pagecount > 0) {
@@ -414,7 +415,7 @@ EOD;
             return [];
         }
 
-        $tmpdir = \make_temp_directory('assignfeedback_editpdf/pageimages/' . self::hash($assignment, $userid, $attemptnumber));
+        $tmpdir = \make_temp_directory('assignfeedback_exapdf/pageimages/' . self::hash($assignment, $userid, $attemptnumber));
         $combined = $tmpdir . '/' . self::COMBINED_PDF_FILENAME;
 
         $document->get_combined_file()->copy_content_to($combined); // Copy the file.
@@ -428,7 +429,7 @@ EOD;
 
         $record = new \stdClass();
         $record->contextid = $assignment->get_context()->id;
-        $record->component = 'assignfeedback_editpdf';
+        $record->component = 'assignfeedback_exapdf';
         $record->filearea = self::PAGE_IMAGE_FILEAREA;
         $record->itemid = $grade->id;
         $record->filepath = '/';
@@ -514,7 +515,7 @@ EOD;
         $grade = $assignment->get_user_grade($userid, true, $attemptnumber);
 
         $contextid = $assignment->get_context()->id;
-        $component = 'assignfeedback_editpdf';
+        $component = 'assignfeedback_exapdf';
         $itemid = $grade->id;
         $filepath = '/';
         $filearea = self::PAGE_IMAGE_FILEAREA;
@@ -669,7 +670,7 @@ EOD;
 
         $file = $document->get_combined_file();
 
-        $tmpdir = make_temp_directory('assignfeedback_editpdf/final/' . self::hash($assignment, $userid, $attemptnumber));
+        $tmpdir = make_temp_directory('assignfeedback_exapdf/final/' . self::hash($assignment, $userid, $attemptnumber));
         $combined = $tmpdir . '/' . self::COMBINED_PDF_FILENAME;
         $file->copy_content_to($combined); // Copy the file.
 
@@ -690,11 +691,11 @@ EOD;
         }
 
         $fs = get_file_storage();
-        $stamptmpdir = make_temp_directory('assignfeedback_editpdf/stamps/' . self::hash($assignment, $userid, $attemptnumber));
+        $stamptmpdir = make_temp_directory('assignfeedback_exapdf/stamps/' . self::hash($assignment, $userid, $attemptnumber));
         $grade = $assignment->get_user_grade($userid, true, $attemptnumber);
         // Copy any new stamps to this instance.
         if ($files = $fs->get_area_files($assignment->get_context()->id,
-                                         'assignfeedback_editpdf',
+                                         'assignfeedback_exapdf',
                                          'stamps',
                                          $grade->id,
                                          "filename",
@@ -770,7 +771,7 @@ EOD;
         $record = new \stdClass();
 
         $record->contextid = $assignment->get_context()->id;
-        $record->component = 'assignfeedback_editpdf';
+        $record->component = 'assignfeedback_exapdf';
         $record->filearea = self::FINAL_PDF_FILEAREA;
         $record->itemid = $grade->id;
         $record->filepath = '/';
@@ -802,7 +803,7 @@ EOD;
         $fs = get_file_storage();
         $assignment = self::get_assignment_from_param($assignment);
         $contextid = $assignment->get_context()->id;
-        $component = 'assignfeedback_editpdf';
+        $component = 'assignfeedback_exapdf';
         $itemid = $grade->id;
 
         // Get all the pages.
@@ -839,7 +840,7 @@ EOD;
         $grade = $assignment->get_user_grade($userid, true, $attemptnumber);
 
         $contextid = $assignment->get_context()->id;
-        $component = 'assignfeedback_editpdf';
+        $component = 'assignfeedback_exapdf';
         $filearea = self::FINAL_PDF_FILEAREA;
         $itemid = $grade->id;
         $filepath = '/';
@@ -878,7 +879,7 @@ EOD;
         $grade = $assignment->get_user_grade($userid, true, $attemptnumber);
 
         $contextid = $assignment->get_context()->id;
-        $component = 'assignfeedback_editpdf';
+        $component = 'assignfeedback_exapdf';
         $filearea = self::FINAL_PDF_FILEAREA;
         $itemid = $grade->id;
 
@@ -1029,7 +1030,7 @@ EOD;
     private static function save_jpg_to_pdf($assignment, $userid, $attemptnumber, $file, $size=null) {
         // Temporary file.
         $filename = $file->get_filename();
-        $tmpdir = make_temp_directory('assignfeedback_editpdf' . DIRECTORY_SEPARATOR
+        $tmpdir = make_temp_directory('assignfeedback_exapdf' . DIRECTORY_SEPARATOR
             . self::TMP_JPG_TO_PDF_FILEAREA . DIRECTORY_SEPARATOR
             . self::hash($assignment, $userid, $attemptnumber));
         $tempfile = $tmpdir . DIRECTORY_SEPARATOR . $filename . ".pdf";
@@ -1080,7 +1081,7 @@ EOD;
      */
     private static function save_rotated_image_file($assignment, $userid, $attemptnumber, $rotateddata, $filename) {
         $filearea = self::TMP_ROTATED_JPG_FILEAREA;
-        $tmpdir = make_temp_directory('assignfeedback_editpdf' . DIRECTORY_SEPARATOR
+        $tmpdir = make_temp_directory('assignfeedback_exapdf' . DIRECTORY_SEPARATOR
             . $filearea . DIRECTORY_SEPARATOR
             . self::hash($assignment, $userid, $attemptnumber));
         $tempfile = $tmpdir . DIRECTORY_SEPARATOR . basename($filename);

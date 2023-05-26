@@ -17,14 +17,14 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * EDITOR
  * This is an in browser PDF editor.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class editor
  * @constructor
  * @extends Y.Base
@@ -124,16 +124,16 @@ EDITOR.prototype = {
      * Info about the current edit operation.
      *
      * @property currentedit
-     * @type M.assignfeedback_editpdf.edit
+     * @type M.assignfeedback_exapdf.edit
      * @protected
      */
-    currentedit: new M.assignfeedback_editpdf.edit(),
+    currentedit: new M.assignfeedback_exapdf.edit(),
 
     /**
      * Current drawable.
      *
      * @property currentdrawable
-     * @type M.assignfeedback_editpdf.drawable|false
+     * @type M.assignfeedback_exapdf.drawable|false
      * @protected
      */
     currentdrawable: false,
@@ -142,7 +142,7 @@ EDITOR.prototype = {
      * Current drawables.
      *
      * @property drawables
-     * @type array(M.assignfeedback_editpdf.drawable)
+     * @type array(M.assignfeedback_exapdf.drawable)
      * @protected
      */
     drawables: [],
@@ -150,7 +150,7 @@ EDITOR.prototype = {
     /**
      * Current comment when the comment menu is open.
      * @property currentcomment
-     * @type M.assignfeedback_editpdf.comment
+     * @type M.assignfeedback_exapdf.comment
      * @protected
      */
     currentcomment: null,
@@ -158,7 +158,7 @@ EDITOR.prototype = {
     /**
      * Current annotation when the select tool is used.
      * @property currentannotation
-     * @type M.assignfeedback_editpdf.annotation
+     * @type M.assignfeedback_exapdf.annotation
      * @protected
      */
     currentannotation: null,
@@ -166,7 +166,7 @@ EDITOR.prototype = {
     /**
      * Track the previous annotation so we can remove selection highlights.
      * @property lastannotation
-     * @type M.assignfeedback_editpdf.annotation
+     * @type M.assignfeedback_exapdf.annotation
      * @protected
      */
     lastannotation: null,
@@ -182,7 +182,7 @@ EDITOR.prototype = {
     /**
      * The users comments quick list
      * @property quicklist
-     * @type M.assignfeedback_editpdf.quickcommentlist
+     * @type M.assignfeedback_exapdf.quickcommentlist
      * @protected
      */
     quicklist: null,
@@ -248,7 +248,7 @@ EDITOR.prototype = {
             require(['mod_assign/grading_review_panel'], function(ReviewPanelManager) {
                 var panelManager = new ReviewPanelManager();
 
-                var panel = panelManager.getReviewPanel('assignfeedback_editpdf');
+                var panel = panelManager.getReviewPanel('assignfeedback_exapdf');
                 if (panel) {
                     panel = Y.one(panel);
                     panel.empty();
@@ -258,7 +258,7 @@ EDITOR.prototype = {
                 this.currentedit.start = false;
                 this.currentedit.end = false;
                 if (!this.get('readonly')) {
-                    this.quicklist = new M.assignfeedback_editpdf.quickcommentlist(this);
+                    this.quicklist = new M.assignfeedback_exapdf.quickcommentlist(this);
                 }
             }.bind(this));
 
@@ -275,7 +275,7 @@ EDITOR.prototype = {
         // Initalise the colour buttons.
         button = this.get_dialogue_element(SELECTOR.COMMENTCOLOURBUTTON);
 
-        imgurl = M.util.image_url('background_colour_' + this.currentedit.commentcolour, 'assignfeedback_editpdf');
+        imgurl = M.util.image_url('background_colour_' + this.currentedit.commentcolour, 'assignfeedback_exapdf');
         button.one('img').setAttribute('src', imgurl);
 
         if (this.currentedit.commentcolour === 'clear') {
@@ -285,11 +285,11 @@ EDITOR.prototype = {
         }
 
         button = this.get_dialogue_element(SELECTOR.ANNOTATIONCOLOURBUTTON);
-        imgurl = M.util.image_url('colour_' + this.currentedit.annotationcolour, 'assignfeedback_editpdf');
+        imgurl = M.util.image_url('colour_' + this.currentedit.annotationcolour, 'assignfeedback_exapdf');
         button.one('img').setAttribute('src', imgurl);
 
         currenttoolnode = this.get_dialogue_element(TOOLSELECTOR[this.currentedit.tool]);
-        currenttoolnode.addClass('assignfeedback_editpdf_selectedbutton');
+        currenttoolnode.addClass('assignfeedback_exapdf_selectedbutton');
         currenttoolnode.setAttribute('aria-pressed', 'true');
         drawingregion = this.get_dialogue_element(SELECTOR.DRAWINGREGION);
         drawingregion.setAttribute('data-currenttool', this.currentedit.tool);
@@ -331,17 +331,17 @@ EDITOR.prototype = {
             width = parseInt(canvas.getStyle('width'), 10),
             height = parseInt(canvas.getStyle('height'), 10);
 
-        return new M.assignfeedback_editpdf.rect(offsetleft, offsettop, width, height);
+        return new M.assignfeedback_exapdf.rect(offsetleft, offsettop, width, height);
     },
 
     /**
      * Called to translate from window coordinates to canvas coordinates.
      * @method get_canvas_coordinates
-     * @param M.assignfeedback_editpdf.point point in window coordinats.
+     * @param M.assignfeedback_exapdf.point point in window coordinats.
      */
     get_canvas_coordinates: function(point) {
         var bounds = this.get_canvas_bounds(),
-            newpoint = new M.assignfeedback_editpdf.point(point.x - bounds.x, point.y - bounds.y);
+            newpoint = new M.assignfeedback_exapdf.point(point.x - bounds.x, point.y - bounds.y);
 
         bounds.x = bounds.y = 0;
 
@@ -352,11 +352,11 @@ EDITOR.prototype = {
     /**
      * Called to translate from canvas coordinates to window coordinates.
      * @method get_window_coordinates
-     * @param M.assignfeedback_editpdf.point point in window coordinats.
+     * @param M.assignfeedback_exapdf.point point in window coordinats.
      */
     get_window_coordinates: function(point) {
         var bounds = this.get_canvas_bounds(),
-            newpoint = new M.assignfeedback_editpdf.point(point.x + bounds.x, point.y + bounds.y);
+            newpoint = new M.assignfeedback_exapdf.point(point.x + bounds.x, point.y + bounds.y);
 
         return newpoint;
     },
@@ -570,10 +570,10 @@ EDITOR.prototype = {
         var icontemplate = this.get_dialogue_element(SELECTOR.ICONMESSAGECONTAINER);
         var warningregion = this.get_dialogue_element(SELECTOR.WARNINGMESSAGECONTAINER);
         var delay = 15, duration = 1;
-        var messageclasses = 'assignfeedback_editpdf_warningmessages alert alert-warning';
+        var messageclasses = 'assignfeedback_exapdf_warningmessages alert alert-warning';
         if (dismissable) {
             delay = 4;
-            messageclasses = 'assignfeedback_editpdf_warningmessages alert alert-info';
+            messageclasses = 'assignfeedback_exapdf_warningmessages alert alert-info';
         }
         var warningelement = Y.Node.create('<div class="' + messageclasses + '" role="alert"></div>');
 
@@ -614,7 +614,7 @@ EDITOR.prototype = {
                 this.dialogue.hide();
             }
             // Display alert dialogue.
-            error = new M.core.alert({message: M.util.get_string('cannotopenpdf', 'assignfeedback_editpdf')});
+            error = new M.core.alert({message: M.util.get_string('cannotopenpdf', 'assignfeedback_exapdf')});
             error.show();
             return;
         }
@@ -624,7 +624,7 @@ EDITOR.prototype = {
         for (i = 0; i < this.pages.length; i++) {
             for (j = 0; j < this.pages[i].comments.length; j++) {
                 comment = this.pages[i].comments[j];
-                this.pages[i].comments[j] = new M.assignfeedback_editpdf.comment(this,
+                this.pages[i].comments[j] = new M.assignfeedback_exapdf.comment(this,
                                                                                  comment.gradeid,
                                                                                  comment.pageno,
                                                                                  comment.x,
@@ -642,7 +642,7 @@ EDITOR.prototype = {
         readonly = this.get('readonly');
         if (!readonly && data.partial) {
             // Warn about non converted files, but only for teachers.
-            this.warning(M.util.get_string('partialwarning', 'assignfeedback_editpdf'), false);
+            this.warning(M.util.get_string('partialwarning', 'assignfeedback_exapdf'), false);
         }
 
         // Update the ui.
@@ -744,7 +744,7 @@ EDITOR.prototype = {
                 }
 
                 new M.core.alert({
-                    message: M.util.get_string('cannotopenpdf', 'assignfeedback_editpdf'),
+                    message: M.util.get_string('cannotopenpdf', 'assignfeedback_exapdf'),
                     visible: true
                 });
             } else {
@@ -756,7 +756,7 @@ EDITOR.prototype = {
             }
 
             new M.core.alert({
-                title: M.util.get_string('cannotopenpdf', 'assignfeedback_editpdf'),
+                title: M.util.get_string('cannotopenpdf', 'assignfeedback_exapdf'),
                 visible: true
             });
         }
@@ -837,7 +837,7 @@ EDITOR.prototype = {
         // Set the default tool.
 
         commentcolourbutton = this.get_dialogue_element(SELECTOR.COMMENTCOLOURBUTTON);
-        picker = new M.assignfeedback_editpdf.colourpicker({
+        picker = new M.assignfeedback_exapdf.colourpicker({
             buttonNode: commentcolourbutton,
             colours: COMMENTCOLOUR,
             iconprefix: 'background_colour_',
@@ -853,7 +853,7 @@ EDITOR.prototype = {
         });
 
         annotationcolourbutton = this.get_dialogue_element(SELECTOR.ANNOTATIONCOLOURBUTTON);
-        picker = new M.assignfeedback_editpdf.colourpicker({
+        picker = new M.assignfeedback_exapdf.colourpicker({
             buttonNode: annotationcolourbutton,
             iconprefix: 'colour_',
             colours: ANNOTATIONCOLOUR,
@@ -880,7 +880,7 @@ EDITOR.prototype = {
             this.currentedit.stamp = filename;
             currentstampbutton = this.get_dialogue_element(SELECTOR.STAMPSBUTTON);
 
-            picker = new M.assignfeedback_editpdf.stamppicker({
+            picker = new M.assignfeedback_exapdf.stamppicker({
                 buttonNode: currentstampbutton,
                 stamps: stampfiles,
                 callback: function(e) {
@@ -912,7 +912,7 @@ EDITOR.prototype = {
 
         // Change style of the pressed button.
         currenttoolnode = this.get_dialogue_element(TOOLSELECTOR[this.currentedit.tool]);
-        currenttoolnode.removeClass('assignfeedback_editpdf_selectedbutton');
+        currenttoolnode.removeClass('assignfeedback_exapdf_selectedbutton');
         currenttoolnode.setAttribute('aria-pressed', 'false');
         this.currentedit.tool = tool;
 
@@ -962,7 +962,7 @@ EDITOR.prototype = {
         }
 
         if (this.currentedit.tool === 'comment') {
-            comment = new M.assignfeedback_editpdf.comment(this);
+            comment = new M.assignfeedback_exapdf.comment(this);
             drawable = comment.draw_current_edit(this.currentedit);
         } else {
             annotation = this.create_annotation(this.currentedit.tool, {});
@@ -1086,7 +1086,7 @@ EDITOR.prototype = {
         var bounds = this.get_canvas_bounds(),
             canvas = this.get_dialogue_element(SELECTOR.DRAWINGCANVAS),
             drawingregion = this.get_dialogue_element(SELECTOR.DRAWINGREGION),
-            clientpoint = new M.assignfeedback_editpdf.point(e.clientX + canvas.get('docScrollX'),
+            clientpoint = new M.assignfeedback_exapdf.point(e.clientX + canvas.get('docScrollX'),
                                                              e.clientY + canvas.get('docScrollY')),
             point = this.get_canvas_coordinates(clientpoint),
             activeelement = document.activeElement,
@@ -1150,7 +1150,7 @@ EDITOR.prototype = {
                 this.currentdrawable.erase();
             }
             this.currentdrawable = false;
-            comment = new M.assignfeedback_editpdf.comment(this);
+            comment = new M.assignfeedback_exapdf.comment(this);
             if (comment.init_from_edit(this.currentedit)) {
                 this.pages[this.currentpage].comments.push(comment);
                 this.drawables.push(comment.draw(true));
@@ -1217,17 +1217,17 @@ EDITOR.prototype = {
         data.type = type;
         data.editor = this;
         if (type === "line") {
-            return new M.assignfeedback_editpdf.annotationline(data);
+            return new M.assignfeedback_exapdf.annotationline(data);
         } else if (type === "rectangle") {
-            return new M.assignfeedback_editpdf.annotationrectangle(data);
+            return new M.assignfeedback_exapdf.annotationrectangle(data);
         } else if (type === "oval") {
-            return new M.assignfeedback_editpdf.annotationoval(data);
+            return new M.assignfeedback_exapdf.annotationoval(data);
         } else if (type === "pen") {
-            return new M.assignfeedback_editpdf.annotationpen(data);
+            return new M.assignfeedback_exapdf.annotationpen(data);
         } else if (type === "highlight") {
-            return new M.assignfeedback_editpdf.annotationhighlight(data);
+            return new M.assignfeedback_exapdf.annotationhighlight(data);
         } else if (type === "stamp") {
-            return new M.assignfeedback_editpdf.annotationstamp(data);
+            return new M.assignfeedback_exapdf.annotationstamp(data);
         }
         return false;
     },
@@ -1265,7 +1265,7 @@ EDITOR.prototype = {
                         }
                         // Show warning that we have not saved the feedback.
                         Y.one(SELECTOR.UNSAVEDCHANGESINPUT).set('value', 'true');
-                        this.warning(M.util.get_string('draftchangessaved', 'assignfeedback_editpdf'), true);
+                        this.warning(M.util.get_string('draftchangessaved', 'assignfeedback_exapdf'), true);
                     } catch (e) {
                         return new M.core.exception(e);
                     }
@@ -1288,7 +1288,7 @@ EDITOR.prototype = {
      */
     open_search_comments: function(e) {
         if (!this.searchcommentswindow) {
-            this.searchcommentswindow = new M.assignfeedback_editpdf.commentsearch({
+            this.searchcommentswindow = new M.assignfeedback_exapdf.commentsearch({
                 editor: this
             });
         }
@@ -1418,7 +1418,7 @@ EDITOR.prototype = {
                 option = Y.Node.create('<option/>');
                 option.setAttribute('value', i);
                 strinfo = {page: i + 1, total: this.pages.length};
-                option.setHTML(M.util.get_string('pagexofy', 'assignfeedback_editpdf', strinfo));
+                option.setHTML(M.util.get_string('pagexofy', 'assignfeedback_exapdf', strinfo));
                 pageselect.append(option);
             }
         }
@@ -1637,7 +1637,7 @@ EDITOR.prototype = {
 };
 
 Y.extend(EDITOR, Y.Base, EDITOR.prototype, {
-    NAME: 'moodle-assignfeedback_editpdf-editor',
+    NAME: 'moodle-assignfeedback_exapdf-editor',
     ATTRS: {
         userid: {
             validator: Y.Lang.isInteger,
@@ -1682,8 +1682,8 @@ Y.extend(EDITOR, Y.Base, EDITOR.prototype, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.editor = M.assignfeedback_editpdf.editor || {};
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.editor = M.assignfeedback_exapdf.editor || {};
 
 /**
  * Init function - will create a new instance every time.
@@ -1691,7 +1691,7 @@ M.assignfeedback_editpdf.editor = M.assignfeedback_editpdf.editor || {};
  * @static
  * @param {Object} params
  */
-M.assignfeedback_editpdf.editor.init = M.assignfeedback_editpdf.editor.init || function(params) {
-    M.assignfeedback_editpdf.instance = new EDITOR(params);
-    return M.assignfeedback_editpdf.instance;
+M.assignfeedback_exapdf.editor.init = M.assignfeedback_exapdf.editor.init || function(params) {
+    M.assignfeedback_exapdf.instance = new EDITOR(params);
+    return M.assignfeedback_exapdf.instance;
 };

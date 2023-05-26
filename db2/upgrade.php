@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Upgrade code for the feedback_editpdf module.
+ * Upgrade code for the feedback_exapdf module.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2013 Jerome Mouneyrac
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,11 +25,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * EditPDF upgrade code
+ * exapdf upgrade code
  * @param int $oldversion
  * @return bool
  */
-function xmldb_assignfeedback_editpdf_upgrade($oldversion) {
+function xmldb_assignfeedback_exapdf_upgrade($oldversion) {
     global $CFG, $DB;
 
     $dbman = $DB->get_manager();
@@ -40,7 +40,7 @@ function xmldb_assignfeedback_editpdf_upgrade($oldversion) {
     if ($oldversion < 2021060400) {
         // Remove submissions from the processing queue that have been processed.
         $sql = 'DELETE
-                  FROM {assignfeedback_editpdf_queue}
+                  FROM {assignfeedback_exapdf_queue}
                  WHERE EXISTS (SELECT 1
                                  FROM {assign_submission} s,
                                       {assign_grades} g
@@ -51,24 +51,24 @@ function xmldb_assignfeedback_editpdf_upgrade($oldversion) {
 
         $DB->execute($sql);
 
-        // Editpdf savepoint reached.
-        upgrade_plugin_savepoint(true, 2021060400, 'assignfeedback', 'editpdf');
+        // exapdf savepoint reached.
+        upgrade_plugin_savepoint(true, 2021060400, 'assignfeedback', 'exapdf');
     }
 
     // Automatically generated Moodle v4.0.0 release upgrade line.
     // Put any upgrade step following this.
 
     if ($oldversion < 2022061000) {
-        $table = new xmldb_table('assignfeedback_editpdf_queue');
+        $table = new xmldb_table('assignfeedback_exapdf_queue');
         if ($dbman->table_exists($table)) {
             // Convert not yet converted submissions into adhoc tasks.
-            $rs = $DB->get_recordset('assignfeedback_editpdf_queue');
+            $rs = $DB->get_recordset('assignfeedback_exapdf_queue');
             foreach ($rs as $record) {
                 $data = [
                     'submissionid' => $record->submissionid,
                     'submissionattempt' => $record->submissionattempt,
                 ];
-                $task = new assignfeedback_editpdf\task\convert_submission;
+                $task = new assignfeedback_exapdf\task\convert_submission;
                 $task->set_custom_data($data);
                 \core\task\manager::queue_adhoc_task($task, true);
             }
@@ -78,8 +78,8 @@ function xmldb_assignfeedback_editpdf_upgrade($oldversion) {
             $dbman->drop_table($table);
         }
 
-        // Editpdf savepoint reached.
-        upgrade_plugin_savepoint(true, 2022061000, 'assignfeedback', 'editpdf');
+        // exapdf savepoint reached.
+        upgrade_plugin_savepoint(true, 2022061000, 'assignfeedback', 'exapdf');
     }
 
     if ($oldversion < 2022082200) {
@@ -87,20 +87,20 @@ function xmldb_assignfeedback_editpdf_upgrade($oldversion) {
         $DB->delete_records('file_conversion');
 
         // Schedule an adhoc task to fix existing stale conversions.
-        $task = new \assignfeedback_editpdf\task\bump_submission_for_stale_conversions();
+        $task = new \assignfeedback_exapdf\task\bump_submission_for_stale_conversions();
         \core\task\manager::queue_adhoc_task($task);
 
-        upgrade_plugin_savepoint(true, 2022082200, 'assignfeedback', 'editpdf');
+        upgrade_plugin_savepoint(true, 2022082200, 'assignfeedback', 'exapdf');
     }
 
     // Automatically generated Moodle v4.1.0 release upgrade line.
     // Put any upgrade step following this.
 
     if ($oldversion < 2022112801) {
-        $task = new \assignfeedback_editpdf\task\remove_orphaned_editpdf_files();
+        $task = new \assignfeedback_exapdf\task\remove_orphaned_exapdf_files();
         \core\task\manager::queue_adhoc_task($task);
 
-        upgrade_plugin_savepoint(true, 2022112801, 'assignfeedback', 'editpdf');
+        upgrade_plugin_savepoint(true, 2022112801, 'assignfeedback', 'exapdf');
     }
 
     // Automatically generated Moodle v4.2.0 release upgrade line.

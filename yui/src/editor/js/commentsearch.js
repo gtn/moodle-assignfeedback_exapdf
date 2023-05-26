@@ -5,13 +5,13 @@ var COMMENTSEARCHNAME = "commentsearch",
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * This is a searchable dialogue of comments.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class commentsearch
  * @constructor
  * @extends M.core.dialogue
@@ -21,7 +21,7 @@ COMMENTSEARCH = function(config) {
     config.centered = true;
     config.width = '400px';
     config.visible = false;
-    config.headerContent = M.util.get_string('searchcomments', 'assignfeedback_editpdf');
+    config.headerContent = M.util.get_string('searchcomments', 'assignfeedback_exapdf');
     config.footerContent = '';
     COMMENTSEARCH.superclass.constructor.apply(this, [config]);
 };
@@ -42,15 +42,15 @@ Y.extend(COMMENTSEARCH, M.core.dialogue, {
             bb;
 
         bb = this.get('boundingBox');
-        bb.addClass('assignfeedback_editpdf_commentsearch');
+        bb.addClass('assignfeedback_exapdf_commentsearch');
 
         editor = this.get('editor');
         container = Y.Node.create('<div/>');
 
-        placeholder = M.util.get_string('filter', 'assignfeedback_editpdf');
+        placeholder = M.util.get_string('filter', 'assignfeedback_exapdf');
         commentfilter = Y.Node.create('<input type="text" size="20" placeholder="' + placeholder + '"/>');
         container.append(commentfilter);
-        commentlist = Y.Node.create('<ul role="menu" class="assignfeedback_editpdf_search"/>');
+        commentlist = Y.Node.create('<ul role="menu" class="assignfeedback_exapdf_search"/>');
         container.append(commentlist);
 
         commentfilter.on('keyup', this.filter_search_comments, this);
@@ -146,7 +146,7 @@ Y.extend(COMMENTSEARCH, M.core.dialogue, {
          * The editor this search window is attached to.
          *
          * @attribute editor
-         * @type M.assignfeedback_editpdf.editor
+         * @type M.assignfeedback_exapdf.editor
          * @default null
          */
         editor: {
@@ -173,5 +173,5 @@ Y.Base.modifyAttrs(COMMENTSEARCH, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.commentsearch = COMMENTSEARCH;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.commentsearch = COMMENTSEARCH;

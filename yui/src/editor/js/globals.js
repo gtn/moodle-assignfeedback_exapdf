@@ -17,20 +17,20 @@
 /**
  * A list of globals used by this module.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
-var AJAXBASE = M.cfg.wwwroot + '/mod/assign/feedback/editpdf/ajax.php',
-    AJAXBASEPROGRESS = M.cfg.wwwroot + '/mod/assign/feedback/editpdf/ajax_progress.php',
+var AJAXBASE = M.cfg.wwwroot + '/mod/assign/feedback/exapdf/ajax.php',
+    AJAXBASEPROGRESS = M.cfg.wwwroot + '/mod/assign/feedback/exapdf/ajax_progress.php',
     CSS = {
-        DIALOGUE: 'assignfeedback_editpdf_widget'
+        DIALOGUE: 'assignfeedback_exapdf_widget'
     },
     SELECTOR = {
         PREVIOUSBUTTON:  '.navigate-previous-button',
         NEXTBUTTON:  ' .navigate-next-button',
         SEARCHCOMMENTSBUTTON: '.searchcommentsbutton',
         EXPCOLCOMMENTSBUTTON: '.expcolcommentsbutton',
-        SEARCHFILTER: '.assignfeedback_editpdf_commentsearch input',
-        SEARCHCOMMENTSLIST: '.assignfeedback_editpdf_commentsearch ul',
+        SEARCHFILTER: '.assignfeedback_exapdf_commentsearch input',
+        SEARCHCOMMENTSLIST: '.assignfeedback_exapdf_commentsearch ul',
         PAGESELECT: '.navigate-page-select',
         LOADINGICON: '.loading',
         PROGRESSBARCONTAINER: '.progress-info.progress-striped',
@@ -43,8 +43,8 @@ var AJAXBASE = M.cfg.wwwroot + '/mod/assign/feedback/editpdf/ajax.php',
         DELETEANNOTATIONBUTTON: '.deleteannotationbutton',
         WARNINGMESSAGECONTAINER: '.warningmessages',
         ICONMESSAGECONTAINER: '.infoicon',
-        UNSAVEDCHANGESDIV: '.assignfeedback_editpdf_warningmessages',
-        UNSAVEDCHANGESINPUT: 'input[name="assignfeedback_editpdf_haschanges"]',
+        UNSAVEDCHANGESDIV: '.assignfeedback_exapdf_warningmessages',
+        UNSAVEDCHANGESINPUT: 'input[name="assignfeedback_exapdf_haschanges"]',
         STAMPSBUTTON: '.currentstampbutton',
         USERINFOREGION: '[data-region="user-info"]',
         ROTATELEFTBUTTON: '.rotateleftbutton',

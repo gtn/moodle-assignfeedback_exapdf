@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,11 +17,11 @@
 /**
  * An event observer.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @copyright  2016 Damyon Wiese
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace assignfeedback_editpdf\event;
+namespace assignfeedback_exapdf\event;
 
 /**
  * An event observer.
@@ -55,7 +55,7 @@ class observer {
             'submissionid' => $event->other['submissionid'],
             'submissionattempt' => $event->other['submissionattempt'],
         ];
-        $task = new \assignfeedback_editpdf\task\convert_submission;
+        $task = new \assignfeedback_exapdf\task\convert_submission;
         $task->set_custom_data($data);
         \core\task\manager::queue_adhoc_task($task, true);
     }

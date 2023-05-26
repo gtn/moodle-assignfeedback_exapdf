@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Install code for the feedback_editpdf module.
+ * Install code for the feedback_exapdf module.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2013 Jerome Mouneyrac
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,9 +25,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * EditPDF install code
+ * exapdf install code
  */
-function xmldb_assignfeedback_editpdf_install() {
+function xmldb_assignfeedback_exapdf_install() {
     global $CFG;
 
     // List of default stamps.
@@ -35,7 +35,7 @@ function xmldb_assignfeedback_editpdf_install() {
 
     // Stamp file object.
     $filerecord = new stdClass;
-    $filerecord->component = 'assignfeedback_editpdf';
+    $filerecord->component = 'assignfeedback_exapdf';
     $filerecord->contextid = context_system::instance()->id;
     $filerecord->userid    = get_admin()->id;
     $filerecord->filearea  = 'stamps';
@@ -48,6 +48,6 @@ function xmldb_assignfeedback_editpdf_install() {
     foreach ($defaultstamps as $stamp) {
         $filerecord->filename = $stamp;
         $fs->create_file_from_pathname($filerecord,
-            $CFG->dirroot . '/mod/assign/feedback/editpdf/pix/' . $filerecord->filename);
+            $CFG->dirroot . '/mod/assign/feedback/exapdf/pix/' . $filerecord->filename);
     }
 }

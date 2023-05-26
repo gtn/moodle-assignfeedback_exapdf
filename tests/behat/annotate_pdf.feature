@@ -1,4 +1,4 @@
-@mod @mod_assign @assignfeedback @assignfeedback_editpdf @_file_upload
+@mod @mod_assign @assignfeedback @assignfeedback_exapdf @_file_upload
 Feature: In an assignment, teacher can annotate PDF files during grading
   In order to provide visual report on a graded PDF
   As a teacher
@@ -22,7 +22,7 @@ Feature: In an assignment, teacher can annotate PDF files during grading
       | activity                            | assign                |
       | course                              | C1                    |
       | name                                | Test assignment name  |
-      | assignfeedback_editpdf_enabled      | 1                     |
+      | assignfeedback_exapdf_enabled      | 1                     |
       | assignfeedback_comments_enabled     | 1                     |
       | assignsubmission_file_enabled       | 1                     |
       | assignsubmission_file_maxfiles      | 2                     |
@@ -32,7 +32,7 @@ Feature: In an assignment, teacher can annotate PDF files during grading
     And the following "mod_assign > submission" exists:
       | assign  | Test assignment name                                                                                              |
       | user    | student1                                                                                                          |
-      | file    | mod/assign/feedback/editpdf/tests/fixtures/submission.pdf, mod/assign/feedback/editpdf/tests/fixtures/testgs.pdf  |
+      | file    | mod/assign/feedback/exapdf/tests/fixtures/submission.pdf, mod/assign/feedback/exapdf/tests/fixtures/testgs.pdf  |
     And I log in as "admin"
     And I am on site homepage
     And I navigate to "Plugins > Activity modules > Assignment > Feedback plugins > Annotate PDF" in site administration
@@ -102,7 +102,7 @@ Feature: In an assignment, teacher can annotate PDF files during grading
       | course                              | C1                    |
       | name                                | Test assignment name  |
       | assignfeedback_comments_enabled     | 1                     |
-      | assignfeedback_editpdf_enabled      | 1                     |
+      | assignfeedback_exapdf_enabled      | 1                     |
       | assignsubmission_file_enabled       | 1                     |
       | assignsubmission_file_maxfiles      | 2                     |
       | assignsubmission_file_maxsizebytes  | 102400                |
@@ -113,7 +113,7 @@ Feature: In an assignment, teacher can annotate PDF files during grading
     And the following "mod_assign > submission" exists:
       | assign  | Test assignment name                                       |
       | user    | student1                                                   |
-      | file    | mod/assign/feedback/editpdf/tests/fixtures/submission.pdf  |
+      | file    | mod/assign/feedback/exapdf/tests/fixtures/submission.pdf  |
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
     And I follow "View all submissions"

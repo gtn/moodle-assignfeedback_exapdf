@@ -1,4 +1,4 @@
-@mod @mod_assign @assignfeedback @assignfeedback_editpdf @_file_upload
+@mod @mod_assign @assignfeedback @assignfeedback_exapdf @_file_upload
 Feature: In a group assignment, teacher can annotate PDF files for all users
   In order to provide visual report on a graded PDF for all users
   As a teacher
@@ -33,13 +33,13 @@ Feature: In a group assignment, teacher can annotate PDF files for all users
       | assignsubmission_file_enabled       | 1                     |
       | assignsubmission_file_maxfiles      | 1                     |
       | assignsubmission_file_maxsizebytes  | 102400                |
-      | assignfeedback_editpdf_enabled      | 1                     |
+      | assignfeedback_exapdf_enabled      | 1                     |
       | submissiondrafts                    | 0                     |
       | teamsubmission                      | 1                     |
     And the following "mod_assign > submission" exists:
       | assign  | Test assignment name                                       |
       | user    | student1                                                   |
-      | file    | mod/assign/feedback/editpdf/tests/fixtures/submission.pdf  |
+      | file    | mod/assign/feedback/exapdf/tests/fixtures/submission.pdf  |
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
     And I follow "View all submissions"

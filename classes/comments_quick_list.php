@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,18 +17,18 @@
 /**
  * This file contains the functions for managing a users comments quicklist.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignfeedback_editpdf;
+namespace assignfeedback_exapdf;
 
 /**
  * This class performs crud operations on a users quicklist comments.
  *
  * No capability checks are done - they should be done by the calling class.
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,7 +42,7 @@ class comments_quick_list {
         global $DB, $USER;
 
         $comments = array();
-        $records = $DB->get_records('assignfeedback_editpdf_quick', array('userid'=>$USER->id));
+        $records = $DB->get_records('assignfeedback_exapdf_quick', array('userid'=>$USER->id));
 
         return $records;
     }
@@ -63,7 +63,7 @@ class comments_quick_list {
         $comment->width = $width;
         $comment->colour = $colour;
 
-        $comment->id = $DB->insert_record('assignfeedback_editpdf_quick', $comment);
+        $comment->id = $DB->insert_record('assignfeedback_exapdf_quick', $comment);
         return $comment;
     }
 
@@ -75,7 +75,7 @@ class comments_quick_list {
     public static function get_comment($commentid) {
         global $DB;
 
-        $record = $DB->get_record('assignfeedback_editpdf_quick', array('id'=>$commentid), '*', IGNORE_MISSING);
+        $record = $DB->get_record('assignfeedback_exapdf_quick', array('id'=>$commentid), '*', IGNORE_MISSING);
         if ($record) {
             return $record;
         }
@@ -89,6 +89,6 @@ class comments_quick_list {
      */
     public static function remove_comment($commentid) {
         global $DB, $USER;
-        return $DB->delete_records('assignfeedback_editpdf_quick', array('id'=>$commentid, 'userid'=>$USER->id));
+        return $DB->delete_records('assignfeedback_exapdf_quick', array('id'=>$commentid, 'userid'=>$USER->id));
     }
 }

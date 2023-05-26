@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  * Process concurrent ajax request.
  * ALL RETURNED INFO IS PUBLIC.
  *
- * @package assignfeedback_editpdf
+ * @package assignfeedback_exapdf
  * @copyright  2013 Jerome Mouneyrac
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ define('AJAX_SCRIPT', true);
 // To be able to process concurrent ajax request with the generate pdf ajax request we can not use cookie.
 define('NO_MOODLE_COOKIES', true);
 
-use \assignfeedback_editpdf\document_services;
+use \assignfeedback_exapdf\document_services;
 require_once('../../../../config.php');
 
 try {
@@ -50,7 +50,7 @@ try {
     }
 
     // No need to handle the readonly files here, the should be already generated.
-    $component = 'assignfeedback_editpdf';
+    $component = 'assignfeedback_exapdf';
     $filearea = document_services::PAGE_IMAGE_FILEAREA;
     $filepath = '/';
     $fs = get_file_storage();

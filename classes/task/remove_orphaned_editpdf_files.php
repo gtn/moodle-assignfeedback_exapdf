@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,23 +17,23 @@
 /**
  * Cleans up orphaned feedback pdf files and table entries.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @copyright  2022 Adrian Greeve <adrian@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignfeedback_editpdf\task;
+namespace assignfeedback_exapdf\task;
 
 use core\task\adhoc_task;
 
 /**
  * Cleans up orphaned feedback pdf files and table entries.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @copyright  2022 Adrian Greeve <adrian@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class remove_orphaned_editpdf_files extends adhoc_task {
+class remove_orphaned_exapdf_files extends adhoc_task {
 
     /**
      * Run the task.
@@ -53,10 +53,10 @@ class remove_orphaned_editpdf_files extends adhoc_task {
         $sql = "SELECT DISTINCT f.contextid, f.component, f.filearea, f.itemid
                   FROM {files} f
              LEFT JOIN {assign_grades} g ON g.id = f.itemid
-                 WHERE f.component = :assigneditpdf
+                 WHERE f.component = :assignexapdf
                AND NOT (filearea = :stamps AND f.itemid = 0)
                    AND g.id IS NULL";
-        $params = ['assigneditpdf' => 'assignfeedback_editpdf', 'stamps' => 'stamps'];
+        $params = ['assignexapdf' => 'assignfeedback_exapdf', 'stamps' => 'stamps'];
 
         $results = $DB->get_recordset_sql($sql, $params);
         foreach ($results as $record) {
@@ -72,9 +72,9 @@ class remove_orphaned_editpdf_files extends adhoc_task {
     private function remove_rotated_table_entries(): void {
         global $DB;
         $rotatesql = "SELECT er.id AS erid
-                        FROM {assignfeedback_editpdf_rot} er
+                        FROM {assignfeedback_exapdf_rot} er
                    LEFT JOIN {assign_grades} g ON g.id = er.gradeid
                        WHERE g.id IS NULL";
-        $DB->delete_records_subquery('assignfeedback_editpdf_rot', 'id', 'erid', $rotatesql);
+        $DB->delete_records_subquery('assignfeedback_exapdf_rot', 'id', 'erid', $rotatesql);
     }
 }

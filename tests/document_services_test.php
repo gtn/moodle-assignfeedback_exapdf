@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace assignfeedback_editpdf;
+namespace assignfeedback_exapdf;
 
 use mod_assign_test_generator;
 use advanced_testcase;
@@ -28,9 +28,9 @@ require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 /**
  * Unit tests for document services.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @category   test
- * @covers     \assignfeedback_editpdf\document_services
+ * @covers     \assignfeedback_exapdf\document_services
  * @copyright  2022 Mikhail Golenkov <mikhailgolenkov@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -50,12 +50,12 @@ class document_services_test extends advanced_testcase {
         $user = $this->getDataGenerator()->create_user();
         $this->getDataGenerator()->enrol_user($user->id, $course->id, 'student');
 
-        $method = new ReflectionMethod('\assignfeedback_editpdf\document_services', 'save_file');
+        $method = new ReflectionMethod('\assignfeedback_exapdf\document_services', 'save_file');
         $method->setAccessible(true);
 
         $filearea = document_services::TMP_ROTATED_JPG_FILEAREA;
         $content = 'some random content';
-        $tempfile = make_temp_directory('assignfeedback_editpdf') . DIRECTORY_SEPARATOR . 'mock.file';
+        $tempfile = make_temp_directory('assignfeedback_exapdf') . DIRECTORY_SEPARATOR . 'mock.file';
         file_put_contents($tempfile, $content);
 
         // Invoke the method and confirm, that the file is saved.
@@ -81,7 +81,7 @@ class document_services_test extends advanced_testcase {
         $user = $this->getDataGenerator()->create_user();
         $this->getDataGenerator()->enrol_user($user->id, $course->id, 'student');
 
-        $method = new ReflectionMethod('\assignfeedback_editpdf\document_services', 'save_rotated_image_file');
+        $method = new ReflectionMethod('\assignfeedback_exapdf\document_services', 'save_rotated_image_file');
         $method->setAccessible(true);
 
         $imagecontent = file_get_contents($CFG->dirroot . '/lib/filestorage/tests/fixtures/testimage.png');

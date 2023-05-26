@@ -16,13 +16,13 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a 2d rect.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @param int x
  * @param int y
  * @param int width
@@ -66,7 +66,7 @@ var RECT = function(x, y, width, height) {
     /**
      * Set this rect to represent the smallest possible rectangle containing this list of points.
      * @method bounds
-     * @param M.assignfeedback_editpdf.point[]
+     * @param M.assignfeedback_exapdf.point[]
      * @public
      */
     this.bound = function(points) {
@@ -139,5 +139,5 @@ var RECT = function(x, y, width, height) {
     };
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.rect = RECT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.rect = RECT;

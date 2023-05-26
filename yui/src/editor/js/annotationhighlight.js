@@ -16,16 +16,16 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
 */
 
 /**
  * Class representing a highlight.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationhighlight
- * @extends M.assignfeedback_editpdf.annotation
- * @module moodle-assignfeedback_editpdf-editor
+ * @extends M.assignfeedback_exapdf.annotation
+ * @module moodle-assignfeedback_exapdf-editor
  */
 var ANNOTATIONHIGHLIGHT = function(config) {
     ANNOTATIONHIGHLIGHT.superclass.constructor.apply(this, [config]);
@@ -34,12 +34,12 @@ var ANNOTATIONHIGHLIGHT = function(config) {
 ANNOTATIONHIGHLIGHT.NAME = "annotationhighlight";
 ANNOTATIONHIGHLIGHT.ATTRS = {};
 
-Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a highlight annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
@@ -47,10 +47,10 @@ Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
             bounds,
             highlightcolour;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(this.x, this.y),
-                      new M.assignfeedback_editpdf.point(this.endx, this.endy)]);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(this.x, this.y),
+                      new M.assignfeedback_exapdf.point(this.endx, this.endy)]);
 
         highlightcolour = ANNOTATIONCOLOUR[this.colour];
 
@@ -82,17 +82,17 @@ Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             bounds,
             highlightcolour;
 
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(edit.start.x, edit.start.y),
-                      new M.assignfeedback_editpdf.point(edit.end.x, edit.end.y)]);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(edit.start.x, edit.start.y),
+                      new M.assignfeedback_exapdf.point(edit.end.x, edit.end.y)]);
 
         // Set min. width of highlight.
         if (!bounds.has_min_width()) {
@@ -128,11 +128,11 @@ Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool true if highlight bound is more than min width/height, else false.
      */
     init_from_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect();
+        var bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         this.gradeid = this.editor.get('gradeid');
@@ -149,5 +149,5 @@ Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationhighlight = ANNOTATIONHIGHLIGHT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationhighlight = ANNOTATIONHIGHLIGHT;

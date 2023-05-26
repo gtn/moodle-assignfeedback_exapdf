@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'assignfeedback_editpdf', language 'en'
+ * Strings for component 'assignfeedback_exapdf', language 'en'
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -49,9 +49,9 @@ $string['downloadfeedback'] = 'Download feedback PDF';
 $string['drag'] = 'Drag';
 $string['errorgenerateimage'] = 'Error generating image with ghostscript, debugging info: {$a}';
 $string['errorpdfpage'] = 'There was an error while generating this page.';
-$string['editpdf'] = 'Annotate PDF';
-$string['editpdf_help'] = 'Annotate student submissions directly in the browser and produce an edited downloadable PDF.';
-$string['enabled'] = 'Annotate PDF';
+$string['exapdf'] = 'Exa PDF';
+$string['exapdf_help'] = 'Annotate student submissions directly in the browser and produce an edited downloadable PDF.';
+$string['enabled'] = 'Exa PDF';
 $string['enabled_help'] = 'If enabled, the teacher will be able to create annotated PDF files when marking assignment submissions. This allows the teacher to add comments, drawing and stamps directly on top of the student\'s work. The annotating is done in the browser and no extra software is required.';
 $string['expcolcomments'] = 'Expand/collapse all comments';
 $string['filter'] = 'Filter comments...';
@@ -73,7 +73,7 @@ $string['pagenumber'] = 'Page {$a}';
 $string['pagexofy'] = 'Page {$a->page} of {$a->total}';
 $string['pen'] = 'Pen';
 $string['partialwarning'] = 'Some of the files in this submission can only be accessed by direct download.';
-$string['pluginname'] = 'Annotate PDF';
+$string['pluginname'] = 'Exa PDF';
 $string['privacy:metadata:colourpurpose'] = 'Colour of the comment or annotation';
 $string['privacy:metadata:conversionpurpose'] = 'Files are converted to PDFs to allow for annotations.';
 $string['privacy:metadata:filepurpose'] = 'Stores an annotated PDF with feedback for the user.';

@@ -15,21 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the editor class for the assignfeedback_editpdf plugin
+ * This file contains the editor class for the assignfeedback_exapdf plugin
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignfeedback_editpdf;
+namespace assignfeedback_exapdf;
+// debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); exit;
 
 /**
  * This class performs crud operations on comments and annotations from a page of a response.
  *
  * No capability checks are done - they should be done by the calling class.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -364,7 +365,7 @@ class page_editor {
      * @param bool $includesubdirs Whether to copy the content of sub-directories too.
      */
     public static function replace_files_from_to($fs, $contextid, $sourceitemid, $itemid, $area, $includesubdirs = false) {
-        $component = 'assignfeedback_editpdf';
+        $component = 'assignfeedback_exapdf';
         // Remove the existing files within this area.
         $fs->delete_area_files($contextid, $component, $area, $itemid);
 
@@ -416,12 +417,12 @@ class page_editor {
             $record->isrotated = $isrotated;
             $record->pathnamehash = $pathnamehash;
             $record->degree = $degree;
-            $DB->insert_record('assignfeedback_editpdf_rot', $record, false);
+            $DB->insert_record('assignfeedback_exapdf_rot', $record, false);
         } else {
             $oldrecord->isrotated = $isrotated;
             $oldrecord->pathnamehash = $pathnamehash;
             $oldrecord->degree = $degree;
-            $DB->update_record('assignfeedback_editpdf_rot', $oldrecord, false);
+            $DB->update_record('assignfeedback_exapdf_rot', $oldrecord, false);
         }
     }
 
@@ -434,7 +435,7 @@ class page_editor {
      */
     public static function get_page_rotation($gradeid, $pageno) {
         global $DB;
-        $result = $DB->get_record('assignfeedback_editpdf_rot', array('gradeid' => $gradeid, 'pageno' => $pageno));
+        $result = $DB->get_record('assignfeedback_exapdf_rot', array('gradeid' => $gradeid, 'pageno' => $pageno));
         return $result;
     }
 

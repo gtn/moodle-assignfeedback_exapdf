@@ -16,13 +16,13 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a users quick comment.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class quickcomment
  */
 var QUICKCOMMENT = function(id, rawtext, width, colour) {
@@ -60,5 +60,5 @@ var QUICKCOMMENT = function(id, rawtext, width, colour) {
     this.colour = colour || "yellow";
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.quickcomment = QUICKCOMMENT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.quickcomment = QUICKCOMMENT;

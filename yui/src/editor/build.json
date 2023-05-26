@@ -1,7 +1,7 @@
 {
-  "name": "moodle-assignfeedback_editpdf-editor",
+  "name": "moodle-assignfeedback_exapdf-editor",
   "builds": {
-    "moodle-assignfeedback_editpdf-editor": {
+    "moodle-assignfeedback_exapdf-editor": {
       "jsfiles": [
         "globals.js",
         "point.js",

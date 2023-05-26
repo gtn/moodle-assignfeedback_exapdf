@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,15 +17,15 @@
 /**
  * Process ajax requests
  *
- * @package assignfeedback_editpdf
+ * @package assignfeedback_exapdf
  * @copyright  2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use \assignfeedback_editpdf\document_services;
-use \assignfeedback_editpdf\combined_document;
-use \assignfeedback_editpdf\page_editor;
-use \assignfeedback_editpdf\comments_quick_list;
+use \assignfeedback_exapdf\document_services;
+use \assignfeedback_exapdf\combined_document;
+use \assignfeedback_exapdf\page_editor;
+use \assignfeedback_exapdf\comments_quick_list;
 
 define('AJAX_SCRIPT', true);
 
@@ -69,7 +69,7 @@ if ($action === 'pollconversions') {
     }
 
     // Get a lock for the PDF/Image conversion of the assignment files.
-    $lockfactory = \core\lock\lock_config::get_lock_factory('assignfeedback_editpdf_pollconversions');
+    $lockfactory = \core\lock\lock_config::get_lock_factory('assignfeedback_exapdf_pollconversions');
     $resource = "user:{$userid},assignmentid:{$assignmentid},attemptnumber:{$attemptnumber}";
     $lock = $lockfactory->get_lock($resource, 0);
 
@@ -129,7 +129,7 @@ if ($action === 'pollconversions') {
                 $page = new stdClass();
                 $comments = page_editor::get_comments($grade->id, $index, $draft);
                 $page->url = moodle_url::make_pluginfile_url($context->id,
-                                                            'assignfeedback_editpdf',
+                                                            'assignfeedback_exapdf',
                                                             $filearea,
                                                             $grade->id,
                                                             '/',
@@ -147,7 +147,7 @@ if ($action === 'pollconversions') {
                 $response->pages[] = $page;
             }
 
-            $component = 'assignfeedback_editpdf';
+            $component = 'assignfeedback_exapdf';
             $filearea = document_services::PAGE_IMAGE_FILEAREA;
             $filepath = '/';
             $fs = get_file_storage();
@@ -177,11 +177,11 @@ if ($action === 'pollconversions') {
 
     $added = page_editor::set_comments($grade->id, $index, $page->comments);
     if ($added != count($page->comments)) {
-        array_push($response->errors, get_string('couldnotsavepage', 'assignfeedback_editpdf', $index+1));
+        array_push($response->errors, get_string('couldnotsavepage', 'assignfeedback_exapdf', $index+1));
     }
     $added = page_editor::set_annotations($grade->id, $index, $page->annotations);
     if ($added != count($page->annotations)) {
-        array_push($response->errors, get_string('couldnotsavepage', 'assignfeedback_editpdf', $index+1));
+        array_push($response->errors, get_string('couldnotsavepage', 'assignfeedback_exapdf', $index+1));
     }
     echo json_encode($response);
     die();
@@ -196,7 +196,7 @@ if ($action === 'pollconversions') {
     $response->url = '';
     if ($file) {
         $url = moodle_url::make_pluginfile_url($assignment->get_context()->id,
-                                               'assignfeedback_editpdf',
+                                               'assignfeedback_exapdf',
                                                document_services::FINAL_PDF_FILEAREA,
                                                $grade->id,
                                                '/',

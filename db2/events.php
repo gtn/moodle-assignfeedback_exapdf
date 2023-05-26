@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * EditPDF event handler definition.
+ * exapdf event handler definition.
  *
- * @package assignfeedback_editpdf
+ * @package assignfeedback_exapdf
  * @category event
  * @copyright 2016 Damyon Wiese
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,10 +27,10 @@
 $observers = array(
     array(
         'eventname'   => '\mod_assign\event\submission_created',
-        'callback'    => '\assignfeedback_editpdf\event\observer::submission_created',
+        'callback'    => '\assignfeedback_exapdf\event\observer::submission_created',
     ),
     array(
         'eventname'   => '\mod_assign\event\submission_updated',
-        'callback'    => '\assignfeedback_editpdf\event\observer::submission_updated',
+        'callback'    => '\assignfeedback_exapdf\event\observer::submission_updated',
     ),
 );

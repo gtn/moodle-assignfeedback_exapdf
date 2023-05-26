@@ -17,24 +17,27 @@
 /**
  * Library code for manipulating PDFs
  *
- * @package assignfeedback_editpdf
+ * @package assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignfeedback_editpdf;
+namespace assignfeedback_exapdf;
 use setasign\Fpdi\TcpdfFpdi;
+
+debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+exit;
 
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once($CFG->libdir.'/pdflib.php');
-require_once($CFG->dirroot.'/mod/assign/feedback/editpdf/fpdi/autoload.php');
+require_once($CFG->dirroot.'/mod/assign/feedback/exapdf/fpdi/autoload.php');
 
 /**
  * Library code for manipulating PDFs
  *
- * @package assignfeedback_editpdf
+ * @package assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -72,7 +75,7 @@ class pdf extends TcpdfFpdi {
     /** Min. height an annotation should have */
     const MIN_ANNOTATION_HEIGHT = 5;
     /** Blank PDF file used during error. */
-    const BLANK_PDF = '/mod/assign/feedback/editpdf/fixtures/blank.pdf';
+    const BLANK_PDF = '/mod/assign/feedback/exapdf/fixtures/blank.pdf';
     /** Page image file name prefix*/
     const IMAGE_PAGE = 'image_page';
     /**
@@ -255,7 +258,7 @@ class pdf extends TcpdfFpdi {
         $this->SetAutoPageBreak(true, 100 * $this->scale);
         $this->setHeaderFont(array($this->get_export_font_name(), '', 24 * $this->scale, '', true));
         $this->setHeaderMargin(24 * $this->scale);
-        $this->setHeaderData('', 0, '', get_string('commentindex', 'assignfeedback_editpdf'));
+        $this->setHeaderData('', 0, '', get_string('commentindex', 'assignfeedback_exapdf'));
 
         // Add a new page to the document with an appropriate header.
         $this->setPrintHeader(true);
@@ -272,7 +275,7 @@ class pdf extends TcpdfFpdi {
                 // Also create a link back to the marker, which will be added here.
                 $markerlink = $this->AddLink();
                 $this->SetLink($markerlink, $comment->y * $this->scale, $pageno + 1);
-                $label = get_string('commentlabel', 'assignfeedback_editpdf', array('pnum' => $pageno + 1, 'cnum' => $index + 1));
+                $label = get_string('commentlabel', 'assignfeedback_exapdf', array('pnum' => $pageno + 1, 'cnum' => $index + 1));
                 $this->Cell(50 * $this->scale, 0, $label, 0, 0, '', false, $markerlink);
                 $this->MultiCell(0, 0, $comment->rawtext, 0, 'L');
                 $this->Ln(12 * $this->scale);
@@ -324,7 +327,7 @@ class pdf extends TcpdfFpdi {
         $marker = '@<svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.5 -0.5 12 12" preserveAspectRatio="xMinYMin meet">' .
                 '<path d="M11 0H1C.4 0 0 .4 0 1v6c0 .6.4 1 1 1h1v4l4-4h5c.6 0 1-.4 1-1V1c0-.6-.4-1-1-1z" fill="' . $fill . '" ' .
                 'fill-opacity="' . $fillopacity . '" stroke="rgb(153, 153, 153)" stroke-width="0.5"/></svg>';
-        $label = get_string('commentlabel', 'assignfeedback_editpdf', array('pnum' => $pageno + 1, 'cnum' => $index + 1));
+        $label = get_string('commentlabel', 'assignfeedback_exapdf', array('pnum' => $pageno + 1, 'cnum' => $index + 1));
 
         $x *= $this->scale;
         $y *= $this->scale;
@@ -594,13 +597,13 @@ class pdf extends TcpdfFpdi {
             $output = null;
             $result = exec($command, $output);
             if (!file_exists($imagefile)) {
-                $fullerror = '<pre>'.get_string('command', 'assignfeedback_editpdf')."\n";
+                $fullerror = '<pre>'.get_string('command', 'assignfeedback_exapdf')."\n";
                 $fullerror .= $command . "\n\n";
-                $fullerror .= get_string('result', 'assignfeedback_editpdf')."\n";
+                $fullerror .= get_string('result', 'assignfeedback_exapdf')."\n";
                 $fullerror .= htmlspecialchars($result, ENT_COMPAT) . "\n\n";
-                $fullerror .= get_string('output', 'assignfeedback_editpdf')."\n";
+                $fullerror .= get_string('output', 'assignfeedback_exapdf')."\n";
                 $fullerror .= htmlspecialchars(implode("\n", $output), ENT_COMPAT) . '</pre>';
-                throw new \moodle_exception('errorgenerateimage', 'assignfeedback_editpdf', '', $fullerror);
+                throw new \moodle_exception('errorgenerateimage', 'assignfeedback_exapdf', '', $fullerror);
             }
         }
 
@@ -796,7 +799,7 @@ class pdf extends TcpdfFpdi {
         $pdf = new pdf();
         $pdf->set_pdf($errorfile);
         $pdf->copy_page();
-        $pdf->add_comment(get_string('errorpdfpage', 'assignfeedback_editpdf'), 250, 300, 200, "red");
+        $pdf->add_comment(get_string('errorpdfpage', 'assignfeedback_exapdf'), 250, 300, 200, "red");
         $generatedpdf = $tmperrorimagefolder . '/' . 'error.pdf';
         $pdf->save_pdf($generatedpdf);
 
@@ -845,13 +848,13 @@ class pdf extends TcpdfFpdi {
             return $ret;
         }
 
-        $testfile = $CFG->dirroot.'/mod/assign/feedback/editpdf/tests/fixtures/testgs.pdf';
+        $testfile = $CFG->dirroot.'/mod/assign/feedback/exapdf/tests/fixtures/testgs.pdf';
         if (!file_exists($testfile)) {
             $ret->status = self::GSPATH_NOTESTFILE;
             return $ret;
         }
 
-        $testimagefolder = \make_temp_directory('assignfeedback_editpdf_test');
+        $testimagefolder = \make_temp_directory('assignfeedback_exapdf_test');
         $filepath = $testimagefolder . '/' . self::IMAGE_PAGE . '0.png';
         // Delete any previous test images, if they exist.
         if (file_exists($filepath)) {
@@ -880,7 +883,7 @@ class pdf extends TcpdfFpdi {
         header('Content-type: image/png');
         require_once($CFG->libdir.'/filelib.php');
 
-        $testimagefolder = \make_temp_directory('assignfeedback_editpdf_test');
+        $testimagefolder = \make_temp_directory('assignfeedback_exapdf_test');
         $testimage = $testimagefolder . '/' . self::IMAGE_PAGE . '0.png';
         send_file($testimage, basename($testimage), 0);
         die();

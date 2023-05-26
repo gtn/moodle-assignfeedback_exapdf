@@ -16,13 +16,13 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a 2d point.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @param Number x
  * @param Number y
  * @class point
@@ -48,7 +48,7 @@ var POINT = function(x, y) {
     /**
      * Clip this point to the rect
      * @method clip
-     * @param M.assignfeedback_editpdf.point
+     * @param M.assignfeedback_exapdf.point
      * @public
      */
     this.clip = function(bounds) {
@@ -69,5 +69,5 @@ var POINT = function(x, y) {
     };
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.point = POINT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.point = POINT;

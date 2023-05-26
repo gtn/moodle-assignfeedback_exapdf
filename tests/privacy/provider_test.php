@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Unit tests for assignfeedback_editpdf.
+ * Unit tests for assignfeedback_exapdf.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @copyright  2018 Adrian Greeve <adrian@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace assignfeedback_editpdf\privacy;
+namespace assignfeedback_exapdf\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -29,11 +29,11 @@ global $CFG;
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/tests/privacy/provider_test.php');
 
-use assignfeedback_editpdf\page_editor;
+use assignfeedback_exapdf\page_editor;
 use mod_assign\privacy\assign_plugin_request_data;
 
 /**
- * Unit tests for mod/assign/feedback/editpdf/classes/privacy/
+ * Unit tests for mod/assign/feedback/exapdf/classes/privacy/
  *
  * @copyright  2018 Adrian Greeve <adrian@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -42,8 +42,8 @@ class provider_test extends \mod_assign\privacy\provider_test {
 
     public function setUp(): void {
         // Skip this test if ghostscript is not supported.
-        $result = \assignfeedback_editpdf\pdf::test_gs_path(false);
-        if ($result->status !== \assignfeedback_editpdf\pdf::GSPATH_OK) {
+        $result = \assignfeedback_exapdf\pdf::test_gs_path(false);
+        if ($result->status !== \assignfeedback_exapdf\pdf::GSPATH_OK) {
             $this->markTestSkipped('Ghostscript not setup');
             return;
         }
@@ -75,7 +75,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
             'filepath' => '/',
             'filename' => 'submission.pdf'
         );
-        $sourcefile = $CFG->dirroot.'/mod/assign/feedback/editpdf/tests/fixtures/submission.pdf';
+        $sourcefile = $CFG->dirroot.'/mod/assign/feedback/exapdf/tests/fixtures/submission.pdf';
         $fi = $fs->create_file_from_pathname($pdfsubmission, $sourcefile);
 
         $data = new \stdClass();
@@ -84,11 +84,11 @@ class provider_test extends \mod_assign\privacy\provider_test {
 
         $this->setUser($teacher->id);
 
-        $plugin = $assign->get_feedback_plugin_by_type('editpdf');
+        $plugin = $assign->get_feedback_plugin_by_type('exapdf');
 
         $grade = $assign->get_user_grade($student->id, true);
 
-        $comment = new \assignfeedback_editpdf\comment();
+        $comment = new \assignfeedback_exapdf\comment();
 
         $comment->rawtext = 'Comment text';
         $comment->width = 100;
@@ -97,7 +97,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $comment->colour = 'red';
         page_editor::set_comments($grade->id, 0, [$comment]);
 
-        $annotation = new \assignfeedback_editpdf\annotation();
+        $annotation = new \assignfeedback_exapdf\annotation();
 
         $annotation->path = '';
         $annotation->x = 100;
@@ -112,7 +112,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $comments = page_editor::get_comments($grade->id, 0, true);
         $annotations = page_editor::get_annotations($grade->id, 0, false);
         page_editor::release_drafts($grade->id);
-        $storedfile = \assignfeedback_editpdf\document_services::generate_feedback_document($assign->get_instance()->id, $student->id,
+        $storedfile = \assignfeedback_exapdf\document_services::generate_feedback_document($assign->get_instance()->id, $student->id,
                 $grade->attemptnumber);
 
         return [$plugin, $grade, $storedfile];
@@ -122,8 +122,8 @@ class provider_test extends \mod_assign\privacy\provider_test {
      * Quick test to make sure that get_metadata returns something.
      */
     public function test_get_metadata() {
-        $collection = new \core_privacy\local\metadata\collection('assignfeedback_editpdf');
-        $collection = \assignfeedback_editpdf\privacy\provider::get_metadata($collection);
+        $collection = new \core_privacy\local\metadata\collection('assignfeedback_exapdf');
+        $collection = \assignfeedback_exapdf\privacy\provider::get_metadata($collection);
         $this->assertNotEmpty($collection);
     }
 
@@ -143,7 +143,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $assign = $this->create_instance(['course' => $course,
                 'assignsubmission_file_enabled' => 1,
                 'assignsubmission_file_maxfiles' => 1,
-                'assignfeedback_editpdf_enabled' => 1,
+                'assignfeedback_exapdf_enabled' => 1,
                 'assignsubmission_file_maxsizebytes' => 1000000]);
 
         $context = $assign->get_context();
@@ -158,10 +158,10 @@ class provider_test extends \mod_assign\privacy\provider_test {
 
         // The student should be able to see the teachers feedback.
         $exportdata = new \mod_assign\privacy\assign_plugin_request_data($context, $assign, $grade, [], $user1);
-        \assignfeedback_editpdf\privacy\provider::export_feedback_user_data($exportdata);
-        // print_object($writer->get_files([get_string('privacy:path', 'assignfeedback_editpdf')]));
+        \assignfeedback_exapdf\privacy\provider::export_feedback_user_data($exportdata);
+        // print_object($writer->get_files([get_string('privacy:path', 'assignfeedback_exapdf')]));
         // print_object($writer->get_files(['PDF feedback', $storedfile->get_filename()]));
-        $pdffile = $writer->get_files([get_string('privacy:path', 'assignfeedback_editpdf')])[$storedfile->get_filename()];
+        $pdffile = $writer->get_files([get_string('privacy:path', 'assignfeedback_exapdf')])[$storedfile->get_filename()];
         // The writer should have returned a stored file.
         $this->assertInstanceOf('stored_file', $pdffile);
     }
@@ -184,7 +184,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $assign = $this->create_instance(['course' => $course,
                 'assignsubmission_file_enabled' => 1,
                 'assignsubmission_file_maxfiles' => 1,
-                'assignfeedback_editpdf_enabled' => 1,
+                'assignfeedback_exapdf_enabled' => 1,
                 'assignsubmission_file_maxsizebytes' => 1000000]);
 
         $context = $assign->get_context();
@@ -197,7 +197,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $this->assertFalse($plugin2->is_empty($grade2));
 
         $requestdata = new assign_plugin_request_data($context, $assign);
-        \assignfeedback_editpdf\privacy\provider::delete_feedback_for_context($requestdata);
+        \assignfeedback_exapdf\privacy\provider::delete_feedback_for_context($requestdata);
 
         // Check that we now have no data.
         $this->assertTrue($plugin1->is_empty($grade1));
@@ -222,7 +222,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $assign = $this->create_instance(['course' => $course,
                 'assignsubmission_file_enabled' => 1,
                 'assignsubmission_file_maxfiles' => 1,
-                'assignfeedback_editpdf_enabled' => 1,
+                'assignfeedback_exapdf_enabled' => 1,
                 'assignsubmission_file_maxsizebytes' => 1000000]);
 
         $context = $assign->get_context();
@@ -235,7 +235,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $this->assertFalse($plugin2->is_empty($grade2));
 
         $requestdata = new assign_plugin_request_data($context, $assign, $grade1, [], $user1);
-        \assignfeedback_editpdf\privacy\provider::delete_feedback_for_grade($requestdata);
+        \assignfeedback_exapdf\privacy\provider::delete_feedback_for_grade($requestdata);
 
         // Check that we now have no data for user 1.
         $this->assertTrue($plugin1->is_empty($grade1));
@@ -267,13 +267,13 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $assign1 = $this->create_instance(['course' => $course,
                 'assignsubmission_file_enabled' => 1,
                 'assignsubmission_file_maxfiles' => 1,
-                'assignfeedback_editpdf_enabled' => 1,
+                'assignfeedback_exapdf_enabled' => 1,
                 'assignsubmission_file_maxsizebytes' => 1000000]);
 
         $assign2 = $this->create_instance(['course' => $course,
                 'assignsubmission_file_enabled' => 1,
                 'assignsubmission_file_maxfiles' => 1,
-                'assignfeedback_editpdf_enabled' => 1,
+                'assignfeedback_exapdf_enabled' => 1,
                 'assignsubmission_file_maxsizebytes' => 1000000]);
 
         $context = $assign1->get_context();
@@ -292,13 +292,13 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $this->assertFalse($plugin5->is_empty($grade5));
 
         // Check that there are also files generated.
-        $files = $DB->get_records('files', ['component' => 'assignfeedback_editpdf', 'filearea' => 'download']);
+        $files = $DB->get_records('files', ['component' => 'assignfeedback_exapdf', 'filearea' => 'download']);
         $this->assertCount(10, $files);
 
         $deletedata = new assign_plugin_request_data($context, $assign1);
         $deletedata->set_userids([$user1->id, $user3->id]);
         $deletedata->populate_submissions_and_grades();
-        \assignfeedback_editpdf\privacy\provider::delete_feedback_for_grades($deletedata);
+        \assignfeedback_exapdf\privacy\provider::delete_feedback_for_grades($deletedata);
 
         // Check that we now have no data for user 1.
         $this->assertTrue($plugin1->is_empty($grade1));
@@ -312,7 +312,7 @@ class provider_test extends \mod_assign\privacy\provider_test {
         $this->assertFalse($plugin5->is_empty($grade5));
 
         // Check the files as well.
-        $files = $DB->get_records('files', ['component' => 'assignfeedback_editpdf', 'filearea' => 'download']);
+        $files = $DB->get_records('files', ['component' => 'assignfeedback_exapdf', 'filearea' => 'download']);
         // We should now only have six records here.
         $this->assertCount(6, $files);
     }

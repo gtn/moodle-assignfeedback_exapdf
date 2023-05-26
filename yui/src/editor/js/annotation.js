@@ -16,13 +16,13 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a highlight.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotation
  * @constructor
  */
@@ -35,9 +35,9 @@ ANNOTATION.ATTRS = {};
 
 Y.extend(ANNOTATION, Y.Base, {
     /**
-     * Reference to M.assignfeedback_editpdf.editor.
+     * Reference to M.assignfeedback_exapdf.editor.
      * @property editor
-     * @type M.assignfeedback_editpdf.editor
+     * @type M.assignfeedback_exapdf.editor
      * @public
      */
     editor: null,
@@ -115,9 +115,9 @@ Y.extend(ANNOTATION, Y.Base, {
     colour: 'red',
 
     /**
-     * Reference to M.assignfeedback_editpdf.drawable
+     * Reference to M.assignfeedback_exapdf.drawable
      * @property drawable
-     * @type M.assignfeedback_editpdf.drawable
+     * @type M.assignfeedback_exapdf.drawable
      * @public
      */
     drawable: false,
@@ -166,7 +166,7 @@ Y.extend(ANNOTATION, Y.Base, {
      * Draw a selection around this annotation if it is selected.
      * @public
      * @method draw_highlight
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw_highlight: function() {
         var bounds,
@@ -176,9 +176,9 @@ Y.extend(ANNOTATION, Y.Base, {
 
         if (this.editor.currentannotation === this) {
             // Draw a highlight around the annotation.
-            bounds = new M.assignfeedback_editpdf.rect();
-            bounds.bound([new M.assignfeedback_editpdf.point(this.x, this.y),
-                          new M.assignfeedback_editpdf.point(this.endx, this.endy)]);
+            bounds = new M.assignfeedback_exapdf.rect();
+            bounds.bound([new M.assignfeedback_exapdf.point(this.x, this.y),
+                          new M.assignfeedback_exapdf.point(this.endx, this.endy)]);
 
             shape = this.editor.graphic.addShape({
                 type: Y.Rect,
@@ -197,11 +197,11 @@ Y.extend(ANNOTATION, Y.Base, {
             this.drawable.shapes.push(shape);
 
             // Add a delete X to the annotation.
-            var deleteicon = Y.Node.create('<img src="' + M.util.image_url('trash', 'assignfeedback_editpdf') + '"/>'),
+            var deleteicon = Y.Node.create('<img src="' + M.util.image_url('trash', 'assignfeedback_exapdf') + '"/>'),
                 deletelink = Y.Node.create('<a href="#" role="button"></a>');
 
             deleteicon.setAttrs({
-                'alt': M.util.get_string('deleteannotation', 'assignfeedback_editpdf')
+                'alt': M.util.get_string('deleteannotation', 'assignfeedback_exapdf')
             });
             deleteicon.setStyles({
                 'backgroundColor': 'white'
@@ -226,7 +226,7 @@ Y.extend(ANNOTATION, Y.Base, {
      * Draw an annotation
      * @public
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable|false
+     * @return M.assignfeedback_exapdf.drawable|false
      */
     draw: function() {
         // Should be overridden by the subclass.
@@ -302,7 +302,7 @@ Y.extend(ANNOTATION, Y.Base, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
         var noop = edit && false;
@@ -315,11 +315,11 @@ Y.extend(ANNOTATION, Y.Base, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool if width/height is more than min. required.
      */
     init_from_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect();
+        var bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         this.gradeid = this.editor.get('gradeid');
@@ -335,5 +335,5 @@ Y.extend(ANNOTATION, Y.Base, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotation = ANNOTATION;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotation = ANNOTATION;

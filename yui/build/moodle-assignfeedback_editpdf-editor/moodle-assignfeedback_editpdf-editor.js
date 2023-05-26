@@ -1,4 +1,4 @@
-YUI.add('moodle-assignfeedback_editpdf-editor', function (Y, NAME) {
+YUI.add('moodle-assignfeedback_exapdf-editor', function (Y, NAME) {
 
 // This file is part of Moodle - http://moodle.org/
 //
@@ -19,20 +19,20 @@ YUI.add('moodle-assignfeedback_editpdf-editor', function (Y, NAME) {
 /**
  * A list of globals used by this module.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
-var AJAXBASE = M.cfg.wwwroot + '/mod/assign/feedback/editpdf/ajax.php',
-    AJAXBASEPROGRESS = M.cfg.wwwroot + '/mod/assign/feedback/editpdf/ajax_progress.php',
+var AJAXBASE = M.cfg.wwwroot + '/mod/assign/feedback/exapdf/ajax.php',
+    AJAXBASEPROGRESS = M.cfg.wwwroot + '/mod/assign/feedback/exapdf/ajax_progress.php',
     CSS = {
-        DIALOGUE: 'assignfeedback_editpdf_widget'
+        DIALOGUE: 'assignfeedback_exapdf_widget'
     },
     SELECTOR = {
         PREVIOUSBUTTON:  '.navigate-previous-button',
         NEXTBUTTON:  ' .navigate-next-button',
         SEARCHCOMMENTSBUTTON: '.searchcommentsbutton',
         EXPCOLCOMMENTSBUTTON: '.expcolcommentsbutton',
-        SEARCHFILTER: '.assignfeedback_editpdf_commentsearch input',
-        SEARCHCOMMENTSLIST: '.assignfeedback_editpdf_commentsearch ul',
+        SEARCHFILTER: '.assignfeedback_exapdf_commentsearch input',
+        SEARCHCOMMENTSLIST: '.assignfeedback_exapdf_commentsearch ul',
         PAGESELECT: '.navigate-page-select',
         LOADINGICON: '.loading',
         PROGRESSBARCONTAINER: '.progress-info.progress-striped',
@@ -45,8 +45,8 @@ var AJAXBASE = M.cfg.wwwroot + '/mod/assign/feedback/editpdf/ajax.php',
         DELETEANNOTATIONBUTTON: '.deleteannotationbutton',
         WARNINGMESSAGECONTAINER: '.warningmessages',
         ICONMESSAGECONTAINER: '.infoicon',
-        UNSAVEDCHANGESDIV: '.assignfeedback_editpdf_warningmessages',
-        UNSAVEDCHANGESINPUT: 'input[name="assignfeedback_editpdf_haschanges"]',
+        UNSAVEDCHANGESDIV: '.assignfeedback_exapdf_warningmessages',
+        UNSAVEDCHANGESINPUT: 'input[name="assignfeedback_exapdf_haschanges"]',
         STAMPSBUTTON: '.currentstampbutton',
         USERINFOREGION: '[data-region="user-info"]',
         ROTATELEFTBUTTON: '.rotateleftbutton',
@@ -103,13 +103,13 @@ var AJAXBASE = M.cfg.wwwroot + '/mod/assign/feedback/editpdf/ajax.php',
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a 2d point.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @param Number x
  * @param Number y
  * @class point
@@ -135,7 +135,7 @@ var POINT = function(x, y) {
     /**
      * Clip this point to the rect
      * @method clip
-     * @param M.assignfeedback_editpdf.point
+     * @param M.assignfeedback_exapdf.point
      * @public
      */
     this.clip = function(bounds) {
@@ -156,8 +156,8 @@ var POINT = function(x, y) {
     };
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.point = POINT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.point = POINT;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -176,13 +176,13 @@ M.assignfeedback_editpdf.point = POINT;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a 2d rect.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @param int x
  * @param int y
  * @param int width
@@ -226,7 +226,7 @@ var RECT = function(x, y, width, height) {
     /**
      * Set this rect to represent the smallest possible rectangle containing this list of points.
      * @method bounds
-     * @param M.assignfeedback_editpdf.point[]
+     * @param M.assignfeedback_exapdf.point[]
      * @public
      */
     this.bound = function(points) {
@@ -299,8 +299,8 @@ var RECT = function(x, y, width, height) {
     };
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.rect = RECT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.rect = RECT;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -319,13 +319,13 @@ M.assignfeedback_editpdf.rect = RECT;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * EDIT
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class edit
  */
 var EDIT = function() {
@@ -333,7 +333,7 @@ var EDIT = function() {
     /**
      * Starting point for the edit.
      * @property start
-     * @type M.assignfeedback_editpdf.point|false
+     * @type M.assignfeedback_exapdf.point|false
      * @public
      */
     this.start = false;
@@ -341,7 +341,7 @@ var EDIT = function() {
     /**
      * Finishing point for the edit.
      * @property end
-     * @type M.assignfeedback_editpdf.point|false
+     * @type M.assignfeedback_exapdf.point|false
      * @public
      */
     this.end = false;
@@ -357,7 +357,7 @@ var EDIT = function() {
     /**
      * Starting point for the currently selected annotation.
      * @property annotationstart
-     * @type M.assignfeedback_editpdf.point|false
+     * @type M.assignfeedback_exapdf.point|false
      * @public
      */
     this.annotationstart = false;
@@ -397,14 +397,14 @@ var EDIT = function() {
     /**
      * List of points the the current drawing path.
      * @property path
-     * @type M.assignfeedback_editpdf.point[]
+     * @type M.assignfeedback_exapdf.point[]
      * @public
      */
     this.path = [];
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.edit = EDIT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.edit = EDIT;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -423,22 +423,22 @@ M.assignfeedback_editpdf.edit = EDIT;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a drawable thing which contains both Y.Nodes, and Y.Shapes.
  *
- * @namespace M.assignfeedback_editpdf
- * @param M.assignfeedback_editpdf.editor editor
+ * @namespace M.assignfeedback_exapdf
+ * @param M.assignfeedback_exapdf.editor editor
  * @class drawable
  */
 var DRAWABLE = function(editor) {
 
     /**
-     * Reference to M.assignfeedback_editpdf.editor.
+     * Reference to M.assignfeedback_exapdf.editor.
      * @property editor
-     * @type M.assignfeedback_editpdf.editor
+     * @type M.assignfeedback_exapdf.editor
      * @public
      */
     this.editor = editor;
@@ -515,8 +515,8 @@ var DRAWABLE = function(editor) {
     };
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.drawable = DRAWABLE;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.drawable = DRAWABLE;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -535,13 +535,13 @@ M.assignfeedback_editpdf.drawable = DRAWABLE;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a highlight.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotation
  * @constructor
  */
@@ -554,9 +554,9 @@ ANNOTATION.ATTRS = {};
 
 Y.extend(ANNOTATION, Y.Base, {
     /**
-     * Reference to M.assignfeedback_editpdf.editor.
+     * Reference to M.assignfeedback_exapdf.editor.
      * @property editor
-     * @type M.assignfeedback_editpdf.editor
+     * @type M.assignfeedback_exapdf.editor
      * @public
      */
     editor: null,
@@ -634,9 +634,9 @@ Y.extend(ANNOTATION, Y.Base, {
     colour: 'red',
 
     /**
-     * Reference to M.assignfeedback_editpdf.drawable
+     * Reference to M.assignfeedback_exapdf.drawable
      * @property drawable
-     * @type M.assignfeedback_editpdf.drawable
+     * @type M.assignfeedback_exapdf.drawable
      * @public
      */
     drawable: false,
@@ -685,7 +685,7 @@ Y.extend(ANNOTATION, Y.Base, {
      * Draw a selection around this annotation if it is selected.
      * @public
      * @method draw_highlight
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw_highlight: function() {
         var bounds,
@@ -695,9 +695,9 @@ Y.extend(ANNOTATION, Y.Base, {
 
         if (this.editor.currentannotation === this) {
             // Draw a highlight around the annotation.
-            bounds = new M.assignfeedback_editpdf.rect();
-            bounds.bound([new M.assignfeedback_editpdf.point(this.x, this.y),
-                          new M.assignfeedback_editpdf.point(this.endx, this.endy)]);
+            bounds = new M.assignfeedback_exapdf.rect();
+            bounds.bound([new M.assignfeedback_exapdf.point(this.x, this.y),
+                          new M.assignfeedback_exapdf.point(this.endx, this.endy)]);
 
             shape = this.editor.graphic.addShape({
                 type: Y.Rect,
@@ -716,11 +716,11 @@ Y.extend(ANNOTATION, Y.Base, {
             this.drawable.shapes.push(shape);
 
             // Add a delete X to the annotation.
-            var deleteicon = Y.Node.create('<img src="' + M.util.image_url('trash', 'assignfeedback_editpdf') + '"/>'),
+            var deleteicon = Y.Node.create('<img src="' + M.util.image_url('trash', 'assignfeedback_exapdf') + '"/>'),
                 deletelink = Y.Node.create('<a href="#" role="button"></a>');
 
             deleteicon.setAttrs({
-                'alt': M.util.get_string('deleteannotation', 'assignfeedback_editpdf')
+                'alt': M.util.get_string('deleteannotation', 'assignfeedback_exapdf')
             });
             deleteicon.setStyles({
                 'backgroundColor': 'white'
@@ -745,7 +745,7 @@ Y.extend(ANNOTATION, Y.Base, {
      * Draw an annotation
      * @public
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable|false
+     * @return M.assignfeedback_exapdf.drawable|false
      */
     draw: function() {
         // Should be overridden by the subclass.
@@ -821,7 +821,7 @@ Y.extend(ANNOTATION, Y.Base, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
         var noop = edit && false;
@@ -834,11 +834,11 @@ Y.extend(ANNOTATION, Y.Base, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool if width/height is more than min. required.
      */
     init_from_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect();
+        var bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         this.gradeid = this.editor.get('gradeid');
@@ -854,8 +854,8 @@ Y.extend(ANNOTATION, Y.Base, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotation = ANNOTATION;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotation = ANNOTATION;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -874,15 +874,15 @@ M.assignfeedback_editpdf.annotation = ANNOTATION;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a line.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationline
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONLINE = function(config) {
     ANNOTATIONLINE.superclass.constructor.apply(this, [config]);
@@ -891,18 +891,18 @@ var ANNOTATIONLINE = function(config) {
 ANNOTATIONLINE.NAME = "annotationline";
 ANNOTATIONLINE.ATTRS = {};
 
-Y.extend(ANNOTATIONLINE, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONLINE, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a line annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
             shape;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
 
         shape = this.editor.graphic.addShape({
         type: Y.Path,
@@ -927,10 +927,10 @@ Y.extend(ANNOTATIONLINE, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape;
 
         shape = this.editor.graphic.addShape({
@@ -956,7 +956,7 @@ Y.extend(ANNOTATIONLINE, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool true if line bound is more than min width/height, else false.
      */
     init_from_edit: function(edit) {
@@ -974,8 +974,8 @@ Y.extend(ANNOTATIONLINE, M.assignfeedback_editpdf.annotation, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationline = ANNOTATIONLINE;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationline = ANNOTATIONLINE;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -994,15 +994,15 @@ M.assignfeedback_editpdf.annotationline = ANNOTATIONLINE;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a rectangle.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationrectangle
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONRECTANGLE = function(config) {
     ANNOTATIONRECTANGLE.superclass.constructor.apply(this, [config]);
@@ -1011,23 +1011,23 @@ var ANNOTATIONRECTANGLE = function(config) {
 ANNOTATIONRECTANGLE.NAME = "annotationrectangle";
 ANNOTATIONRECTANGLE.ATTRS = {};
 
-Y.extend(ANNOTATIONRECTANGLE, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONRECTANGLE, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a rectangle annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
             bounds,
             shape;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
 
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(this.x, this.y),
-                      new M.assignfeedback_editpdf.point(this.endx, this.endy)]);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(this.x, this.y),
+                      new M.assignfeedback_exapdf.point(this.endx, this.endy)]);
 
         shape = this.editor.graphic.addShape({
             type: Y.Rect,
@@ -1051,16 +1051,16 @@ Y.extend(ANNOTATIONRECTANGLE, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             bounds;
 
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(edit.start.x, edit.start.y),
-                      new M.assignfeedback_editpdf.point(edit.end.x, edit.end.y)]);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(edit.start.x, edit.start.y),
+                      new M.assignfeedback_exapdf.point(edit.end.x, edit.end.y)]);
 
         // Set min. width and height of rectangle.
         if (!bounds.has_min_width()) {
@@ -1088,8 +1088,8 @@ Y.extend(ANNOTATIONRECTANGLE, M.assignfeedback_editpdf.annotation, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationrectangle = ANNOTATIONRECTANGLE;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationrectangle = ANNOTATIONRECTANGLE;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -1108,15 +1108,15 @@ M.assignfeedback_editpdf.annotationrectangle = ANNOTATIONRECTANGLE;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a oval.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationoval
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONOVAL = function(config) {
     ANNOTATIONOVAL.superclass.constructor.apply(this, [config]);
@@ -1125,23 +1125,23 @@ var ANNOTATIONOVAL = function(config) {
 ANNOTATIONOVAL.NAME = "annotationoval";
 ANNOTATIONOVAL.ATTRS = {};
 
-Y.extend(ANNOTATIONOVAL, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONOVAL, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a oval annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
             bounds,
             shape;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
 
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(this.x, this.y),
-                      new M.assignfeedback_editpdf.point(this.endx, this.endy)]);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(this.x, this.y),
+                      new M.assignfeedback_exapdf.point(this.endx, this.endy)]);
 
         shape = this.editor.graphic.addShape({
             type: Y.Ellipse,
@@ -1165,16 +1165,16 @@ Y.extend(ANNOTATIONOVAL, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             bounds;
 
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(edit.start.x, edit.start.y),
-                      new M.assignfeedback_editpdf.point(edit.end.x, edit.end.y)]);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(edit.start.x, edit.start.y),
+                      new M.assignfeedback_exapdf.point(edit.end.x, edit.end.y)]);
 
         // Set min. width and height of oval.
         if (!bounds.has_min_width()) {
@@ -1202,8 +1202,8 @@ Y.extend(ANNOTATIONOVAL, M.assignfeedback_editpdf.annotation, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationoval = ANNOTATIONOVAL;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationoval = ANNOTATIONOVAL;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -1222,15 +1222,15 @@ M.assignfeedback_editpdf.annotationoval = ANNOTATIONOVAL;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a pen.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationpen
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONPEN = function(config) {
     ANNOTATIONPEN.superclass.constructor.apply(this, [config]);
@@ -1239,12 +1239,12 @@ var ANNOTATIONPEN = function(config) {
 ANNOTATIONPEN.NAME = "annotationpen";
 ANNOTATIONPEN.ATTRS = {};
 
-Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONPEN, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a pen annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
@@ -1253,7 +1253,7 @@ Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
             positions,
             xy;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
 
         shape = this.editor.graphic.addShape({
            type: Y.Path,
@@ -1291,10 +1291,10 @@ Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             first;
 
@@ -1332,11 +1332,11 @@ Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool true if pen bound is more than min width/height, else false.
      */
     init_from_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect(),
+        var bounds = new M.assignfeedback_exapdf.rect(),
             pathlist = [],
             i = 0;
 
@@ -1362,8 +1362,8 @@ Y.extend(ANNOTATIONPEN, M.assignfeedback_editpdf.annotation, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationpen = ANNOTATIONPEN;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationpen = ANNOTATIONPEN;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -1382,16 +1382,16 @@ M.assignfeedback_editpdf.annotationpen = ANNOTATIONPEN;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
 */
 
 /**
  * Class representing a highlight.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationhighlight
- * @extends M.assignfeedback_editpdf.annotation
- * @module moodle-assignfeedback_editpdf-editor
+ * @extends M.assignfeedback_exapdf.annotation
+ * @module moodle-assignfeedback_exapdf-editor
  */
 var ANNOTATIONHIGHLIGHT = function(config) {
     ANNOTATIONHIGHLIGHT.superclass.constructor.apply(this, [config]);
@@ -1400,12 +1400,12 @@ var ANNOTATIONHIGHLIGHT = function(config) {
 ANNOTATIONHIGHLIGHT.NAME = "annotationhighlight";
 ANNOTATIONHIGHLIGHT.ATTRS = {};
 
-Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a highlight annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
@@ -1413,10 +1413,10 @@ Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
             bounds,
             highlightcolour;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(this.x, this.y),
-                      new M.assignfeedback_editpdf.point(this.endx, this.endy)]);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(this.x, this.y),
+                      new M.assignfeedback_exapdf.point(this.endx, this.endy)]);
 
         highlightcolour = ANNOTATIONCOLOUR[this.colour];
 
@@ -1448,17 +1448,17 @@ Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             bounds,
             highlightcolour;
 
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(edit.start.x, edit.start.y),
-                      new M.assignfeedback_editpdf.point(edit.end.x, edit.end.y)]);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(edit.start.x, edit.start.y),
+                      new M.assignfeedback_exapdf.point(edit.end.x, edit.end.y)]);
 
         // Set min. width of highlight.
         if (!bounds.has_min_width()) {
@@ -1494,11 +1494,11 @@ Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool true if highlight bound is more than min width/height, else false.
      */
     init_from_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect();
+        var bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         this.gradeid = this.editor.get('gradeid');
@@ -1515,8 +1515,8 @@ Y.extend(ANNOTATIONHIGHLIGHT, M.assignfeedback_editpdf.annotation, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationhighlight = ANNOTATIONHIGHLIGHT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationhighlight = ANNOTATIONHIGHLIGHT;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -1535,15 +1535,15 @@ M.assignfeedback_editpdf.annotationhighlight = ANNOTATIONHIGHLIGHT;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a stamp.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationstamp
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONSTAMP = function(config) {
     ANNOTATIONSTAMP.superclass.constructor.apply(this, [config]);
@@ -1552,20 +1552,20 @@ var ANNOTATIONSTAMP = function(config) {
 ANNOTATIONSTAMP.NAME = "annotationstamp";
 ANNOTATIONSTAMP.ATTRS = {};
 
-Y.extend(ANNOTATIONSTAMP, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONSTAMP, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a stamp annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             drawingcanvas = this.editor.get_dialogue_element(SELECTOR.DRAWINGCANVAS),
             node,
             position;
 
-        position = this.editor.get_window_coordinates(new M.assignfeedback_editpdf.point(this.x, this.y));
+        position = this.editor.get_window_coordinates(new M.assignfeedback_exapdf.point(this.x, this.y));
         node = Y.Node.create('<div/>');
         node.addClass('annotation');
         node.addClass('stamp');
@@ -1602,17 +1602,17 @@ Y.extend(ANNOTATIONSTAMP, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect(),
-            drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var bounds = new M.assignfeedback_exapdf.rect(),
+            drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             drawingregion = this.editor.get_dialogue_element(SELECTOR.DRAWINGREGION),
             node,
             position;
 
         bounds.bound([edit.start, edit.end]);
-        position = this.editor.get_window_coordinates(new M.assignfeedback_editpdf.point(bounds.x, bounds.y));
+        position = this.editor.get_window_coordinates(new M.assignfeedback_exapdf.point(bounds.x, bounds.y));
 
         node = Y.Node.create('<div/>');
         node.addClass('annotation');
@@ -1641,11 +1641,11 @@ Y.extend(ANNOTATIONSTAMP, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool if width/height is more than min. required.
      */
     init_from_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect();
+        var bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         if (bounds.width < 40) {
@@ -1691,21 +1691,21 @@ Y.extend(ANNOTATIONSTAMP, M.assignfeedback_editpdf.annotation, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationstamp = ANNOTATIONSTAMP;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationstamp = ANNOTATIONSTAMP;
 var DROPDOWN_NAME = "Dropdown menu",
     DROPDOWN;
 
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * This is a drop down list of buttons triggered (and aligned to) a button.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class dropdown
  * @constructor
  * @extends M.core.dialogue
@@ -1731,7 +1731,7 @@ Y.extend(DROPDOWN, M.core.dialogue, {
         DROPDOWN.superclass.initializer.call(this, config);
 
         bb = this.get('boundingBox');
-        bb.addClass('assignfeedback_editpdf_dropdown');
+        bb.addClass('assignfeedback_exapdf_dropdown');
 
         // Align the menu to the button that opens it.
         button = this.get('buttonNode');
@@ -1817,31 +1817,31 @@ Y.Base.modifyAttrs(DROPDOWN, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.dropdown = DROPDOWN;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.dropdown = DROPDOWN;
 var COLOURPICKER_NAME = "Colourpicker",
     COLOURPICKER;
 
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * COLOURPICKER
  * This is a drop down list of colours.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class colourpicker
  * @constructor
- * @extends M.assignfeedback_editpdf.dropdown
+ * @extends M.assignfeedback_exapdf.dropdown
  */
 COLOURPICKER = function(config) {
     COLOURPICKER.superclass.constructor.apply(this, [config]);
 };
 
-Y.extend(COLOURPICKER, M.assignfeedback_editpdf.dropdown, {
+Y.extend(COLOURPICKER, M.assignfeedback_exapdf.dropdown, {
 
     /**
      * Initialise the menu.
@@ -1850,16 +1850,16 @@ Y.extend(COLOURPICKER, M.assignfeedback_editpdf.dropdown, {
      * @return void
      */
     initializer: function(config) {
-        var colourlist = Y.Node.create('<ul role="menu" class="assignfeedback_editpdf_menu"/>'),
+        var colourlist = Y.Node.create('<ul role="menu" class="assignfeedback_exapdf_menu"/>'),
             body;
 
         // Build a list of coloured buttons.
         Y.each(this.get('colours'), function(rgb, colour) {
             var button, listitem, title, img, iconname;
 
-            title = M.util.get_string(colour, 'assignfeedback_editpdf');
+            title = M.util.get_string(colour, 'assignfeedback_exapdf');
             iconname = this.get('iconprefix') + colour;
-            img = M.util.image_url(iconname, 'assignfeedback_editpdf');
+            img = M.util.image_url(iconname, 'assignfeedback_exapdf');
             button = Y.Node.create('<button><img alt="' + title + '" src="' + img + '"/></button>');
             button.setAttribute('data-colour', colour);
             button.setAttribute('data-rgb', rgb);
@@ -1878,7 +1878,7 @@ Y.extend(COLOURPICKER, M.assignfeedback_editpdf.dropdown, {
         colourlist.delegate('key', this.callback_handler, 'down:13', 'button', this);
 
         // Set the accessible header text.
-        this.set('headerText', M.util.get_string('colourpicker', 'assignfeedback_editpdf'));
+        this.set('headerText', M.util.get_string('colourpicker', 'assignfeedback_exapdf'));
 
         // Set the body content.
         body.append(colourlist);
@@ -1949,30 +1949,30 @@ Y.extend(COLOURPICKER, M.assignfeedback_editpdf.dropdown, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.colourpicker = COLOURPICKER;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.colourpicker = COLOURPICKER;
 var STAMPPICKER_NAME = "Colourpicker",
     STAMPPICKER;
 
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * This is a drop down list of stamps.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class stamppicker
  * @constructor
- * @extends M.assignfeedback_editpdf.dropdown
+ * @extends M.assignfeedback_exapdf.dropdown
  */
 STAMPPICKER = function(config) {
     STAMPPICKER.superclass.constructor.apply(this, [config]);
 };
 
-Y.extend(STAMPPICKER, M.assignfeedback_editpdf.dropdown, {
+Y.extend(STAMPPICKER, M.assignfeedback_exapdf.dropdown, {
 
     /**
      * Initialise the menu.
@@ -1981,13 +1981,13 @@ Y.extend(STAMPPICKER, M.assignfeedback_editpdf.dropdown, {
      * @return void
      */
     initializer: function(config) {
-        var stamplist = Y.Node.create('<ul role="menu" class="assignfeedback_editpdf_menu"/>');
+        var stamplist = Y.Node.create('<ul role="menu" class="assignfeedback_exapdf_menu"/>');
 
         // Build a list of stamped buttons.
         Y.each(this.get('stamps'), function(stamp) {
             var button, listitem, title;
 
-            title = M.util.get_string('stamp', 'assignfeedback_editpdf');
+            title = M.util.get_string('stamp', 'assignfeedback_exapdf');
             button = Y.Node.create('<button><img height="16" width="16" alt="' + title + '" src="' + stamp + '"/></button>');
             button.setAttribute('data-stamp', stamp);
             button.setAttribute('role', 'menuitem');
@@ -2004,7 +2004,7 @@ Y.extend(STAMPPICKER, M.assignfeedback_editpdf.dropdown, {
         stamplist.delegate('key', this.callback_handler, 'down:13', 'button', this);
 
         // Set the accessible header text.
-        this.set('headerText', M.util.get_string('stamppicker', 'assignfeedback_editpdf'));
+        this.set('headerText', M.util.get_string('stamppicker', 'assignfeedback_exapdf'));
 
         // Set the body content.
         this.set('bodyContent', stamplist);
@@ -2062,31 +2062,31 @@ Y.extend(STAMPPICKER, M.assignfeedback_editpdf.dropdown, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.stamppicker = STAMPPICKER;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.stamppicker = STAMPPICKER;
 var COMMENTMENUNAME = "Commentmenu",
     COMMENTMENU;
 
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * COMMENTMENU
  * This is a drop down list of comment context functions.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class commentmenu
  * @constructor
- * @extends M.assignfeedback_editpdf.dropdown
+ * @extends M.assignfeedback_exapdf.dropdown
  */
 COMMENTMENU = function(config) {
     COMMENTMENU.superclass.constructor.apply(this, [config]);
 };
 
-Y.extend(COMMENTMENU, M.assignfeedback_editpdf.dropdown, {
+Y.extend(COMMENTMENU, M.assignfeedback_exapdf.dropdown, {
 
     /**
      * Initialise the menu.
@@ -2102,10 +2102,10 @@ Y.extend(COMMENTMENU, M.assignfeedback_editpdf.dropdown, {
 
         comment = this.get('comment');
         // Build the list of menu items.
-        commentlinks = Y.Node.create('<ul role="menu" class="assignfeedback_editpdf_menu"/>');
+        commentlinks = Y.Node.create('<ul role="menu" class="assignfeedback_exapdf_menu"/>');
 
         link = Y.Node.create('<li><a tabindex="-1" href="#">' +
-               M.util.get_string('addtoquicklist', 'assignfeedback_editpdf') +
+               M.util.get_string('addtoquicklist', 'assignfeedback_exapdf') +
                '</a></li>');
         link.on('click', comment.add_to_quicklist, comment);
         link.on('key', comment.add_to_quicklist, 'enter,space', comment);
@@ -2113,7 +2113,7 @@ Y.extend(COMMENTMENU, M.assignfeedback_editpdf.dropdown, {
         commentlinks.append(link);
 
         link = Y.Node.create('<li><a tabindex="-1" href="#">' +
-               M.util.get_string('deletecomment', 'assignfeedback_editpdf') +
+               M.util.get_string('deletecomment', 'assignfeedback_exapdf') +
                '</a></li>');
         link.on('click', function(e) {
             e.preventDefault();
@@ -2132,7 +2132,7 @@ Y.extend(COMMENTMENU, M.assignfeedback_editpdf.dropdown, {
         commentlinks.append(link);
 
         // Set the accessible header text.
-        this.set('headerText', M.util.get_string('commentcontextmenu', 'assignfeedback_editpdf'));
+        this.set('headerText', M.util.get_string('commentcontextmenu', 'assignfeedback_exapdf'));
 
         body = Y.Node.create('<div/>');
 
@@ -2162,7 +2162,7 @@ Y.extend(COMMENTMENU, M.assignfeedback_editpdf.dropdown, {
                 linkitem = Y.Node.create('<a href="#" tabindex="-1">' + quickcomment.rawtext + '</a>'),
                 deletelinkitem = Y.Node.create('<a href="#" tabindex="-1" class="delete_quicklist_comment">' +
                                                '<img src="' + M.util.image_url('t/delete', 'core') + '" ' +
-                                               'alt="' + M.util.get_string('deletecomment', 'assignfeedback_editpdf') + '"/>' +
+                                               'alt="' + M.util.get_string('deletecomment', 'assignfeedback_exapdf') + '"/>' +
                                                '</a>');
             linkitem.setAttribute('title', quickcomment.rawtext);
             listitem.append(linkitem);
@@ -2186,7 +2186,7 @@ Y.extend(COMMENTMENU, M.assignfeedback_editpdf.dropdown, {
          * The comment this menu is attached to.
          *
          * @attribute comment
-         * @type M.assignfeedback_editpdf.comment
+         * @type M.assignfeedback_exapdf.comment
          * @default null
          */
         comment: {
@@ -2196,8 +2196,8 @@ Y.extend(COMMENTMENU, M.assignfeedback_editpdf.dropdown, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.commentmenu = COMMENTMENU;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.commentmenu = COMMENTMENU;
 /* eslint-disable no-unused-vars */
 var COMMENTSEARCHNAME = "commentsearch",
     COMMENTSEARCH;
@@ -2205,13 +2205,13 @@ var COMMENTSEARCHNAME = "commentsearch",
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * This is a searchable dialogue of comments.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class commentsearch
  * @constructor
  * @extends M.core.dialogue
@@ -2221,7 +2221,7 @@ COMMENTSEARCH = function(config) {
     config.centered = true;
     config.width = '400px';
     config.visible = false;
-    config.headerContent = M.util.get_string('searchcomments', 'assignfeedback_editpdf');
+    config.headerContent = M.util.get_string('searchcomments', 'assignfeedback_exapdf');
     config.footerContent = '';
     COMMENTSEARCH.superclass.constructor.apply(this, [config]);
 };
@@ -2242,15 +2242,15 @@ Y.extend(COMMENTSEARCH, M.core.dialogue, {
             bb;
 
         bb = this.get('boundingBox');
-        bb.addClass('assignfeedback_editpdf_commentsearch');
+        bb.addClass('assignfeedback_exapdf_commentsearch');
 
         editor = this.get('editor');
         container = Y.Node.create('<div/>');
 
-        placeholder = M.util.get_string('filter', 'assignfeedback_editpdf');
+        placeholder = M.util.get_string('filter', 'assignfeedback_exapdf');
         commentfilter = Y.Node.create('<input type="text" size="20" placeholder="' + placeholder + '"/>');
         container.append(commentfilter);
-        commentlist = Y.Node.create('<ul role="menu" class="assignfeedback_editpdf_search"/>');
+        commentlist = Y.Node.create('<ul role="menu" class="assignfeedback_exapdf_search"/>');
         container.append(commentlist);
 
         commentfilter.on('keyup', this.filter_search_comments, this);
@@ -2346,7 +2346,7 @@ Y.extend(COMMENTSEARCH, M.core.dialogue, {
          * The editor this search window is attached to.
          *
          * @attribute editor
-         * @type M.assignfeedback_editpdf.editor
+         * @type M.assignfeedback_exapdf.editor
          * @default null
          */
         editor: {
@@ -2373,8 +2373,8 @@ Y.Base.modifyAttrs(COMMENTSEARCH, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.commentsearch = COMMENTSEARCH;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.commentsearch = COMMENTSEARCH;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -2393,15 +2393,15 @@ M.assignfeedback_editpdf.commentsearch = COMMENTSEARCH;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a list of comments.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class comment
- * @param M.assignfeedback_editpdf.editor editor
+ * @param M.assignfeedback_exapdf.editor editor
  * @param Int gradeid
  * @param Int pageno
  * @param Int x
@@ -2413,9 +2413,9 @@ M.assignfeedback_editpdf.commentsearch = COMMENTSEARCH;
 var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
 
     /**
-     * Reference to M.assignfeedback_editpdf.editor.
+     * Reference to M.assignfeedback_exapdf.editor.
      * @property editor
-     * @type M.assignfeedback_editpdf.editor
+     * @type M.assignfeedback_exapdf.editor
      * @public
      */
     this.editor = editor;
@@ -2477,9 +2477,9 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
     this.colour = colour || 'yellow';
 
     /**
-     * Reference to M.assignfeedback_editpdf.drawable
+     * Reference to M.assignfeedback_exapdf.drawable
      * @property drawable
-     * @type M.assignfeedback_editpdf.drawable
+     * @type M.assignfeedback_exapdf.drawable
      * @public
      */
     this.drawable = false;
@@ -2503,7 +2503,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
     /**
      * Reference to the dialogue that is the context menu.
      * @property menu
-     * @type M.assignfeedback_editpdf.dropdown
+     * @type M.assignfeedback_exapdf.dropdown
      * @public
      */
     this.menu = null;
@@ -2531,10 +2531,10 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
      * @public
      * @method draw_comment
      * @param boolean focus - Set the keyboard focus to the new comment if true
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     this.draw = function(focus) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             node,
             drawingcanvas = this.editor.get_dialogue_element(SELECTOR.DRAWINGCANVAS),
             container,
@@ -2572,7 +2572,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
             this.width = 100;
         }
 
-        position = this.editor.get_window_coordinates(new M.assignfeedback_editpdf.point(this.x, this.y));
+        position = this.editor.get_window_coordinates(new M.assignfeedback_exapdf.point(this.x, this.y));
         node.setStyles({
             width: this.width + 'px',
             backgroundColor: COMMENTCOLOUR[this.colour],
@@ -2785,7 +2785,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
                         node.setData('dragging', true);
                     }
 
-                    newlocation = this.editor.get_canvas_coordinates(new M.assignfeedback_editpdf.point(x, y));
+                    newlocation = this.editor.get_canvas_coordinates(new M.assignfeedback_exapdf.point(x, y));
                     bounds = this.editor.get_canvas_bounds(true);
                     bounds.x = 0;
                     bounds.y = 0;
@@ -2834,7 +2834,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
                         node.setData('dragging', true);
                     }
 
-                    newlocation = this.editor.get_canvas_coordinates(new M.assignfeedback_editpdf.point(x, y));
+                    newlocation = this.editor.get_canvas_coordinates(new M.assignfeedback_exapdf.point(x, y));
                     bounds = this.editor.get_canvas_bounds(true);
                     bounds.x = 0;
                     bounds.y = 0;
@@ -2862,7 +2862,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
                 }
             }, null, this);
 
-            this.menu = new M.assignfeedback_editpdf.commentmenu({
+            this.menu = new M.assignfeedback_exapdf.commentmenu({
                 buttonNode: this.menulink,
                 comment: this
             });
@@ -2946,14 +2946,14 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     this.draw_current_edit = function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             bounds;
 
-        bounds = new M.assignfeedback_editpdf.rect();
+        bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         // We will draw a box with the current background colour.
@@ -2978,11 +2978,11 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool true if comment bound is more than min width/height, else false.
      */
     this.init_from_edit = function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect();
+        var bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         // Minimum comment width.
@@ -3012,7 +3012,7 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
         var node = this.drawable.nodes[0].one('textarea');
         var container = node.ancestor('div');
 
-        var newlocation = new M.assignfeedback_editpdf.point(this.x, this.y);
+        var newlocation = new M.assignfeedback_exapdf.point(this.x, this.y);
         var windowlocation = this.editor.get_window_coordinates(newlocation);
 
         container.setX(windowlocation.x);
@@ -3022,8 +3022,8 @@ var COMMENT = function(editor, gradeid, pageno, x, y, width, colour, rawtext) {
 
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.comment = COMMENT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.comment = COMMENT;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -3042,13 +3042,13 @@ M.assignfeedback_editpdf.comment = COMMENT;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a users quick comment.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class quickcomment
  */
 var QUICKCOMMENT = function(id, rawtext, width, colour) {
@@ -3086,8 +3086,8 @@ var QUICKCOMMENT = function(id, rawtext, width, colour) {
     this.colour = colour || "yellow";
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.quickcomment = QUICKCOMMENT;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.quickcomment = QUICKCOMMENT;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -3106,21 +3106,21 @@ M.assignfeedback_editpdf.quickcomment = QUICKCOMMENT;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a users list of quick comments.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class quickcommentlist
  */
 var QUICKCOMMENTLIST = function(editor) {
 
     /**
-     * Reference to M.assignfeedback_editpdf.editor.
+     * Reference to M.assignfeedback_exapdf.editor.
      * @property editor
-     * @type M.assignfeedback_editpdf.editor
+     * @type M.assignfeedback_exapdf.editor
      * @public
      */
     this.editor = editor;
@@ -3128,7 +3128,7 @@ var QUICKCOMMENTLIST = function(editor) {
     /**
      * Array of Comments
      * @property shapes
-     * @type M.assignfeedback_editpdf.quickcomment[]
+     * @type M.assignfeedback_exapdf.quickcomment[]
      * @public
      */
     this.comments = [];
@@ -3170,7 +3170,7 @@ var QUICKCOMMENTLIST = function(editor) {
                         if (jsondata.error) {
                             return new M.core.ajaxException(jsondata);
                         } else {
-                            quickcomment = new M.assignfeedback_editpdf.quickcomment(jsondata.id,
+                            quickcomment = new M.assignfeedback_exapdf.quickcomment(jsondata.id,
                                                                                      jsondata.rawtext,
                                                                                      jsondata.width,
                                                                                      jsondata.colour);
@@ -3268,7 +3268,7 @@ var QUICKCOMMENTLIST = function(editor) {
                             return new M.core.ajaxException(jsondata);
                         } else {
                             Y.each(jsondata, function(comment) {
-                                var quickcomment = new M.assignfeedback_editpdf.quickcomment(comment.id,
+                                var quickcomment = new M.assignfeedback_exapdf.quickcomment(comment.id,
                                                                                              comment.rawtext,
                                                                                              comment.width,
                                                                                              comment.colour);
@@ -3293,8 +3293,8 @@ var QUICKCOMMENTLIST = function(editor) {
     };
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.quickcommentlist = QUICKCOMMENTLIST;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.quickcommentlist = QUICKCOMMENTLIST;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -3314,14 +3314,14 @@ M.assignfeedback_editpdf.quickcommentlist = QUICKCOMMENTLIST;
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * EDITOR
  * This is an in browser PDF editor.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class editor
  * @constructor
  * @extends Y.Base
@@ -3421,16 +3421,16 @@ EDITOR.prototype = {
      * Info about the current edit operation.
      *
      * @property currentedit
-     * @type M.assignfeedback_editpdf.edit
+     * @type M.assignfeedback_exapdf.edit
      * @protected
      */
-    currentedit: new M.assignfeedback_editpdf.edit(),
+    currentedit: new M.assignfeedback_exapdf.edit(),
 
     /**
      * Current drawable.
      *
      * @property currentdrawable
-     * @type M.assignfeedback_editpdf.drawable|false
+     * @type M.assignfeedback_exapdf.drawable|false
      * @protected
      */
     currentdrawable: false,
@@ -3439,7 +3439,7 @@ EDITOR.prototype = {
      * Current drawables.
      *
      * @property drawables
-     * @type array(M.assignfeedback_editpdf.drawable)
+     * @type array(M.assignfeedback_exapdf.drawable)
      * @protected
      */
     drawables: [],
@@ -3447,7 +3447,7 @@ EDITOR.prototype = {
     /**
      * Current comment when the comment menu is open.
      * @property currentcomment
-     * @type M.assignfeedback_editpdf.comment
+     * @type M.assignfeedback_exapdf.comment
      * @protected
      */
     currentcomment: null,
@@ -3455,7 +3455,7 @@ EDITOR.prototype = {
     /**
      * Current annotation when the select tool is used.
      * @property currentannotation
-     * @type M.assignfeedback_editpdf.annotation
+     * @type M.assignfeedback_exapdf.annotation
      * @protected
      */
     currentannotation: null,
@@ -3463,7 +3463,7 @@ EDITOR.prototype = {
     /**
      * Track the previous annotation so we can remove selection highlights.
      * @property lastannotation
-     * @type M.assignfeedback_editpdf.annotation
+     * @type M.assignfeedback_exapdf.annotation
      * @protected
      */
     lastannotation: null,
@@ -3479,7 +3479,7 @@ EDITOR.prototype = {
     /**
      * The users comments quick list
      * @property quicklist
-     * @type M.assignfeedback_editpdf.quickcommentlist
+     * @type M.assignfeedback_exapdf.quickcommentlist
      * @protected
      */
     quicklist: null,
@@ -3545,7 +3545,7 @@ EDITOR.prototype = {
             require(['mod_assign/grading_review_panel'], function(ReviewPanelManager) {
                 var panelManager = new ReviewPanelManager();
 
-                var panel = panelManager.getReviewPanel('assignfeedback_editpdf');
+                var panel = panelManager.getReviewPanel('assignfeedback_exapdf');
                 if (panel) {
                     panel = Y.one(panel);
                     panel.empty();
@@ -3555,7 +3555,7 @@ EDITOR.prototype = {
                 this.currentedit.start = false;
                 this.currentedit.end = false;
                 if (!this.get('readonly')) {
-                    this.quicklist = new M.assignfeedback_editpdf.quickcommentlist(this);
+                    this.quicklist = new M.assignfeedback_exapdf.quickcommentlist(this);
                 }
             }.bind(this));
 
@@ -3572,7 +3572,7 @@ EDITOR.prototype = {
         // Initalise the colour buttons.
         button = this.get_dialogue_element(SELECTOR.COMMENTCOLOURBUTTON);
 
-        imgurl = M.util.image_url('background_colour_' + this.currentedit.commentcolour, 'assignfeedback_editpdf');
+        imgurl = M.util.image_url('background_colour_' + this.currentedit.commentcolour, 'assignfeedback_exapdf');
         button.one('img').setAttribute('src', imgurl);
 
         if (this.currentedit.commentcolour === 'clear') {
@@ -3582,11 +3582,11 @@ EDITOR.prototype = {
         }
 
         button = this.get_dialogue_element(SELECTOR.ANNOTATIONCOLOURBUTTON);
-        imgurl = M.util.image_url('colour_' + this.currentedit.annotationcolour, 'assignfeedback_editpdf');
+        imgurl = M.util.image_url('colour_' + this.currentedit.annotationcolour, 'assignfeedback_exapdf');
         button.one('img').setAttribute('src', imgurl);
 
         currenttoolnode = this.get_dialogue_element(TOOLSELECTOR[this.currentedit.tool]);
-        currenttoolnode.addClass('assignfeedback_editpdf_selectedbutton');
+        currenttoolnode.addClass('assignfeedback_exapdf_selectedbutton');
         currenttoolnode.setAttribute('aria-pressed', 'true');
         drawingregion = this.get_dialogue_element(SELECTOR.DRAWINGREGION);
         drawingregion.setAttribute('data-currenttool', this.currentedit.tool);
@@ -3628,17 +3628,17 @@ EDITOR.prototype = {
             width = parseInt(canvas.getStyle('width'), 10),
             height = parseInt(canvas.getStyle('height'), 10);
 
-        return new M.assignfeedback_editpdf.rect(offsetleft, offsettop, width, height);
+        return new M.assignfeedback_exapdf.rect(offsetleft, offsettop, width, height);
     },
 
     /**
      * Called to translate from window coordinates to canvas coordinates.
      * @method get_canvas_coordinates
-     * @param M.assignfeedback_editpdf.point point in window coordinats.
+     * @param M.assignfeedback_exapdf.point point in window coordinats.
      */
     get_canvas_coordinates: function(point) {
         var bounds = this.get_canvas_bounds(),
-            newpoint = new M.assignfeedback_editpdf.point(point.x - bounds.x, point.y - bounds.y);
+            newpoint = new M.assignfeedback_exapdf.point(point.x - bounds.x, point.y - bounds.y);
 
         bounds.x = bounds.y = 0;
 
@@ -3649,11 +3649,11 @@ EDITOR.prototype = {
     /**
      * Called to translate from canvas coordinates to window coordinates.
      * @method get_window_coordinates
-     * @param M.assignfeedback_editpdf.point point in window coordinats.
+     * @param M.assignfeedback_exapdf.point point in window coordinats.
      */
     get_window_coordinates: function(point) {
         var bounds = this.get_canvas_bounds(),
-            newpoint = new M.assignfeedback_editpdf.point(point.x + bounds.x, point.y + bounds.y);
+            newpoint = new M.assignfeedback_exapdf.point(point.x + bounds.x, point.y + bounds.y);
 
         return newpoint;
     },
@@ -3867,10 +3867,10 @@ EDITOR.prototype = {
         var icontemplate = this.get_dialogue_element(SELECTOR.ICONMESSAGECONTAINER);
         var warningregion = this.get_dialogue_element(SELECTOR.WARNINGMESSAGECONTAINER);
         var delay = 15, duration = 1;
-        var messageclasses = 'assignfeedback_editpdf_warningmessages alert alert-warning';
+        var messageclasses = 'assignfeedback_exapdf_warningmessages alert alert-warning';
         if (dismissable) {
             delay = 4;
-            messageclasses = 'assignfeedback_editpdf_warningmessages alert alert-info';
+            messageclasses = 'assignfeedback_exapdf_warningmessages alert alert-info';
         }
         var warningelement = Y.Node.create('<div class="' + messageclasses + '" role="alert"></div>');
 
@@ -3911,7 +3911,7 @@ EDITOR.prototype = {
                 this.dialogue.hide();
             }
             // Display alert dialogue.
-            error = new M.core.alert({message: M.util.get_string('cannotopenpdf', 'assignfeedback_editpdf')});
+            error = new M.core.alert({message: M.util.get_string('cannotopenpdf', 'assignfeedback_exapdf')});
             error.show();
             return;
         }
@@ -3921,7 +3921,7 @@ EDITOR.prototype = {
         for (i = 0; i < this.pages.length; i++) {
             for (j = 0; j < this.pages[i].comments.length; j++) {
                 comment = this.pages[i].comments[j];
-                this.pages[i].comments[j] = new M.assignfeedback_editpdf.comment(this,
+                this.pages[i].comments[j] = new M.assignfeedback_exapdf.comment(this,
                                                                                  comment.gradeid,
                                                                                  comment.pageno,
                                                                                  comment.x,
@@ -3939,7 +3939,7 @@ EDITOR.prototype = {
         readonly = this.get('readonly');
         if (!readonly && data.partial) {
             // Warn about non converted files, but only for teachers.
-            this.warning(M.util.get_string('partialwarning', 'assignfeedback_editpdf'), false);
+            this.warning(M.util.get_string('partialwarning', 'assignfeedback_exapdf'), false);
         }
 
         // Update the ui.
@@ -4041,7 +4041,7 @@ EDITOR.prototype = {
                 }
 
                 new M.core.alert({
-                    message: M.util.get_string('cannotopenpdf', 'assignfeedback_editpdf'),
+                    message: M.util.get_string('cannotopenpdf', 'assignfeedback_exapdf'),
                     visible: true
                 });
             } else {
@@ -4053,7 +4053,7 @@ EDITOR.prototype = {
             }
 
             new M.core.alert({
-                title: M.util.get_string('cannotopenpdf', 'assignfeedback_editpdf'),
+                title: M.util.get_string('cannotopenpdf', 'assignfeedback_exapdf'),
                 visible: true
             });
         }
@@ -4134,7 +4134,7 @@ EDITOR.prototype = {
         // Set the default tool.
 
         commentcolourbutton = this.get_dialogue_element(SELECTOR.COMMENTCOLOURBUTTON);
-        picker = new M.assignfeedback_editpdf.colourpicker({
+        picker = new M.assignfeedback_exapdf.colourpicker({
             buttonNode: commentcolourbutton,
             colours: COMMENTCOLOUR,
             iconprefix: 'background_colour_',
@@ -4150,7 +4150,7 @@ EDITOR.prototype = {
         });
 
         annotationcolourbutton = this.get_dialogue_element(SELECTOR.ANNOTATIONCOLOURBUTTON);
-        picker = new M.assignfeedback_editpdf.colourpicker({
+        picker = new M.assignfeedback_exapdf.colourpicker({
             buttonNode: annotationcolourbutton,
             iconprefix: 'colour_',
             colours: ANNOTATIONCOLOUR,
@@ -4177,7 +4177,7 @@ EDITOR.prototype = {
             this.currentedit.stamp = filename;
             currentstampbutton = this.get_dialogue_element(SELECTOR.STAMPSBUTTON);
 
-            picker = new M.assignfeedback_editpdf.stamppicker({
+            picker = new M.assignfeedback_exapdf.stamppicker({
                 buttonNode: currentstampbutton,
                 stamps: stampfiles,
                 callback: function(e) {
@@ -4209,7 +4209,7 @@ EDITOR.prototype = {
 
         // Change style of the pressed button.
         currenttoolnode = this.get_dialogue_element(TOOLSELECTOR[this.currentedit.tool]);
-        currenttoolnode.removeClass('assignfeedback_editpdf_selectedbutton');
+        currenttoolnode.removeClass('assignfeedback_exapdf_selectedbutton');
         currenttoolnode.setAttribute('aria-pressed', 'false');
         this.currentedit.tool = tool;
 
@@ -4259,7 +4259,7 @@ EDITOR.prototype = {
         }
 
         if (this.currentedit.tool === 'comment') {
-            comment = new M.assignfeedback_editpdf.comment(this);
+            comment = new M.assignfeedback_exapdf.comment(this);
             drawable = comment.draw_current_edit(this.currentedit);
         } else {
             annotation = this.create_annotation(this.currentedit.tool, {});
@@ -4383,7 +4383,7 @@ EDITOR.prototype = {
         var bounds = this.get_canvas_bounds(),
             canvas = this.get_dialogue_element(SELECTOR.DRAWINGCANVAS),
             drawingregion = this.get_dialogue_element(SELECTOR.DRAWINGREGION),
-            clientpoint = new M.assignfeedback_editpdf.point(e.clientX + canvas.get('docScrollX'),
+            clientpoint = new M.assignfeedback_exapdf.point(e.clientX + canvas.get('docScrollX'),
                                                              e.clientY + canvas.get('docScrollY')),
             point = this.get_canvas_coordinates(clientpoint),
             activeelement = document.activeElement,
@@ -4447,7 +4447,7 @@ EDITOR.prototype = {
                 this.currentdrawable.erase();
             }
             this.currentdrawable = false;
-            comment = new M.assignfeedback_editpdf.comment(this);
+            comment = new M.assignfeedback_exapdf.comment(this);
             if (comment.init_from_edit(this.currentedit)) {
                 this.pages[this.currentpage].comments.push(comment);
                 this.drawables.push(comment.draw(true));
@@ -4514,17 +4514,17 @@ EDITOR.prototype = {
         data.type = type;
         data.editor = this;
         if (type === "line") {
-            return new M.assignfeedback_editpdf.annotationline(data);
+            return new M.assignfeedback_exapdf.annotationline(data);
         } else if (type === "rectangle") {
-            return new M.assignfeedback_editpdf.annotationrectangle(data);
+            return new M.assignfeedback_exapdf.annotationrectangle(data);
         } else if (type === "oval") {
-            return new M.assignfeedback_editpdf.annotationoval(data);
+            return new M.assignfeedback_exapdf.annotationoval(data);
         } else if (type === "pen") {
-            return new M.assignfeedback_editpdf.annotationpen(data);
+            return new M.assignfeedback_exapdf.annotationpen(data);
         } else if (type === "highlight") {
-            return new M.assignfeedback_editpdf.annotationhighlight(data);
+            return new M.assignfeedback_exapdf.annotationhighlight(data);
         } else if (type === "stamp") {
-            return new M.assignfeedback_editpdf.annotationstamp(data);
+            return new M.assignfeedback_exapdf.annotationstamp(data);
         }
         return false;
     },
@@ -4562,7 +4562,7 @@ EDITOR.prototype = {
                         }
                         // Show warning that we have not saved the feedback.
                         Y.one(SELECTOR.UNSAVEDCHANGESINPUT).set('value', 'true');
-                        this.warning(M.util.get_string('draftchangessaved', 'assignfeedback_editpdf'), true);
+                        this.warning(M.util.get_string('draftchangessaved', 'assignfeedback_exapdf'), true);
                     } catch (e) {
                         return new M.core.exception(e);
                     }
@@ -4585,7 +4585,7 @@ EDITOR.prototype = {
      */
     open_search_comments: function(e) {
         if (!this.searchcommentswindow) {
-            this.searchcommentswindow = new M.assignfeedback_editpdf.commentsearch({
+            this.searchcommentswindow = new M.assignfeedback_exapdf.commentsearch({
                 editor: this
             });
         }
@@ -4715,7 +4715,7 @@ EDITOR.prototype = {
                 option = Y.Node.create('<option/>');
                 option.setAttribute('value', i);
                 strinfo = {page: i + 1, total: this.pages.length};
-                option.setHTML(M.util.get_string('pagexofy', 'assignfeedback_editpdf', strinfo));
+                option.setHTML(M.util.get_string('pagexofy', 'assignfeedback_exapdf', strinfo));
                 pageselect.append(option);
             }
         }
@@ -4934,7 +4934,7 @@ EDITOR.prototype = {
 };
 
 Y.extend(EDITOR, Y.Base, EDITOR.prototype, {
-    NAME: 'moodle-assignfeedback_editpdf-editor',
+    NAME: 'moodle-assignfeedback_exapdf-editor',
     ATTRS: {
         userid: {
             validator: Y.Lang.isInteger,
@@ -4979,8 +4979,8 @@ Y.extend(EDITOR, Y.Base, EDITOR.prototype, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.editor = M.assignfeedback_editpdf.editor || {};
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.editor = M.assignfeedback_exapdf.editor || {};
 
 /**
  * Init function - will create a new instance every time.
@@ -4988,9 +4988,9 @@ M.assignfeedback_editpdf.editor = M.assignfeedback_editpdf.editor || {};
  * @static
  * @param {Object} params
  */
-M.assignfeedback_editpdf.editor.init = M.assignfeedback_editpdf.editor.init || function(params) {
-    M.assignfeedback_editpdf.instance = new EDITOR(params);
-    return M.assignfeedback_editpdf.instance;
+M.assignfeedback_exapdf.editor.init = M.assignfeedback_exapdf.editor.init || function(params) {
+    M.assignfeedback_exapdf.instance = new EDITOR(params);
+    return M.assignfeedback_exapdf.instance;
 };
 
 

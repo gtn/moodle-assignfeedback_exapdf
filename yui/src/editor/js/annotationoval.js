@@ -16,15 +16,15 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a oval.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationoval
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONOVAL = function(config) {
     ANNOTATIONOVAL.superclass.constructor.apply(this, [config]);
@@ -33,23 +33,23 @@ var ANNOTATIONOVAL = function(config) {
 ANNOTATIONOVAL.NAME = "annotationoval";
 ANNOTATIONOVAL.ATTRS = {};
 
-Y.extend(ANNOTATIONOVAL, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONOVAL, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a oval annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
         var drawable,
             bounds,
             shape;
 
-        drawable = new M.assignfeedback_editpdf.drawable(this.editor);
+        drawable = new M.assignfeedback_exapdf.drawable(this.editor);
 
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(this.x, this.y),
-                      new M.assignfeedback_editpdf.point(this.endx, this.endy)]);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(this.x, this.y),
+                      new M.assignfeedback_exapdf.point(this.endx, this.endy)]);
 
         shape = this.editor.graphic.addShape({
             type: Y.Ellipse,
@@ -73,16 +73,16 @@ Y.extend(ANNOTATIONOVAL, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             shape,
             bounds;
 
-        bounds = new M.assignfeedback_editpdf.rect();
-        bounds.bound([new M.assignfeedback_editpdf.point(edit.start.x, edit.start.y),
-                      new M.assignfeedback_editpdf.point(edit.end.x, edit.end.y)]);
+        bounds = new M.assignfeedback_exapdf.rect();
+        bounds.bound([new M.assignfeedback_exapdf.point(edit.start.x, edit.start.y),
+                      new M.assignfeedback_exapdf.point(edit.end.x, edit.end.y)]);
 
         // Set min. width and height of oval.
         if (!bounds.has_min_width()) {
@@ -110,5 +110,5 @@ Y.extend(ANNOTATIONOVAL, M.assignfeedback_editpdf.annotation, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationoval = ANNOTATIONOVAL;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationoval = ANNOTATIONOVAL;

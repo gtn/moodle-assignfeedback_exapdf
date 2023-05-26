@@ -1,0 +1,7 @@
+{
+  "name": "gtn/assign_feedback_exapdf",
+  "type": "moodle-plugin",
+  "require": {
+    "setasign/fpdf": "^1.8"
+  }
+}

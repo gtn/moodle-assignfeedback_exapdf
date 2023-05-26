@@ -1,4 +1,4 @@
-<?php
+<?php // die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 /**
  * This file contains the definition for the library class for edit PDF renderer.
  *
- * @package   assignfeedback_editpdf
+ * @package   assignfeedback_exapdf
  * @copyright 2012 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,13 +25,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * A custom renderer class that extends the plugin_renderer_base and is used by the editpdf feedback plugin.
+ * A custom renderer class that extends the plugin_renderer_base and is used by the exapdf feedback plugin.
  *
- * @package assignfeedback_editpdf
+ * @package assignfeedback_exapdf
  * @copyright 2013 Davo Smith
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class assignfeedback_editpdf_widget implements renderable {
+class assignfeedback_exapdf_widget implements renderable {
 
     /** @var int $assignment - Assignment instance id */
     public $assignment = 0;

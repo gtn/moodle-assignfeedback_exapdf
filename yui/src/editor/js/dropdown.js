@@ -4,13 +4,13 @@ var DROPDOWN_NAME = "Dropdown menu",
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * This is a drop down list of buttons triggered (and aligned to) a button.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class dropdown
  * @constructor
  * @extends M.core.dialogue
@@ -36,7 +36,7 @@ Y.extend(DROPDOWN, M.core.dialogue, {
         DROPDOWN.superclass.initializer.call(this, config);
 
         bb = this.get('boundingBox');
-        bb.addClass('assignfeedback_editpdf_dropdown');
+        bb.addClass('assignfeedback_exapdf_dropdown');
 
         // Align the menu to the button that opens it.
         button = this.get('buttonNode');
@@ -122,5 +122,5 @@ Y.Base.modifyAttrs(DROPDOWN, {
     }
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.dropdown = DROPDOWN;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.dropdown = DROPDOWN;

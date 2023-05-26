@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,20 +17,20 @@
 /**
  * Bump submission timemodified for conversions that are stale.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @copyright  2022 Catalyst IT Australia Pty Ltd
  * @author     Cameron Ball <cameronball@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignfeedback_editpdf\task;
+namespace assignfeedback_exapdf\task;
 
 use core\task\adhoc_task;
 
 /**
  * Adhoc task to bump the submission timemodified associated with a stale conversion.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @copyright  2022 Catalyst IT Australia Pty Ltd
  * @author     Cameron Ball <cameronball@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -77,7 +77,7 @@ class bump_submission_for_stale_conversions extends adhoc_task {
                            AND f3.timecreated >= :earliest
                            AND ($extensionsql)
                            AND f2.filename IS NULL
-                           AND f3.component = 'assignfeedback_editpdf'
+                           AND f3.component = 'assignfeedback_exapdf'
                            AND f3.filearea = 'combined'
                            AND f3.filename = 'combined.pdf'
                            AND f3.timemodified >= asu.timemodified";

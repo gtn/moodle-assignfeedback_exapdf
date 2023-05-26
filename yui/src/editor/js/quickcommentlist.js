@@ -16,21 +16,21 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a users list of quick comments.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class quickcommentlist
  */
 var QUICKCOMMENTLIST = function(editor) {
 
     /**
-     * Reference to M.assignfeedback_editpdf.editor.
+     * Reference to M.assignfeedback_exapdf.editor.
      * @property editor
-     * @type M.assignfeedback_editpdf.editor
+     * @type M.assignfeedback_exapdf.editor
      * @public
      */
     this.editor = editor;
@@ -38,7 +38,7 @@ var QUICKCOMMENTLIST = function(editor) {
     /**
      * Array of Comments
      * @property shapes
-     * @type M.assignfeedback_editpdf.quickcomment[]
+     * @type M.assignfeedback_exapdf.quickcomment[]
      * @public
      */
     this.comments = [];
@@ -80,7 +80,7 @@ var QUICKCOMMENTLIST = function(editor) {
                         if (jsondata.error) {
                             return new M.core.ajaxException(jsondata);
                         } else {
-                            quickcomment = new M.assignfeedback_editpdf.quickcomment(jsondata.id,
+                            quickcomment = new M.assignfeedback_exapdf.quickcomment(jsondata.id,
                                                                                      jsondata.rawtext,
                                                                                      jsondata.width,
                                                                                      jsondata.colour);
@@ -178,7 +178,7 @@ var QUICKCOMMENTLIST = function(editor) {
                             return new M.core.ajaxException(jsondata);
                         } else {
                             Y.each(jsondata, function(comment) {
-                                var quickcomment = new M.assignfeedback_editpdf.quickcomment(comment.id,
+                                var quickcomment = new M.assignfeedback_exapdf.quickcomment(comment.id,
                                                                                              comment.rawtext,
                                                                                              comment.width,
                                                                                              comment.colour);
@@ -203,5 +203,5 @@ var QUICKCOMMENTLIST = function(editor) {
     };
 };
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.quickcommentlist = QUICKCOMMENTLIST;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.quickcommentlist = QUICKCOMMENTLIST;

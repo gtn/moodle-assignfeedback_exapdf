@@ -1,4 +1,4 @@
-<?php
+<?php die('exapdf include: '.__FILE__);
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,12 +17,12 @@
 /**
  * Privacy class for requesting user data.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @copyright  2018 Adrian Greeve <adrian@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignfeedback_editpdf\privacy;
+namespace assignfeedback_exapdf\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -38,7 +38,7 @@ use \mod_assign\privacy\useridlist;
 /**
  * Privacy class for requesting user data.
  *
- * @package    assignfeedback_editpdf
+ * @package    assignfeedback_exapdf
  * @copyright  2018 Adrian Greeve <adrian@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -59,7 +59,7 @@ class provider implements
             'rawtext' => 'privacy:metadata:rawtextpurpose',
             'colour' => 'privacy:metadata:colourpurpose'
         ];
-        $collection->add_database_table('assignfeedback_editpdf_quick', $quickdata, 'privacy:metadata:tablepurpose');
+        $collection->add_database_table('assignfeedback_exapdf_quick', $quickdata, 'privacy:metadata:tablepurpose');
         $collection->add_subsystem_link('core_files', [], 'privacy:metadata:filepurpose');
         $collection->add_subsystem_link('core_fileconverter', [], 'privacy:metadata:conversionpurpose');
         return $collection;
@@ -103,14 +103,14 @@ class provider implements
      */
     public static function export_feedback_user_data(assign_plugin_request_data $exportdata) {
         $currentpath = $exportdata->get_subcontext();
-        $currentpath[] = get_string('privacy:path', 'assignfeedback_editpdf');
+        $currentpath[] = get_string('privacy:path', 'assignfeedback_exapdf');
         $assign = $exportdata->get_assign();
-        $plugin = $assign->get_plugin_by_type('assignfeedback', 'editpdf');
+        $plugin = $assign->get_plugin_by_type('assignfeedback', 'exapdf');
         $fileareas = $plugin->get_user_data_file_areas();
         $grade = $exportdata->get_pluginobject();
         foreach ($fileareas as $filearea => $notused) {
             writer::with_context($exportdata->get_context())
-                    ->export_area_files($currentpath, 'assignfeedback_editpdf', $filearea, $grade->id);
+                    ->export_area_files($currentpath, 'assignfeedback_exapdf', $filearea, $grade->id);
         }
     }
 
@@ -122,12 +122,12 @@ class provider implements
     public static function delete_feedback_for_context(assign_plugin_request_data $requestdata) {
 
         $assign = $requestdata->get_assign();
-        $plugin = $assign->get_plugin_by_type('assignfeedback', 'editpdf');
+        $plugin = $assign->get_plugin_by_type('assignfeedback', 'exapdf');
         $fileareas = $plugin->get_file_areas();
         $fs = get_file_storage();
         foreach ($fileareas as $filearea => $notused) {
             // Delete pdf files.
-            $fs->delete_area_files($requestdata->get_context()->id, 'assignfeedback_editpdf', $filearea);
+            $fs->delete_area_files($requestdata->get_context()->id, 'assignfeedback_exapdf', $filearea);
         }
         // Delete entries from the tables.
         $plugin->delete_instance();
@@ -162,18 +162,18 @@ class provider implements
         }
 
         $assign = $deletedata->get_assign();
-        $plugin = $assign->get_plugin_by_type('assignfeedback', 'editpdf');
+        $plugin = $assign->get_plugin_by_type('assignfeedback', 'exapdf');
         $fileareas = $plugin->get_file_areas();
         $fs = get_file_storage();
         list($sql, $params) = $DB->get_in_or_equal($deletedata->get_gradeids(), SQL_PARAMS_NAMED);
         foreach ($fileareas as $filearea => $notused) {
             // Delete pdf files.
-            $fs->delete_area_files_select($deletedata->get_context()->id, 'assignfeedback_editpdf', $filearea, $sql, $params);
+            $fs->delete_area_files_select($deletedata->get_context()->id, 'assignfeedback_exapdf', $filearea, $sql, $params);
         }
 
         // Remove table entries.
         $DB->delete_records_select('assignfeedback_editpdf_annot', "gradeid $sql", $params);
         $DB->delete_records_select('assignfeedback_editpdf_cmnt', "gradeid $sql", $params);
-        $DB->delete_records_select('assignfeedback_editpdf_rot', "gradeid $sql", $params);
+        $DB->delete_records_select('assignfeedback_exapdf_rot', "gradeid $sql", $params);
     }
 }

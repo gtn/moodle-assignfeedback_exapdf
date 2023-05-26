@@ -16,15 +16,15 @@
 /**
  * Provides an in browser PDF editor.
  *
- * @module moodle-assignfeedback_editpdf-editor
+ * @module moodle-assignfeedback_exapdf-editor
  */
 
 /**
  * Class representing a stamp.
  *
- * @namespace M.assignfeedback_editpdf
+ * @namespace M.assignfeedback_exapdf
  * @class annotationstamp
- * @extends M.assignfeedback_editpdf.annotation
+ * @extends M.assignfeedback_exapdf.annotation
  */
 var ANNOTATIONSTAMP = function(config) {
     ANNOTATIONSTAMP.superclass.constructor.apply(this, [config]);
@@ -33,20 +33,20 @@ var ANNOTATIONSTAMP = function(config) {
 ANNOTATIONSTAMP.NAME = "annotationstamp";
 ANNOTATIONSTAMP.ATTRS = {};
 
-Y.extend(ANNOTATIONSTAMP, M.assignfeedback_editpdf.annotation, {
+Y.extend(ANNOTATIONSTAMP, M.assignfeedback_exapdf.annotation, {
     /**
      * Draw a stamp annotation
      * @protected
      * @method draw
-     * @return M.assignfeedback_editpdf.drawable
+     * @return M.assignfeedback_exapdf.drawable
      */
     draw: function() {
-        var drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             drawingcanvas = this.editor.get_dialogue_element(SELECTOR.DRAWINGCANVAS),
             node,
             position;
 
-        position = this.editor.get_window_coordinates(new M.assignfeedback_editpdf.point(this.x, this.y));
+        position = this.editor.get_window_coordinates(new M.assignfeedback_exapdf.point(this.x, this.y));
         node = Y.Node.create('<div/>');
         node.addClass('annotation');
         node.addClass('stamp');
@@ -83,17 +83,17 @@ Y.extend(ANNOTATIONSTAMP, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method draw_current_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      */
     draw_current_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect(),
-            drawable = new M.assignfeedback_editpdf.drawable(this.editor),
+        var bounds = new M.assignfeedback_exapdf.rect(),
+            drawable = new M.assignfeedback_exapdf.drawable(this.editor),
             drawingregion = this.editor.get_dialogue_element(SELECTOR.DRAWINGREGION),
             node,
             position;
 
         bounds.bound([edit.start, edit.end]);
-        position = this.editor.get_window_coordinates(new M.assignfeedback_editpdf.point(bounds.x, bounds.y));
+        position = this.editor.get_window_coordinates(new M.assignfeedback_exapdf.point(bounds.x, bounds.y));
 
         node = Y.Node.create('<div/>');
         node.addClass('annotation');
@@ -122,11 +122,11 @@ Y.extend(ANNOTATIONSTAMP, M.assignfeedback_editpdf.annotation, {
      *
      * @public
      * @method init_from_edit
-     * @param M.assignfeedback_editpdf.edit edit
+     * @param M.assignfeedback_exapdf.edit edit
      * @return bool if width/height is more than min. required.
      */
     init_from_edit: function(edit) {
-        var bounds = new M.assignfeedback_editpdf.rect();
+        var bounds = new M.assignfeedback_exapdf.rect();
         bounds.bound([edit.start, edit.end]);
 
         if (bounds.width < 40) {
@@ -172,5 +172,5 @@ Y.extend(ANNOTATIONSTAMP, M.assignfeedback_editpdf.annotation, {
 
 });
 
-M.assignfeedback_editpdf = M.assignfeedback_editpdf || {};
-M.assignfeedback_editpdf.annotationstamp = ANNOTATIONSTAMP;
+M.assignfeedback_exapdf = M.assignfeedback_exapdf || {};
+M.assignfeedback_exapdf.annotationstamp = ANNOTATIONSTAMP;
