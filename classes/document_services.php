@@ -26,7 +26,6 @@ namespace assignfeedback_exapdf;
 
 use DOMDocument;
 
-// debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); exit;
 /**
  * Functions for generating the annotated pdf.
  *
@@ -94,7 +93,7 @@ EOD;
      * @param int|\assign $assignment
      * @return \assign
      */
-    private static function get_assignment_from_param($assignment) {
+    static function get_assignment_from_param($assignment) {
         global $CFG;
 
         require_once($CFG->dirroot . '/mod/assign/locallib.php');
@@ -160,7 +159,7 @@ EOD;
      * @param int $attemptnumber (-1 means latest attempt)
      * @return combined_document
      */
-    protected static function list_compatible_submission_files_for_attempt($assignment, $userid, $attemptnumber) {
+    public static function list_compatible_submission_files_for_attempt($assignment, $userid, $attemptnumber) {
         global $USER, $DB;
 
         $assignment = self::get_assignment_from_param($assignment);

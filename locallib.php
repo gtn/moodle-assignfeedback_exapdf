@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use \assignfeedback_exapdf\document_services;
 use \assignfeedback_exapdf\page_editor;
+use assignfeedback_exapdf\utils;
 
 /**
  * library class for exapdf feedback plugin extending feedback plugin base class
@@ -97,7 +98,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
             // Ensure that the current stamp is in the list of perpetual stamps.
             $systempathnamehash = $this->get_system_stamp_path($stamp);
             if (!array_key_exists($systempathnamehash, $systemstamps)) {
-                $filerecord = (object) [
+                $filerecord = (object)[
                     'filearea' => 'systemstamps',
                     'filepath' => '/' . $stamp->get_contenthash() . '/',
                 ];
@@ -108,7 +109,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
             // Ensure that the current stamp is in the list of stamps for the current grade item.
             $gradeitempathhash = $this->get_assignment_stamp_path($stamp, $grade->id);
             if (!array_key_exists($gradeitempathhash, $gradestamps)) {
-                $filerecord = (object) [
+                $filerecord = (object)[
                     'contextid' => $asscontext->id,
                     'filearea' => 'stamps',
                     'itemid' => $grade->id,
@@ -126,7 +127,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
             // In any case this is a cheap operation as it is solely performing an array lookup.
             $systempathnamehash = $this->get_system_stamp_path($stamp);
             if (!array_key_exists($systempathnamehash, $systemstamps)) {
-                $filerecord = (object) [
+                $filerecord = (object)[
                     'contextid' => $syscontext->id,
                     'itemid' => 0,
                     'filearea' => 'systemstamps',
@@ -163,7 +164,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
                 $feedbackfile->get_filename(),
                 false
             );
-           $filename = $feedbackfile->get_filename();
+            $filename = $feedbackfile->get_filename();
         }
 
         $widget = new assignfeedback_exapdf_widget(
@@ -181,7 +182,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
     /**
      * Get the pathnamehash for the specified stamp if in the system stamps.
      *
-     * @param   stored_file $file
+     * @param stored_file $file
      * @return  string
      */
     protected function get_system_stamp_path(stored_file $stamp): string {
@@ -200,8 +201,8 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
     /**
      * Get the pathnamehash for the specified stamp if in the current assignment stamps.
      *
-     * @param   stored_file $file
-     * @param   int $gradeid
+     * @param stored_file $file
+     * @param int $gradeid
      * @return  string
      */
     protected function get_assignment_stamp_path(stored_file $stamp, int $gradeid): string {
@@ -225,190 +226,53 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
      * @return bool true if elements were added to the form
      */
     public function get_form_elements_for_user($grade, MoodleQuickForm $mform, stdClass $data, $userid) {
-        global $PAGE;
+        global $CFG;
 
         $attempt = -1;
         if ($grade) {
             $attempt = $grade->attemptnumber;
         }
 
-        $renderer = $PAGE->get_renderer('assignfeedback_exapdf');
-
         // Links to download the generated pdf...
-        if ($attempt > -1 && page_editor::has_annotations_or_comments($grade->id, false)) {
+        // if ($attempt > -1 && page_editor::has_annotations_or_comments($grade->id, false)) {
+        if ($attempt > -1) {
             $html = $this->assignment->render_area_files('assignfeedback_exapdf',
-                                                         document_services::FINAL_PDF_FILEAREA,
-                                                         $grade->id);
-            $mform->addElement('static', 'exapdf_files', get_string('downloadfeedback', 'assignfeedback_exapdf'), $html);
+                document_services::FINAL_PDF_FILEAREA,
+                $grade->id);
+            $mform->addElement('static', 'exapdf_files', get_string('downloadfeedback', 'assignfeedback_editpdf'), $html);
         }
-
-        $widget = $this->get_widget($userid, $grade, false);
 
         $context = $this->assignment->get_context();
-        $userid = 3;
 
-        // echo $this->assignment->render_area_files('assignsubmission_file',
-        //     ASSIGNSUBMISSION_FILE_FILEAREA,
-        //     $grade->id);
+        $combined_file = utils::get_combined_file($context, $grade);
 
-        $component = 'assignsubmission_file';
-        $area = ASSIGNSUBMISSION_FILE_FILEAREA;
+        $fileid = join('/', [$context->id, $grade->id, $combined_file->get_contenthash()]);
 
-        // $files = new \assign_files($context, $grade->id, $area, $component, $this->assignment->get_course(), $this->assignment->get_course_module());
-
-        // $fs = get_file_storage();
-
-        ob_start();
-
-        // $files = $fs->get_area_files($context->id,
-        //     $component,
-        //     $area,
-        //     $grade->id,
-        //     'timemodified',
-        //     false);
-
-        echo 'time: '.time();
-
-        $file_infos = array_values($this->get_all_submission_file_infos($context->id, $grade->id));
-
-        echo '<h2>Files:</h2>';
-        foreach ($file_infos as $file_info) {
-            echo $file_info->submission_file->get_filename();
-
-            /* @var \stored_file $file */
-            $file = $file_info->submission_file;
-            $url = moodle_url::make_pluginfile_url(
-                $file->get_contextid(), $file->get_component(), $file->get_filearea(),
-                $file->get_itemid(), $file->get_filepath(), $file->get_filename()
-            );
-            echo ' <a href="'.$url.'">'.'submitted by user'.'</a>';
-
-            if ($file_info->annotated_file) {
-                /* @var \stored_file $file */
-                $file = $file_info->annotated_file;
-                $url = moodle_url::make_pluginfile_url(
-                    $file->get_contextid(), $file->get_component(), $file->get_filearea(),
-                    $file->get_itemid(), $file->get_filepath(), $file->get_filename()
-                );
-                echo ' <a href="'.$url.'">'.'annotated'.'</a>';
-            }
-
-            if ($file_info->final_file) {
-                /* @var \stored_file $file */
-                $file = $file_info->final_file;
-                $url = moodle_url::make_pluginfile_url(
-                    $file->get_contextid(), $file->get_component(), $file->get_filearea(),
-                    $file->get_itemid(), $file->get_filepath(), $file->get_filename()
-                );
-                echo ' <a href="'.$url.'">'.'final feedback'.'</a>';
-            }
-
-            echo '<br/>';
-
-            // $file_info['submission_file'];
-            // $file_info['annotations_file'];
-            // $file_info['final_file'];
+        if ($_SERVER['HTTP_HOST'] == 'localhost') {
+            // local dev
+            $dakoraurl = 'http://dev.dakoraplus.eu:3000';
+        } else {
+            $dakoraurl = 'https://dakoraplus.eu/feature/exapdf';
         }
-        //
-        //
-        // echo '<iframe src="https://dakoraplus.eu/dakora-plus/learning-plans" style="width: 100%; height: 400px;"></iframe>';
+        $dakoraurl .= '/assignment-grading?fileid=' . $fileid . '&moodle_url=' . $CFG->wwwroot . '&do_login=1';
 
+        $data = [
+            'dakoraurl' => $dakoraurl,
+            'fileid' => $fileid,
+        ];
 
-        // echo '<h2>Files:</h2>';
-        // foreach ($files as $file) {
-        //     echo $file->get_filepath(). $file->get_filename().'<br/>';
-        // }
-
-
-        // // korrigierte files
-        // $files = $fs->get_area_files($context->id,
-        //     'assignfeedback_exapdf',
-        //     document_services::FINAL_PDF_FILEAREA,
-        //     $grade->id,
-        //     'timemodified',
-        //     false);
-        //
-        // echo '<h2>Annotiert:</h2>';
-        // foreach ($files as $file) {
-        //     echo $file->get_filepath().$file->get_filename().'<br/>';
-        // }
-
-        $output = ob_get_clean();
-
-        $index = 0;
-
-        // $submission_file_url = '';
-        // if ($file_infos[$index]) {
-        // }
-
-        // $annotations_file_url = '';
-        // if (!empty($file_infos[$index]->annotations_file)) {
-        //     /* @var \stored_file $file */
-        //     $file = $file_infos[$index]->annotations_file;
-        //     $annotations_file_url = (string)moodle_url::make_pluginfile_url(
-        //         $file->get_contextid(), $file->get_component(), $file->get_filearea(),
-        //         $file->get_itemid(), $file->get_filepath(), $file->get_filename()
-        //     );
-        // }
-
-        $files = [];
-        $fs = get_file_storage();
-
-        foreach ($file_infos as $file_info) {
-            /* @var \stored_file $file */
-            $file = $file_info->submission_file;
-            $submission_file_url = (string)moodle_url::make_webservice_pluginfile_url(
-                $file->get_contextid(), 'assignfeedback_exapdf', $file->get_filearea(),
-                $file->get_itemid(), $file->get_filepath(), $file->get_filename()
-            );
-
-            $contextid = $file->get_contextid();
-            $itemid = $file->get_itemid();
-            $filehash = $file->get_contenthash();
-
-            /* @var \stored_file $annotations_file */
-            $annotations_file = current($fs->get_directory_files($contextid, 'assignfeedback_exapdf', 'annotations', $itemid, "/{$filehash}/", false, false));
-
-            $annotated_file = current($fs->get_directory_files($contextid, 'assignfeedback_exapdf', 'annotated', $itemid, "/{$filehash}/", false, false));
-
-            $files[] = [
-                'name' => $file_info->submission_file->get_filename(),
-                'fileid' => join('/', [$context->id, $grade->id, $file_info->submission_file->get_contenthash()]),
-                // 'submission_file' => '/test.docx',
-                'submission_file' => $submission_file_url,
-                'annotations_changed' => $annotations_file && (($annotated_file ? $annotations_file->get_timemodified() > $annotated_file->get_timemodified() : true)),
-            ];
-        }
-
-        $jscode = file_get_contents(__DIR__.'/editor.js')
-            .'start_dakora('.json_encode($files).', '.json_encode($files[0]).');';
+        $jscode = file_get_contents(__DIR__ . '/editor.js')
+            . 'load_dakora(' . json_encode($data) . ');';
 
         global $PAGE;
+        $PAGE->requires->js('/mod/assign/feedback/exapdf/editor.js', true);
         $PAGE->requires->js_init_code($jscode);
 
-        // 'component' => 'assignsubmission_file',
-            // 'filearea' => ASSIGNSUBMISSION_FILE_FILEAREA,
-            // 'itemid' => $submission->id,
-            // 'filepath' => '/',
-            // 'filename' => $textfile ? 'submission.txt' : 'submission.pdf'
-
-        // $component = 'assignsubmission_file';
-        //                                      $filearea =           ASSIGNSUBMISSION_FILE_FILEAREA;
-        //                                                 $submission->id
-
-        // new \assign_files($context, $userid, $filearea, $component, $course, $coursemodule);
-
-        // var_dump($data);
-        // var_dump($userid);
-        // var_dump($grade);
-        // $html = $renderer->render($widget);
-        $html .= 'badabum';
-
-        $mform->addElement('static', 'exapdf', get_string('exapdf', 'assignfeedback_exapdf'), $html);
-        $mform->addHelpButton('exapdf', 'exapdf', 'assignfeedback_exapdf');
-        $mform->addElement('hidden', 'exapdf_source_userid', $userid);
-        $mform->setType('exapdf_source_userid', PARAM_INT);
-        $mform->setConstant('exapdf_source_userid', $userid);
+        // $mform->addElement('static', 'exapdf', get_string('exapdf', 'assignfeedback_exapdf'), $html);
+        // $mform->addHelpButton('exapdf', 'exapdf', 'assignfeedback_exapdf');
+        // $mform->addElement('hidden', 'exapdf_source_userid', $userid);
+        // $mform->setType('exapdf_source_userid', PARAM_INT);
+        // $mform->setConstant('exapdf_source_userid', $userid);
     }
 
     /**
@@ -419,10 +283,17 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
      * @return boolean True if the pdf has been modified, else false.
      */
     public function is_feedback_modified(stdClass $grade, stdClass $data) {
-        // TODO: has to return correct status
-        // logik: if annotations changed after the 'download' file, then feedback has changed!
+        $contextid = $this->assignment->get_context()->id;
 
-        return true;
+        $fs = get_file_storage();
+
+        $annotated_file = current($fs->get_area_files($contextid, 'assignfeedback_exapdf', 'annotated', $grade->id, 'itemid', false));
+        $download_file = current($fs->get_area_files($contextid, 'assignfeedback_exapdf', document_services::FINAL_PDF_FILEAREA, $grade->id, 'itemid', false));
+
+        // annoated_file exists and no download file yet, or is newer than download_file
+        $modified = $annotated_file && (($download_file ? $annotated_file->get_timemodified() > $download_file->get_timemodified() : true));
+
+        return $modified;
 
         // We only need to know if the source user's PDF has changed. If so then all
         // following users will have the same status. If it's only an individual annotation
@@ -499,44 +370,45 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
      * @return bool
      */
     public function save(stdClass $grade, stdClass $data) {
+        global $DB;
+
         $contextid = $this->assignment->get_context()->id;
 
         // first delete old files
         $fs = get_file_storage();
         $fs->delete_area_files($contextid, 'assignfeedback_exapdf', document_services::FINAL_PDF_FILEAREA, $grade->id);
 
+        $annotated_file = current($fs->get_area_files($contextid, 'assignfeedback_exapdf', 'annotated', $grade->id, 'itemid', false));
 
-        // TODO: combine all annotated files to one file, and save it
-
-
-        // then save all annotated files to final area
-        $file_infos = $this->get_all_submission_file_infos($contextid, $grade->id);
-        foreach ($file_infos as $file_info) {
-            if ($file_info->annotated_file) {
-                $filerecord = (object)[
-                    'filearea' => document_services::FINAL_PDF_FILEAREA,
-                    'timecreated' => time(),
-                    'timemodified' => time(),
-                ];
-                $fs->create_file_from_storedfile($filerecord, $file_info->annotated_file);
-            }
+        $user = $DB->get_record('user', ['id' => $grade->userid]);
+        if ($user) {
+            $filename = fullname($user) . '-Feedback.pdf';
+        } else {
+            $filename = 'Feedback.pdf';
         }
 
+        $filerecord = (object)[
+            'filearea' => document_services::FINAL_PDF_FILEAREA,
+            'timecreated' => time(),
+            'timemodified' => time(),
+            'filepath' => '/',
+            'filename' => $filename,
+        ];
+        $fs->create_file_from_storedfile($filerecord, $annotated_file);
+
+        return true;
 
         // Source user id is only added to the form if there was a pdf.
-        // if (!empty($data->exapdf_source_userid)) {
-        //     $sourceuserid = $data->exapdf_source_userid;
-        //     // Copy drafts annotations and comments if current user is different to sourceuserid.
-        //     if ($sourceuserid != $grade->userid) {
-        //         page_editor::copy_drafts_from_to($this->assignment, $grade, $sourceuserid);
-        //     }
-        // }
-
-        // if (page_editor::has_annotations_or_comments($grade->id, true)) {
-        //     document_services::generate_feedback_document($this->assignment, $grade->userid, $grade->attemptnumber);
-        // }
-
-
+        if (!empty($data->editpdf_source_userid)) {
+            $sourceuserid = $data->editpdf_source_userid;
+            // Copy drafts annotations and comments if current user is different to sourceuserid.
+            if ($sourceuserid != $grade->userid) {
+                page_editor::copy_drafts_from_to($this->assignment, $grade, $sourceuserid);
+            }
+        }
+        if (page_editor::has_annotations_or_comments($grade->id, true)) {
+            document_services::generate_feedback_document($this->assignment, $grade->userid, $grade->attemptnumber);
+        }
 
         return true;
     }
@@ -548,24 +420,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
      * @param bool $showviewlink (Always set to false).
      * @return string
      */
-    public function view_summary(stdClass $grade, & $showviewlink) {
-
-        // $infos = $this->get_all_submission_file_infos($this->assignment->get_context()->id, $grade->id);
-        //
-        // ob_start();
-        //
-        // echo '<h2>Annotiert:</h2>';
-        // foreach ($infos as $info) {
-        //     if (!$info['final_file']) {
-        //         continue;
-        //     }
-        //
-        //     $file = $infos['final_file'];
-        //
-        // }
-        //
-        // return 'Summary Spalte bei "alle Bewertungen" und auch ergebnis für den Student!'
-        //     .ob_get_clean();
+    public function view_summary(stdClass $grade, &$showviewlink) {
         $showviewlink = false;
         return $this->view($grade);
     }
@@ -577,13 +432,19 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
      * @return string
      */
     public function view(stdClass $grade) {
+        $html = $this->assignment->render_area_files('assignfeedback_exapdf',
+            document_services::FINAL_PDF_FILEAREA,
+            $grade->id);
+
+        return $html;
+
         global $PAGE;
         $html = '';
         // Show a link to download the pdf.
-        if (true || page_editor::has_annotations_or_comments($grade->id, false)) {
+        if (page_editor::has_annotations_or_comments($grade->id, false)) {
             $html = $this->assignment->render_area_files('assignfeedback_exapdf',
-                                                         document_services::FINAL_PDF_FILEAREA,
-                                                         $grade->id);
+                document_services::FINAL_PDF_FILEAREA,
+                $grade->id);
 
             // Also show the link to the read-only interface.
             $renderer = $PAGE->get_renderer('assignfeedback_exapdf');
@@ -602,8 +463,8 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
     public function is_empty(stdClass $grade) {
         global $DB;
 
-        $comments = $DB->count_records('assignfeedback_editpdf_cmnt', array('gradeid'=>$grade->id, 'draft'=>0));
-        $annotations = $DB->count_records('assignfeedback_editpdf_annot', array('gradeid'=>$grade->id, 'draft'=>0));
+        $comments = $DB->count_records('assignfeedback_editpdf_cmnt', array('gradeid' => $grade->id, 'draft' => 0));
+        $annotations = $DB->count_records('assignfeedback_editpdf_annot', array('gradeid' => $grade->id, 'draft' => 0));
         return $comments == 0 && $annotations == 0;
     }
 
@@ -614,7 +475,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
      */
     public function delete_instance() {
         global $DB;
-        $grades = $DB->get_records('assign_grades', array('assignment'=>$this->assignment->get_instance()->id), '', 'id');
+        $grades = $DB->get_records('assign_grades', array('assignment' => $this->assignment->get_instance()->id), '', 'id');
         if ($grades) {
             list($gradeids, $params) = $DB->get_in_or_equal(array_keys($grades), SQL_PARAMS_NAMED);
             $DB->delete_records_select('assignfeedback_editpdf_annot', 'gradeid ' . $gradeids, $params);
@@ -630,7 +491,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
      * @return bool
      */
     public function is_available() {
-		return true;
+        return true;
 
         if ($this->enabledcache === null) {
             $testpath = assignfeedback_exapdf\pdf::test_gs_path(false);
@@ -638,6 +499,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
         }
         return $this->enabledcache;
     }
+
     /**
      * Prevent enabling this plugin if ghostscript is not available.
      *
@@ -662,7 +524,7 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
             document_services::PAGE_IMAGE_READONLY_FILEAREA => $this->get_name(),
             document_services::STAMPS_FILEAREA => $this->get_name(),
             document_services::TMP_JPG_TO_PDF_FILEAREA => $this->get_name(),
-            document_services::TMP_ROTATED_JPG_FILEAREA => $this->get_name()
+            document_services::TMP_ROTATED_JPG_FILEAREA => $this->get_name(),
         ];
     }
 
@@ -692,68 +554,6 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
      * @since Moodle 3.2
      */
     public function get_config_for_external() {
-        return (array) $this->get_config();
-    }
-
-
-
-    public function get_all_submission_file_infos($contextid, $itemid) {
-        $fs = get_file_storage();
-
-        $allFiles = [];
-
-        $submissionFiles = $fs->get_area_files($contextid,
-            'assignsubmission_file',
-            ASSIGNSUBMISSION_FILE_FILEAREA,
-            $itemid,
-            'timemodified',
-            false);
-
-        foreach ($submissionFiles as $submissionFile) {
-            $finalFile = current($fs->get_directory_files($contextid,
-                'assignfeedback_exapdf',
-                document_services::FINAL_PDF_FILEAREA,
-                $itemid,
-                '/'.$submissionFile->get_contenthash().'/',
-                false));
-
-            $annotationsFile = current($fs->get_directory_files($contextid,
-                'assignfeedback_exapdf',
-                'annotations',
-                $itemid,
-                '/'.$submissionFile->get_contenthash().'/',
-                false));
-
-            $annotatedFile = current($fs->get_directory_files($contextid,
-                'assignfeedback_exapdf',
-                'annotated',
-                $itemid,
-                '/'.$submissionFile->get_contenthash().'/',
-                false));
-
-            // TEST delete
-            // if ($finalFile) {
-            //     $finalFile->delete();
-            // }
-
-            $allFiles[$submissionFile->get_contenthash()] = (object)[
-                'submission_file' => $submissionFile,
-                'annotations_file' => $annotationsFile,
-                'annotated_file' => $annotatedFile,
-                'final_file' => $finalFile,
-            ];
-        }
-
-        // TESTING: copy first file to annotated_area
-        // $file = $allFiles[0]->submission_file;
-        // $filerecord = (object)[
-        //     'component' => 'assignfeedback_exapdf',
-        //     'filearea' => 'annotated',
-        //     'filepath' => '/'.$file->get_contenthash().'/',
-        //     'userid' => null,
-        // ];
-        // $fs->create_file_from_storedfile($filerecord, $file);
-
-        return $allFiles;
+        return (array)$this->get_config();
     }
 }

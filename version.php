@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2023042400;
+$plugin->version   = 2023053100;
 $plugin->requires  = 2022111800;
 $plugin->component = 'assignfeedback_exapdf';

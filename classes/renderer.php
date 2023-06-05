@@ -22,7 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); exit;
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * A custom renderer class that extends the plugin_renderer_base and is used by the exapdf feedback plugin.
@@ -76,6 +76,7 @@ class assignfeedback_exapdf_renderer extends plugin_renderer_base {
      * @return string
      */
     private function render_toolbar_button($icon, $tool, $accesskey = null, $disabled=false) {
+
         // Build button alt text.
         $alttext = new stdClass();
         $alttext->tool = get_string($tool, 'assignfeedback_exapdf');
@@ -106,16 +107,6 @@ class assignfeedback_exapdf_renderer extends plugin_renderer_base {
      */
     public function render_assignfeedback_exapdf_widget(assignfeedback_exapdf_widget $widget) {
         global $CFG;
-
-        // // old:
-        // $jscode = file_get_contents(__DIR__.'/../editor.js');
-        // $this->page->requires->js_init_code($jscode);
-        //
-        // debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        // exit;
-        // new \assign_files($context, $userid, $filearea, $component, $course, $coursemodule);
-        //
-        // return ;
 
         $html = 'TODO: ausgabe von render_assignfeedback_exapdf_widget';
 
