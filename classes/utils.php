@@ -120,9 +120,76 @@ class utils {
     public static function get_combined_file($context, $grade) {
         $submission_files = \assignfeedback_exapdf\utils::get_submission_files($grade);
 
+        $dev_ignore_images = false;
+
+        if (preg_match('!with_editpdf_files!', $_SERVER['REQUEST_URI'])) {
+            $only_pdfs_and_images = true;
+            foreach ($submission_files as $file) {
+                if ($file->get_mimetype() == 'application/pdf' || (!$dev_ignore_images && strpos($file->get_mimetype(), 'image/') === 0)) {
+                    // ok
+                } else {
+                    $only_pdfs_and_images = false;
+                    break;
+                }
+            }
+
+            if (!$only_pdfs_and_images) {
+                $editpdf_combined_document = \assignfeedback_editpdf\document_services::get_combined_document_for_attempt($grade->assignment, $grade->userid, $grade->attemptnumber);
+                $files = $editpdf_combined_document->get_source_files();
+                $compatiblepdfs = [];
+                foreach ($files as $file) {
+                    // Check that each file is compatible and add it to the list.
+                    // Note: We drop non-compatible files.
+                    $compatiblepdf = false;
+                    if (is_a($file, \core_files\conversion::class)) {
+                        $status = $file->get('status');
+                        if ($status == \core_files\conversion::STATUS_COMPLETE) {
+                            $compatiblepdf = $file->get_destfile();
+                        }
+                    } else {
+                        $compatiblepdf = $file;
+                    }
+
+                    if ($compatiblepdf) {
+                        $compatiblepdfs[] = $compatiblepdf;
+                    }
+                }
+
+                // replace submission_file with generated file
+                $old_submission_files = $submission_files;
+                $submission_files = [];
+                foreach ($old_submission_files as $file) {
+                    if ($file->get_mimetype() == 'application/pdf' || (!$dev_ignore_images && strpos($file->get_mimetype(), 'image/') === 0)) {
+                        // ok
+                        $submission_files[] = $file;
+                    } else {
+                        $file_found = false;
+                        foreach ($compatiblepdfs as $compatiblepdf) {
+                            if ($compatiblepdf->get_filename() == $file->get_filename() . '.pdf') {
+                                $file_found = $compatiblepdf;
+                                break;
+                            }
+                        }
+
+                        if ($file_found) {
+                            $submission_files[] = $file_found;
+                        } else {
+                            $submission_files[] = $file;
+                        }
+                    }
+                }
+            }
+        }
+
         $combined_hash = '';
-        foreach ($submission_files as $submission_file) {
-            $combined_hash .= $submission_file->get_contenthash();
+        foreach ($submission_files as $file) {
+            if ($file->get_component() == 'assignfeedback_editpdf') {
+                // for editpdf-files the hash changes for each run
+                // eg. jpegs are generated on each call of get_combined_document_for_attempt()
+                $combined_hash .= 'converted:' . $file->get_filename();
+            } else {
+                $combined_hash .= $file->get_contenthash();
+            }
         }
         $combined_hash = md5($combined_hash);
 
@@ -138,23 +205,13 @@ class utils {
 
         $fs = get_file_storage();
 
-        $only_pdfs_and_images = true;
-        foreach ($submission_files as $file) {
-            if ($file->get_mimetype() == 'application/pdf' || $file->get_imageinfo()) {
-                // ok
-            } else {
-                $only_pdfs_and_images = false;
-                break;
-            }
-        }
-
-        if (!$only_pdfs_and_images) {
-            // check if the moodle conversion created a document
-            $editpdf_combined_file = current($fs->get_area_files($filerecord['contextid'], 'assignfeedback_editpdf', $filerecord['filearea'], $filerecord['itemid'], 'itemid', false, false));
-            if ($editpdf_combined_file) {
-                return $editpdf_combined_file;
-            }
-        }
+        // if (!$only_pdfs_and_images) {
+        //     // check if the moodle conversion created a document
+        //     $editpdf_combined_file = current($fs->get_area_files($filerecord['contextid'], 'assignfeedback_editpdf', $filerecord['filearea'], $filerecord['itemid'], 'itemid', false, false));
+        //     if ($editpdf_combined_file) {
+        //         return $editpdf_combined_file;
+        //     }
+        // }
 
         $combined_file = current($fs->get_directory_files($filerecord['contextid'], $filerecord['component'], $filerecord['filearea'], $filerecord['itemid'], $filerecord['filepath'], false, false));
 
