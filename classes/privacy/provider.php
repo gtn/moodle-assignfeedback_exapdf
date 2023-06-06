@@ -1,4 +1,4 @@
-<?php die('exapdf include: '.__FILE__);
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -173,7 +173,7 @@ class provider implements
 
         // Remove table entries.
         $DB->delete_records_select('assignfeedback_editpdf_annot', "gradeid $sql", $params);
-        $DB->delete_records_select('assignfeedback_editpdf_cmnt', "gradeid $sql", $params);
-        $DB->delete_records_select('assignfeedback_exapdf_rot', "gradeid $sql", $params);
+        // $DB->delete_records_select('assignfeedback_editpdf_cmnt', "gradeid $sql", $params);
+        // $DB->delete_records_select('assignfeedback_exapdf_rot', "gradeid $sql", $params);
     }
 }
