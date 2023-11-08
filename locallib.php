@@ -478,9 +478,9 @@ class assign_feedback_exapdf extends assign_feedback_plugin {
         $grades = $DB->get_records('assign_grades', array('assignment' => $this->assignment->get_instance()->id), '', 'id');
         if ($grades) {
             list($gradeids, $params) = $DB->get_in_or_equal(array_keys($grades), SQL_PARAMS_NAMED);
-            $DB->delete_records_select('assignfeedback_editpdf_annot', 'gradeid ' . $gradeids, $params);
-            $DB->delete_records_select('assignfeedback_editpdf_cmnt', 'gradeid ' . $gradeids, $params);
-            $DB->delete_records_select('assignfeedback_exapdf_rot', 'gradeid ' . $gradeids, $params);
+            $DB->delete_records_select('assignfeedback_exapdf_annot', 'gradeid ' . $gradeids, $params);
+            // $DB->delete_records_select('assignfeedback_editpdf_cmnt', 'gradeid ' . $gradeids, $params);
+            // $DB->delete_records_select('assignfeedback_exapdf_rot', 'gradeid ' . $gradeids, $params);
         }
         return true;
     }
