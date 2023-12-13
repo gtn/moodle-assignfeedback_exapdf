@@ -1,4 +1,4 @@
-<?php die('exapdf include: '.__FILE__);
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -51,6 +51,9 @@ class observer {
      * @param \mod_assign\event\base $event The submission created/updated event.
      */
     protected static function queue_conversion($event) {
+        // vorerst deaktiviert, nicht getestet und auch nicht sicher ob noch benötigt
+        return;
+
         $data = [
             'submissionid' => $event->other['submissionid'],
             'submissionattempt' => $event->other['submissionattempt'],
